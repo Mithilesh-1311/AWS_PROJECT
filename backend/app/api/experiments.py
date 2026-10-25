@@ -59,7 +59,7 @@ async def get_latest_results():
         return json.load(f)
 
 
-@router.post("/experiments/run-baseline")
+@router.post("/experiments/legacy-instructions")
 async def trigger_baseline(background_tasks: BackgroundTasks):
     """Trigger a baseline experiment run in the background.
 

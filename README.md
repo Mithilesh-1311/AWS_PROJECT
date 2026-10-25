@@ -1,129 +1,66 @@
-# Low-Latency EOG-Based Early Intent Detection for Eye Movements
+# EOG Intent
 
-> **Review 1 Milestone (~50% Completion Build)**  
-> Academic Biomedical Signal Processing & Machine Learning Project  
-> Validated on the University of Malta 16-Channel Isotropic EOG Dataset (14 Subjects, 4,032 Trials).
+Recorded EOG research workspace: validated dataset exploration, causal early-window inference, recorded WebSocket replay, reproducible subject-held-out evaluation, durable training jobs and provenance exports.
 
----
+Final logistic 100 ms result: **77.84% accuracy / 0.7794 macro F1**, 14-subject LOSO, 3,610 eligible trials out of 4,032. The 25-sample calibration delay and onset-confirmation delay are included in decision readiness. Observation budget is not total latency. See [model card](docs/MODEL_CARD.md) and [experiment evidence](docs/EXPERIMENTS.md).
 
-## 📌 Executive Overview
+## Local launch (PowerShell)
 
-Traditional eye-gaze tracking and human-machine interfaces require a user to execute a complete saccadic movement and fixate on a target before detecting intention—introducing **200 to 400 milliseconds of latency**. 
+Use Python 3.10 and Node 22. Raw data is deliberately excluded. Place the supplied archive under `Dataset_Isotropic/Dataset_Isotropic/S1...S14`, or set `EOG_DATASET_ROOT` to a folder containing S1...S14. Published reports can be viewed without raw data; training/prediction/replay require it.
 
-This research project develops a **low-latency early intent detection pipeline** that decodes the intended saccadic direction within the first **20 ms to 100 ms** after saccade initiation from multi-channel Electrooculography (EOG).
-
-```
-   Visual Cue (CS=1)            Saccade Onset               Saccade Complete
-          │                           │                            │
-          │ ── Reaction: 150-250ms ── │ ── Duration: 40-60ms ───── │
-          ├───────────────────────────┼─────────────┬──────────────┤
-                                      ▲             ▲
-                                      Window: 20ms  Window: 60ms
-                                      (Early Intent Decoded Here)
-```
-
----
-
-## 🚀 Key Highlights & Accomplishments (Review 1)
-
-- **Full Dataset Validation**: 100% structural verification of all 14 subjects (`S1`–`S14`), 4,032 experimental trials, 16 active monopolar channels at 256 Hz.
-- **Biomedical Anomaly Discovery**: Uncovered and safely isolated the `CS=30` experimental termination marker.
-- **Strict Causality Enforced**: Zero future data leakage; causal baseline centering; forward-only IIR drift filtering; exact sample ceiling conversion ($N = \lceil T_{ms} \cdot 256 / 1000 \rceil$).
-- **Physiological Saccade Onset Detection**: Automated derivative thresholding with Median Absolute Deviation (MAD) noise estimation.
-- **Verified Baseline ML**: Validated Logistic Regression & Linear SVM models on 8-class direction classification across 8 window durations (20ms to 200ms).
-- **Interactive Research Dashboard**: Complete 8-page React + Vite + TypeScript web application with rich visualizations (Recharts, dynamic window slider, multi-channel waveforms).
-- **Automated Test Suite**: 27 unit and integration tests covering signal processing, features, onset detection, window generation, and FastAPI endpoints.
-
----
-
-## 🏗️ Project Architecture
-
-```
-AWS project/
-├── Dataset_Isotropic/         # University of Malta raw .mat files (S1-S14)
-├── backend/
-│   ├── app/
-│   │   ├── api/               # FastAPI route endpoints
-│   │   ├── core/              # Global configuration & constants
-│   │   ├── data/              # Lazy loader & trial segmenter
-│   │   ├── signal_processing/ # Causal preprocessor & onset detector
-│   │   ├── features/          # Early window & feature extractors
-│   │   ├── models/            # Baseline classifiers
-│   │   └── evaluation/        # Stratified cross-validation & metrics
-│   ├── artifacts/             # Cached models, inspection reports, experiment JSONs
-│   ├── scripts/               # CLI tools: inspect_dataset, run_baseline
-│   ├── tests/                 # Comprehensive pytest suite (27 passing tests)
-│   └── requirements.txt
-├── frontend/
-│   ├── src/
-│   │   ├── pages/             # 8 interactive dashboard pages
-│   │   ├── services/          # Typed API client
-│   │   └── hooks/             # Custom React hooks
-│   ├── package.json
-│   └── vite.config.ts
-└── docs/
-    ├── DATASET_REPORT.md      # Detailed dataset validation & anomaly report
-    ├── METHODOLOGY.md         # Scientific & mathematical formulation
-    ├── REVIEW_1_NOTES.md      # Presentation script & defense guide
-    └── PHASE_2_PLAN.md        # Roadmap for deep learning & streaming
-```
-
----
-
-## ⚡ Quick Start Guide
-
-### Prerequisites
-- Python 3.10+
-- Node.js 18+ and npm
-
-### 1. Run Backend API Server
-```bash
+```powershell
 cd backend
-python -m pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
+python -m venv .venv-local
+.\.venv-local\Scripts\python.exe -m pip install -r requirements-dev.txt
+.\.venv-local\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
-- API Docs: [http://localhost:8000/docs](http://localhost:8000/docs)
-- Health Check: [http://localhost:8000/api/health](http://localhost:8000/api/health)
 
-### 2. Run Interactive Research Frontend
-```bash
+In a second terminal, from `backend`:
+
+```powershell
+.\.venv-local\Scripts\python.exe -m scripts.worker
+```
+
+In a third terminal:
+
+```powershell
 cd frontend
-npm install
+npm ci
 npm run dev
 ```
-- Dashboard: [http://localhost:5173](http://localhost:5173)
 
-### 3. Run Automated Tests
-```bash
+Open **http://localhost:5173**. API health: **http://127.0.0.1:8000/api/health**; interactive API schema: **http://127.0.0.1:8000/docs**. Local launch binds loopback. Frontend API and WebSocket requests use the same-origin `/api` proxy.
+
+New clones contain published experiment reports, not generated serving binaries. With the data installed, train and activate a compatible model:
+
+```powershell
 cd backend
-python -m pytest tests/ -v
+.\.venv-local\Scripts\python.exe -m scripts.train_causal --models logistic_regression --windows 100 --evaluation loso --serve
+# Read the experiment ID from the output, then substitute it below:
+.\.venv-local\Scripts\python.exe -c "from app.models.registry import activate; activate('<experiment-id>_logistic_100')"
 ```
 
-### 4. Run Baseline Experiments via CLI
-```bash
+## Verification
+
+```powershell
 cd backend
-python -m scripts.run_baseline --n-classes 8 --model logistic_regression --alignment onset
+python -m pytest -q
+python -m scripts.verify_artifacts
+# From frontend, with API + worker running:
+npm run lint
+npm run build
+npx playwright install chromium
+npm run test:e2e
 ```
 
----
+The clean runtime passed 47 tests with one optional TCN test skipped; the dedicated Torch environment passed all 48 tests including the TCN. Ten browser tests passed at desktop and mobile sizes. Authenticated Caddy inference and replay passed. Exact commands, test scopes and unrun gates are in [VERIFICATION_REPORT.md](docs/VERIFICATION_REPORT.md).
 
-## 📊 Dashboard Pages
+## Deployment and demonstration
 
-1. **Overview**: Project synopsis, core metrics, Review 1 progress status.
-2. **Dataset Explorer**: Interactive viewer for 16-channel EOG waveforms, trial selector, and target direction compass.
-3. **Signal Processing**: Raw vs. preprocessed signal comparator, first-derivative waveform, and detected saccade onset markers.
-4. **Early Window Lab**: Interactive observation duration slider (20ms–200ms) with visual saccade cut markers.
-5. **Experiments**: Accuracy vs. latency trade-off curve, confusion matrix, and classification metrics.
-6. **Data Quality**: Automated multi-subject validation matrix, NaN/Inf checks, and anomaly reporting.
-7. **Methodology**: Visual engineering pipeline and mathematical formulation.
-8. **About**: Technical stack, project specifications, and Phase 2 roadmap.
+Docker Compose provides Caddy/static frontend, API and a separate worker. Copy `.env.example` to `.env`, generate the required bcrypt hash/token, then use `docker compose up -d --build`. [AWS_DEPLOYMENT.md](docs/AWS_DEPLOYMENT.md) gives the complete configuration and rollback/backup path.
 
----
+AWS status: **prepared; Terraform schema and mocked security plan validated; not deployed; not cloud-verified**. No AWS resources or raw-data uploads were performed. Docker/container execution was not run locally because Docker is unavailable; CI contains that gate.
 
-## 📚 Academic Documentation
+Demo: Dataset Explorer → Signal Processing (retrospective diagnostics) → Early Windows → Predictions (causal) → Live Replay (recorded data) → Model Evaluation → Reports. Follow the [demo script](docs/DEMO_SCRIPT.md).
 
-- [Comprehensive Project Analysis](docs/COMPREHENSIVE_PROJECT_ANALYSIS.md): In-depth, publication-grade report reference detailing biophysics, mathematics, dataset, ML models, and full architecture.
-- [Dataset Report](docs/DATASET_REPORT.md): Complete data audit, electrode specifications, and ControlSignal analysis.
-- [Methodology](docs/METHODOLOGY.md): Biophysical theory of EOG, spatial geometry, and causal processing.
-- [Review Notes](docs/REVIEW_1_NOTES.md): Presentation walkthrough and defense Q&A guide.
-- [Project Plan](docs/PHASE_2_PLAN.md): Deep temporal networks, continuous angular regression, and real-time streaming simulator.
+Read [DATASET_CARD](docs/DATASET_CARD.md), [ARCHITECTURE](docs/ARCHITECTURE.md), [API](docs/API.md) and [EXPERIMENTS](docs/EXPERIMENTS.md) for scientific and operational limits. Research extensions are explicitly unimplemented. No clinical or connected-hardware validation is claimed.

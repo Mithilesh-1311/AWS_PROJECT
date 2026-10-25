@@ -1,0 +1,28 @@
+{
+  "model_id": "46c8ad758f244c698eaceb90f161219a_logistic_100",
+  "attempts": 20,
+  "predictions": 20,
+  "scope": "S1 trials 0..19; one warm-up; local sequential HTTP; raw data may be cached; no physical acquisition or internet latency",
+  "metrics_ms": {
+    "http_roundtrip_ms": {
+      "median": 29.43565003806725,
+      "p95": 33.35371009889059
+    },
+    "feature_ms": {
+      "median": 4.155550035648048,
+      "p95": 5.050240037962794
+    },
+    "model_ms": {
+      "median": 0.354000017978251,
+      "p95": 0.4041750333271921
+    },
+    "causal_and_inference_ms": {
+      "median": 11.368050007149577,
+      "p95": 12.381375016411768
+    },
+    "cue_to_decision_ms": {
+      "median": 291.015625,
+      "p95": 348.046875
+    }
+  }
+}

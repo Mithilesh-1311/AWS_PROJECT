@@ -1,6 +1,6 @@
 """Signal data and processing API routes."""
 from fastapi import APIRouter, HTTPException, Query
-from typing import List, Optional
+from typing import List, Optional, Literal
 import numpy as np
 from app.data.dataset_loader import get_loader
 from app.data.trial_segmenter import segment_trials, get_trial_eog
@@ -28,11 +28,11 @@ def _downsample_for_vis(signal: np.ndarray, max_samples: int = MAX_VIS_SAMPLES) 
 
 
 @router.get("/subjects/{subject_id}/trials/{trial_id}/signal")
-async def get_trial_signal(
+def get_trial_signal(
     subject_id: str,
     trial_id: int,
     channels: Optional[str] = Query(None, description="Comma-separated channel indices (0-based)"),
-    phase: str = Query("full", description="outward, return, blink, or full"),
+    phase: Literal["outward", "return", "blink", "full"] = "full",
     preprocess: bool = Query(False),
     baseline_correct: bool = Query(True),
 ):
@@ -89,7 +89,7 @@ async def get_trial_signal(
 
 
 @router.get("/subjects/{subject_id}/trials/{trial_id}/onset")
-async def get_saccade_onset(
+def get_saccade_onset(
     subject_id: str,
     trial_id: int,
 ):
@@ -128,11 +128,11 @@ async def get_saccade_onset(
 
 
 @router.get("/subjects/{subject_id}/trials/{trial_id}/early-window")
-async def get_early_window(
+def get_early_window(
     subject_id: str,
     trial_id: int,
-    window_ms: float = Query(100, description="Window duration in ms"),
-    alignment: str = Query("onset", description="onset or cue"),
+    window_ms: float = Query(100, gt=0, le=1000, allow_inf_nan=False),
+    alignment: Literal["onset", "cue"] = "onset",
 ):
     """Get early observation window data for a trial."""
     loader = get_loader()
@@ -197,7 +197,7 @@ async def get_early_window(
 
 
 @router.get("/subjects/{subject_id}/trials/{trial_id}/processing")
-async def get_signal_processing(
+def get_signal_processing(
     subject_id: str,
     trial_id: int,
     baseline_correct: bool = Query(True),

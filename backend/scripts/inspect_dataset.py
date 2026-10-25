@@ -8,13 +8,16 @@ EOG Isotropic dataset. Generates a comprehensive JSON validation report.
 import os
 import sys
 import json
+import uuid
+from app.core.config import DATASET_ROOT, REPORTS_DIR
+from app.data.dataset_loader import DatasetLoader, get_loader
+from app.data.trial_segmenter import segment_trials
 import numpy as np
 from scipy.io import loadmat
 from pathlib import Path
 from datetime import datetime
 
-DATASET_ROOT = Path(__file__).resolve().parents[2] / "data" / "Dataset_Isotropic"
-REPORT_DIR = Path(__file__).resolve().parents[1] / "artifacts" / "reports"
+REPORT_DIR = REPORTS_DIR
 
 EXPECTED_FILES = ["EOG.mat", "ControlSignal.mat", "Target_GA_stream.mat", "PD.mat", "Dist_screen.mat"]
 EXPECTED_SUBJECTS = [f"S{i}" for i in range(1, 15)]
@@ -135,10 +138,7 @@ def inspect_subject(subject_id, dataset_root):
             report["control_signal_variable_name"] = key
             unique = info.get("unique_values", [])
             report["control_signal_unique_values"] = unique
-            # Check for anomalous value 30
-            if 30 in unique or 30.0 in unique:
-                report["anomalies"].append(f"ControlSignal contains value 30 (not documented as 1,2,3)")
-            expected_vals = {0, 1, 2, 3}
+            expected_vals = {1, 2, 3}
             unexpected_vals = set(unique) - expected_vals - {30, 30.0}
             if unexpected_vals:
                 report["anomalies"].append(f"ControlSignal unexpected values: {list(unexpected_vals)}")
@@ -195,6 +195,14 @@ def inspect_subject(subject_id, dataset_root):
                 )
         break
     
+    try:
+        validated = segment_trials(DatasetLoader(dataset_root), subject_id)
+        report["validated_trial_count"] = len(validated)
+        if len(validated) != 288:
+            report["anomalies"].append(f"Expected 288 trials, got {len(validated)}")
+    except (ValueError, FileNotFoundError) as error:
+        report["anomalies"].append(str(error))
+    report["validation_passed"] = not report["anomalies"]
     return report
 
 
@@ -247,20 +255,8 @@ def count_trials_from_control(dataset_root, subject_id):
 
 
 def main():
-    # Try alternate dataset paths
-    dataset_root = DATASET_ROOT
-    if not dataset_root.exists():
-        alt = Path(__file__).resolve().parents[2] / "Dataset_Isotropic" / "Dataset_Isotropic"
-        if alt.exists():
-            dataset_root = alt
-        else:
-            alt2 = Path("c:/Users/Admin/OneDrive/Desktop/AWS project/Dataset_Isotropic/Dataset_Isotropic")
-            if alt2.exists():
-                dataset_root = alt2
-            else:
-                print(f"ERROR: Dataset not found at {DATASET_ROOT}")
-                sys.exit(1)
-    
+    dataset_root = get_loader().root
+
     print(f"Dataset root: {dataset_root}")
     print(f"Inspecting {len(EXPECTED_SUBJECTS)} subjects...\n")
     
@@ -292,6 +288,7 @@ def main():
         except Exception as e:
             report["anomalies"].append(f"Failed to count trials: {e}")
         
+        report["validation_passed"] = not report["anomalies"]
         full_report["subjects"][sid] = report
         
         if not report["validation_passed"]:
@@ -322,8 +319,8 @@ def main():
     
     # Save report
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
-    report_path = REPORT_DIR / "dataset_inspection_report.json"
-    with open(report_path, "w") as f:
+    report_path = REPORT_DIR / f"dataset_inspection_{uuid.uuid4().hex}.json"
+    with open(report_path, "x", encoding="utf-8") as f:
         json.dump(full_report, f, indent=2, default=str)
     print(f"\nReport saved to: {report_path}")
     

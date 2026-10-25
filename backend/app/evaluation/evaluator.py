@@ -115,6 +115,6 @@ def save_experiment_result(result: ExperimentResult) -> str:
     """
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     filepath = REPORTS_DIR / f"experiment_{result.experiment_id}.json"
-    with open(filepath, "w") as f:
+    with open(filepath, "x") as f:
         json.dump(result.to_dict(), f, indent=2)
     return str(filepath)

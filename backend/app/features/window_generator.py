@@ -43,6 +43,8 @@ def ms_to_samples(duration_ms: float, fs: int = SAMPLING_RATE) -> int:
     We use ceil() to ensure we never observe LESS than the requested duration.
     This is the conservative choice: slightly more data, never less.
     """
+    if not math.isfinite(duration_ms) or duration_ms <= 0 or not math.isfinite(fs) or fs <= 0:
+        raise ValueError("Duration and sampling rate must be positive and finite")
     return math.ceil(duration_ms * fs / 1000.0)
 
 
@@ -99,6 +101,8 @@ def extract_early_window(
         insufficient samples available (no future padding).
     """
     n_channels, n_available = eog_outward.shape
+    if not isinstance(n_window_samples, int) or n_window_samples <= 0:
+        raise ValueError("Window sample count must be a positive integer")
 
     if alignment == "cue":
         start = 0

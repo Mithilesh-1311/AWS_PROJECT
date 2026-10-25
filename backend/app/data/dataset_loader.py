@@ -10,6 +10,8 @@ from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Optional, Dict, List, Tuple
 from functools import lru_cache
+from collections import OrderedDict
+import threading
 import logging
 
 from app.core.config import (
@@ -62,12 +64,17 @@ class DatasetLoader:
 
     def __init__(self, dataset_root: Optional[Path] = None):
         self.root = Path(dataset_root) if dataset_root else DATASET_ROOT
+        if self.root and (self.root / "Dataset_Isotropic" / "S1").is_dir():
+            self.root = self.root / "Dataset_Isotropic"
         if self.root is None or not self.root.exists():
             raise FileNotFoundError(
                 f"Dataset not found at {self.root}. "
                 "Place the Dataset_Isotropic folder under data/ or configure DATASET_ROOT."
             )
-        self._subject_cache: Dict[str, dict] = {}
+        # Bound retained MATLAB arrays to ten files (at most two complete subjects).
+        self._subject_cache = OrderedDict()
+        self._lock = threading.RLock()
+        self._metadata_cache = {}
         self._trial_cache: Dict[str, List[TrialMetadata]] = {}
         logger.info(f"DatasetLoader initialized: {self.root}")
 
@@ -82,15 +89,26 @@ class DatasetLoader:
 
     def _load_mat(self, subject_id: str, filename: str) -> dict:
         """Load a .mat file for a subject, with caching."""
+        if subject_id not in self.subject_ids:
+            raise ValueError("Unknown subject identifier")
+        if filename not in {"EOG.mat", "ControlSignal.mat", "Target_GA_stream.mat", "PD.mat", "Dist_screen.mat"}:
+            raise ValueError("Unknown dataset file")
         cache_key = f"{subject_id}/{filename}"
-        if cache_key not in self._subject_cache:
-            fpath = self.root / subject_id / filename
-            if not fpath.exists():
-                raise FileNotFoundError(f"File not found: {fpath}")
-            self._subject_cache[cache_key] = loadmat(
-                str(fpath), squeeze_me=True
-            )
-        return self._subject_cache[cache_key]
+        with self._lock:
+            if cache_key not in self._subject_cache:
+                fpath = self.root / subject_id / filename
+                if not fpath.exists():
+                    raise FileNotFoundError(f"Missing {subject_id}/{filename}")
+                data = loadmat(str(fpath), squeeze_me=True)
+                key = filename[:-4]
+                if key not in data or not np.isfinite(data[key]).all():
+                    raise ValueError(f"Invalid or nonfinite {subject_id}/{filename}")
+                self._subject_cache[cache_key] = data
+            self._subject_cache.move_to_end(cache_key)
+            data = self._subject_cache[cache_key]
+            while len(self._subject_cache) > 10:
+                self._subject_cache.popitem(last=False)
+            return data
 
     def get_eog(self, subject_id: str) -> np.ndarray:
         """Load EOG data: shape (16, n_samples), float64."""
@@ -98,6 +116,8 @@ class DatasetLoader:
         eog = data["EOG"]
         if eog.ndim == 1:
             eog = eog.reshape(1, -1)
+        if eog.ndim != 2 or eog.shape[0] != EXPECTED_CHANNELS:
+            raise ValueError("EOG must have shape (16, samples)")
         return eog
 
     def get_control_signal(self, subject_id: str) -> np.ndarray:
@@ -127,15 +147,17 @@ class DatasetLoader:
 
     def get_subject_metadata(self, subject_id: str) -> SubjectMetadata:
         """Get lightweight subject metadata without loading full EOG."""
+        signature = tuple((self.root / subject_id / name).stat().st_mtime_ns for name in ["EOG.mat", "ControlSignal.mat", "Target_GA_stream.mat", "PD.mat", "Dist_screen.mat"])
+        cached = self._metadata_cache.get(subject_id)
+        if cached and cached[0] == signature:
+            return cached[1]
         eog = self.get_eog(subject_id)
         cs = self.get_control_signal(subject_id)
 
-        # Count trials (segments with CS == CS_OUTWARD)
-        mask = (cs == CS_OUTWARD).astype(int)
-        starts = np.where(np.diff(np.concatenate([[0], mask])) == 1)[0]
-        n_trials = len(starts)
+        from app.data.trial_segmenter import segment_trials
+        n_trials = len(segment_trials(self, subject_id))
 
-        return SubjectMetadata(
+        metadata = SubjectMetadata(
             subject_id=subject_id,
             eog_shape=eog.shape,
             n_samples=eog.shape[1],
@@ -146,19 +168,22 @@ class DatasetLoader:
             control_signal_values=sorted(np.unique(cs).tolist()),
             n_trials=n_trials,
         )
+        self._metadata_cache[subject_id] = (signature, metadata)
+        return metadata
 
     def release_subject(self, subject_id: str):
         """Release cached data for a subject to free memory."""
-        keys_to_remove = [k for k in self._subject_cache if k.startswith(subject_id + "/")]
-        for k in keys_to_remove:
-            del self._subject_cache[k]
-        if subject_id in self._trial_cache:
-            del self._trial_cache[subject_id]
+        with self._lock:
+            for key in list(self._subject_cache):
+                if key.startswith(subject_id + "/"):
+                    del self._subject_cache[key]
+            self._trial_cache.pop(subject_id, None)
 
     def release_all(self):
         """Release all cached data."""
-        self._subject_cache.clear()
-        self._trial_cache.clear()
+        with self._lock:
+            self._subject_cache.clear()
+            self._trial_cache.clear()
 
 
 # Module-level singleton

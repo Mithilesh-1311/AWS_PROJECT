@@ -12,9 +12,9 @@ export default function EarlyWindowPage() {
   const [windowMs, setWindowMs] = useState(100);
   const [alignment, setAlignment] = useState<'onset' | 'cue'>('onset');
 
-  const { data: subjects } = useFetch(() => api.subjects(), []);
-  const { data, loading } = useFetch(
-    () => api.earlyWindow(subjectId, trialId, windowMs, alignment),
+  const { data: subjects } = useFetch(api.subjects, []);
+  const { data, loading, error } = useFetch(
+    (abort) => api.earlyWindow(subjectId, trialId, windowMs, alignment, abort),
     [subjectId, trialId, windowMs, alignment]
   );
 
@@ -32,19 +32,22 @@ export default function EarlyWindowPage() {
 
   return (
     <div>
+      <h1>Early Windows</h1>
+      <p className="notice">Retrospective diagnostics: onset and preprocessing may use later samples. Predictions and Replay use the separately tested causal processor.</p>
       {/* Controls */}
+      {error && <div className="error-box" role="alert">{error}</div>}
       <div className="controls-row">
         <div className="control-group">
-          <span className="control-label">Subject</span>
-          <select value={subjectId} onChange={e => { setSubjectId(e.target.value); setTrialId(10); }}>
-            {subjects?.subjects?.map((s: any) => (
+          <label className="control-label" htmlFor="subject">Subject</label>
+          <select id="subject" value={subjectId} onChange={e => { setSubjectId(e.target.value); setTrialId(10); }}>
+            {subjects?.subjects?.map((s) => (
               <option key={s.subject_id} value={s.subject_id}>{s.subject_id}</option>
             ))}
           </select>
         </div>
         <div className="control-group">
-          <span className="control-label">Trial</span>
-          <input type="number" min={0} max={287} value={trialId}
+          <label className="control-label" htmlFor="trial">Trial</label>
+          <input id="trial" type="number" min={0} max={287} value={trialId}
             onChange={e => setTrialId(Number(e.target.value))} style={{ width: 80 }} />
         </div>
         <div className="control-group">
@@ -68,7 +71,7 @@ export default function EarlyWindowPage() {
         </div>
         <input
           type="range"
-          min={20} max={200} step={1}
+          aria-label="Observation duration in milliseconds" min={20} max={200} step={1}
           value={windowMs}
           onChange={e => setWindowMs(Number(e.target.value))}
           style={{ width: '100%', accentColor: 'var(--accent)' }}
@@ -97,7 +100,7 @@ export default function EarlyWindowPage() {
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis dataKey="time" stroke="var(--text-muted)" fontSize={11}
+                <XAxis dataKey="time" type="number" domain={['dataMin', 'dataMax']} stroke="var(--text-muted)" fontSize={11}
                   label={{ value: 'Time (ms)', position: 'bottom', offset: -5 }} />
                 <YAxis stroke="var(--text-muted)" fontSize={11} />
                 <Tooltip contentStyle={{ background: 'var(--bg-card)', border: '1px solid var(--border)', fontSize: 12 }} />
@@ -105,20 +108,21 @@ export default function EarlyWindowPage() {
                 <ReferenceArea x1={windowStartMs} x2={windowEndMs}
                   fill="var(--accent)" fillOpacity={0.12} stroke="var(--accent)" strokeDasharray="3 3" />
                 {/* Onset marker */}
-                {data?.onset_sample > 0 && alignment === 'onset' && (
+                {(data?.onset_sample ?? 0) > 0 && alignment === 'onset' && (
                   <ReferenceLine x={onsetMs} stroke="var(--warning)" strokeDasharray="3 3"
                     label={{ value: 'Onset', fill: 'var(--warning)', fontSize: 10 }} />
                 )}
                 {/* Window end marker */}
                 <ReferenceLine x={windowEndMs} stroke="var(--accent)" strokeWidth={2}
                   label={{ value: `${windowMs}ms`, fill: 'var(--accent)', fontSize: 10, position: 'top' }} />
-                <Line type="monotone" dataKey="signal" stroke="var(--text-secondary)" dot={false} strokeWidth={1.5} />
+                <Line type="linear" isAnimationActive={false} dataKey="signal" stroke="var(--text-secondary)" dot={false} strokeWidth={1.5} />
               </LineChart>
             </ResponsiveContainer>
           </div>
         )}
       </div>
 
+      <details><summary>Accessible channel 0 samples</summary><div className="table-scroll"><table className="data-table"><thead><tr><th>Time (ms)</th><th>Recorded units</th></tr></thead><tbody>{chartData.map((row, i) => <tr key={i}><td>{row.time}</td><td>{row.signal?.toFixed(4)}</td></tr>)}</tbody></table></div></details>
       {/* Info cards */}
       <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))' }}>
         <div className="stat-card">
@@ -143,12 +147,7 @@ export default function EarlyWindowPage() {
       <div className="card" style={{ marginTop: 16 }}>
         <div className="card-title" style={{ marginBottom: 8 }}>How This Works</div>
         <p style={{ color: 'var(--text-secondary)', fontSize: 13, lineHeight: 1.7 }}>
-          The <span style={{ color: 'var(--accent)' }}>highlighted region</span> shows the only data
-          available to the classifier at {windowMs}ms. Everything after the
-          <span style={{ color: 'var(--accent)' }}> vertical line</span> is the future — the model
-          cannot see it. As the slider increases, more of the saccade waveform becomes visible,
-          and prediction accuracy improves. The research question is: how early can we predict
-          direction reliably?
+          The highlighted region is the legacy feature window. Its retrospective onset estimate is not evidence of causal availability. At 256 Hz, 100 ms requests 26 samples: a 101.56 ms sample budget and 97.66 ms sample span. Causal inference additionally waits for calibration and onset confirmation; inspect Predictions for actual decision readiness.
         </p>
       </div>
     </div>

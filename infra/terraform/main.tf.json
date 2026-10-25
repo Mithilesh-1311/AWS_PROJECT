@@ -1,0 +1,311 @@
+{
+  "terraform": {
+    "required_version": ">= 1.14, < 2.0",
+    "required_providers": {
+      "aws": {
+        "source": "hashicorp/aws",
+        "version": "~> 6.0"
+      }
+    }
+  },
+  "provider": {
+    "aws": [
+      {
+        "region": "${var.region}",
+        "default_tags": [
+          {
+            "tags": {
+              "Project": "${var.project}",
+              "ManagedBy": "Terraform"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "variable": {
+    "region": {
+      "type": "string",
+      "default": "ap-south-1"
+    },
+    "project": {
+      "type": "string",
+      "default": "eog-intent"
+    },
+    "instance_type": {
+      "type": "string",
+      "default": "t3.large"
+    },
+    "storage_gb": {
+      "type": "number",
+      "default": 100
+    },
+    "config_parameter": {
+      "type": "string",
+      "default": "/eog-intent/runtime-env"
+    },
+    "access_cidrs": {
+      "type": "list(string)",
+      "validation": [
+        {
+          "condition": "${length(var.access_cidrs) > 0 && alltrue([for c in var.access_cidrs : can(cidrhost(c, 0)) && c != \"0.0.0.0/0\"])}",
+          "error_message": "Provide explicit valid researcher CIDRs"
+        }
+      ]
+    },
+    "release_key": {
+      "type": "string",
+      "validation": [
+        {
+          "condition": "${can(regex(\"^releases/[a-zA-Z0-9_.-]+[.]tar[.]gz$\", var.release_key))}",
+          "error_message": "Use releases/<commit>.tar.gz"
+        }
+      ]
+    },
+    "release_sha256": {
+      "type": "string",
+      "validation": [
+        {
+          "condition": "${can(regex(\"^[a-f0-9]{64}$\", var.release_sha256))}",
+          "error_message": "Provide release SHA256"
+        }
+      ]
+    }
+  },
+  "data": {
+    "aws_caller_identity": {
+      "current": {}
+    },
+    "aws_availability_zones": {
+      "available": {
+        "state": "available"
+      }
+    },
+    "aws_ssm_parameter": {
+      "ami": {
+        "name": "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64"
+      }
+    }
+  },
+  "resource": {
+    "aws_vpc": {
+      "app": {
+        "cidr_block": "10.42.0.0/16",
+        "enable_dns_hostnames": true
+      }
+    },
+    "aws_subnet": {
+      "app": {
+        "vpc_id": "${aws_vpc.app.id}",
+        "cidr_block": "10.42.1.0/24",
+        "availability_zone": "${data.aws_availability_zones.available.names[0]}",
+        "map_public_ip_on_launch": true
+      }
+    },
+    "aws_internet_gateway": {
+      "app": {
+        "vpc_id": "${aws_vpc.app.id}"
+      }
+    },
+    "aws_route_table": {
+      "app": {
+        "vpc_id": "${aws_vpc.app.id}",
+        "route": [
+          {
+            "cidr_block": "0.0.0.0/0",
+            "gateway_id": "${aws_internet_gateway.app.id}",
+            "carrier_gateway_id": null,
+            "core_network_arn": null,
+            "destination_prefix_list_id": null,
+            "egress_only_gateway_id": null,
+            "ipv6_cidr_block": null,
+            "local_gateway_id": null,
+            "nat_gateway_id": null,
+            "network_interface_id": null,
+            "odb_network_arn": null,
+            "transit_gateway_id": null,
+            "vpc_endpoint_id": null,
+            "vpc_peering_connection_id": null
+          }
+        ]
+      }
+    },
+    "aws_route_table_association": {
+      "app": {
+        "subnet_id": "${aws_subnet.app.id}",
+        "route_table_id": "${aws_route_table.app.id}"
+      }
+    },
+    "aws_security_group": {
+      "app": {
+        "name_prefix": "${var.project}-",
+        "vpc_id": "${aws_vpc.app.id}",
+        "ingress": [
+          {
+            "from_port": 443,
+            "to_port": 443,
+            "protocol": "tcp",
+            "cidr_blocks": "${var.access_cidrs}",
+            "description": "Research HTTPS / ACME / outbound dependencies",
+            "ipv6_cidr_blocks": [],
+            "prefix_list_ids": [],
+            "security_groups": [],
+            "self": false
+          },
+          {
+            "from_port": 80,
+            "to_port": 80,
+            "protocol": "tcp",
+            "cidr_blocks": [
+              "0.0.0.0/0"
+            ],
+            "description": "Research HTTPS / ACME / outbound dependencies",
+            "ipv6_cidr_blocks": [],
+            "prefix_list_ids": [],
+            "security_groups": [],
+            "self": false
+          }
+        ],
+        "egress": [
+          {
+            "from_port": 0,
+            "to_port": 0,
+            "protocol": "-1",
+            "cidr_blocks": [
+              "0.0.0.0/0"
+            ],
+            "description": "Research HTTPS / ACME / outbound dependencies",
+            "ipv6_cidr_blocks": [],
+            "prefix_list_ids": [],
+            "security_groups": [],
+            "self": false
+          }
+        ]
+      }
+    },
+    "aws_s3_bucket": {
+      "research": {
+        "bucket": "${var.project}-${data.aws_caller_identity.current.account_id}-${var.region}"
+      }
+    },
+    "aws_s3_bucket_public_access_block": {
+      "research": {
+        "bucket": "${aws_s3_bucket.research.id}",
+        "block_public_acls": true,
+        "block_public_policy": true,
+        "ignore_public_acls": true,
+        "restrict_public_buckets": true
+      }
+    },
+    "aws_s3_bucket_versioning": {
+      "research": {
+        "bucket": "${aws_s3_bucket.research.id}",
+        "versioning_configuration": [
+          {
+            "status": "Enabled"
+          }
+        ]
+      }
+    },
+    "aws_s3_bucket_server_side_encryption_configuration": {
+      "research": {
+        "bucket": "${aws_s3_bucket.research.id}",
+        "rule": [
+          {
+            "apply_server_side_encryption_by_default": [
+              {
+                "sse_algorithm": "AES256"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "aws_s3_bucket_policy": {
+      "tls": {
+        "bucket": "${aws_s3_bucket.research.id}",
+        "policy": "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Deny\", \"Principal\": \"*\", \"Action\": \"s3:*\", \"Resource\": [\"${aws_s3_bucket.research.arn}\", \"${aws_s3_bucket.research.arn}/*\"], \"Condition\": {\"Bool\": {\"aws:SecureTransport\": \"false\"}}}]}"
+      }
+    },
+    "aws_cloudwatch_log_group": {
+      "app": {
+        "name": "/${var.project}/containers",
+        "retention_in_days": 14
+      }
+    },
+    "aws_iam_role": {
+      "host": {
+        "name_prefix": "${var.project}-host-",
+        "assume_role_policy": "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\", \"Principal\": {\"Service\": \"ec2.amazonaws.com\"}, \"Action\": \"sts:AssumeRole\"}]}"
+      }
+    },
+    "aws_iam_role_policy_attachment": {
+      "ssm": {
+        "role": "${aws_iam_role.host.name}",
+        "policy_arn": "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+      }
+    },
+    "aws_iam_role_policy": {
+      "host": {
+        "role": "${aws_iam_role.host.id}",
+        "policy": "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\", \"Action\": [\"s3:ListBucket\"], \"Resource\": [\"${aws_s3_bucket.research.arn}\"], \"Condition\": {\"StringLike\": {\"s3:prefix\": [\"datasets/*\", \"artifacts/*\", \"releases/*\", \"backups/*\"]}}}, {\"Effect\": \"Allow\", \"Action\": [\"s3:GetObject\"], \"Resource\": [\"${aws_s3_bucket.research.arn}/datasets/*\", \"${aws_s3_bucket.research.arn}/artifacts/*\", \"${aws_s3_bucket.research.arn}/releases/*\", \"${aws_s3_bucket.research.arn}/backups/*\"]}, {\"Effect\": \"Allow\", \"Action\": [\"s3:PutObject\"], \"Resource\": [\"${aws_s3_bucket.research.arn}/artifacts/*\", \"${aws_s3_bucket.research.arn}/backups/*\"]}, {\"Effect\": \"Allow\", \"Action\": [\"ssm:GetParameter\"], \"Resource\": [\"arn:aws:ssm:${var.region}:${data.aws_caller_identity.current.account_id}:parameter${var.config_parameter}\"]}, {\"Effect\": \"Allow\", \"Action\": [\"logs:CreateLogStream\", \"logs:PutLogEvents\", \"logs:DescribeLogStreams\"], \"Resource\": [\"${aws_cloudwatch_log_group.app.arn}:*\"]}, {\"Effect\": \"Allow\", \"Action\": [\"cloudwatch:PutMetricData\"], \"Resource\": [\"*\"], \"Condition\": {\"StringEquals\": {\"cloudwatch:namespace\": \"EOGIntent\"}}}]}"
+      }
+    },
+    "aws_iam_instance_profile": {
+      "host": {
+        "role": "${aws_iam_role.host.name}"
+      }
+    },
+    "aws_instance": {
+      "host": {
+        "ami": "${data.aws_ssm_parameter.ami.value}",
+        "instance_type": "${var.instance_type}",
+        "subnet_id": "${aws_subnet.app.id}",
+        "vpc_security_group_ids": [
+          "${aws_security_group.app.id}"
+        ],
+        "iam_instance_profile": "${aws_iam_instance_profile.host.name}",
+        "metadata_options": [
+          {
+            "http_tokens": "required",
+            "http_endpoint": "enabled",
+            "http_put_response_hop_limit": 1
+          }
+        ],
+        "root_block_device": [
+          {
+            "volume_size": "${var.storage_gb}",
+            "volume_type": "gp3",
+            "encrypted": true,
+            "delete_on_termination": false
+          }
+        ],
+        "user_data": "${templatefile(\"${path.module}/bootstrap.sh.tftpl\", {bucket = aws_s3_bucket.research.id, region = var.region, release_key = var.release_key, release_sha256 = var.release_sha256, config_parameter = var.config_parameter, log_group = aws_cloudwatch_log_group.app.name})}",
+        "user_data_replace_on_change": true,
+        "tags": {
+          "Name": "${var.project}"
+        }
+      }
+    },
+    "aws_eip": {
+      "app": {
+        "instance": "${aws_instance.host.id}",
+        "domain": "vpc"
+      }
+    }
+  },
+  "output": {
+    "instance_id": {
+      "value": "${aws_instance.host.id}"
+    },
+    "public_ip": {
+      "value": "${aws_eip.app.public_ip}"
+    },
+    "bucket": {
+      "value": "${aws_s3_bucket.research.id}"
+    },
+    "log_group": {
+      "value": "${aws_cloudwatch_log_group.app.name}"
+    }
+  }
+}

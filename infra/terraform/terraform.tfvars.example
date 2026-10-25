@@ -1,0 +1,7 @@
+﻿region = "ap-south-1"
+instance_type = "t3.large"
+storage_gb = 100
+access_cidrs = ["203.0.113.10/32"] # Replace with your public address
+release_key = "releases/REPLACE_COMMIT.tar.gz"
+release_sha256 = "0000000000000000000000000000000000000000000000000000000000000000"
+config_parameter = "/eog-intent/runtime-env"

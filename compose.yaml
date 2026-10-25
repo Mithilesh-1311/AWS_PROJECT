@@ -1,0 +1,42 @@
+services:
+  api:
+    build: ./backend
+    environment: &backend_environment
+      EOG_DEPLOYED: "1"
+      EOG_PROXY_TOKEN: ${EOG_PROXY_TOKEN:?Set a random proxy token of at least 32 characters}
+      EOG_ALLOWED_ORIGINS: ${EOG_ALLOWED_ORIGINS:-http://localhost:8080}
+      EOG_DATASET_ROOT: /data
+      EOG_ARTIFACTS_ROOT: /artifacts
+    volumes: &backend_volumes
+      - ${EOG_DATASET_PATH:-./Dataset_Isotropic/Dataset_Isotropic}:/data:ro
+      - ./backend/artifacts:/artifacts
+    restart: unless-stopped
+    mem_limit: 2g
+  worker:
+    build: ./backend
+    command: ["python", "-m", "scripts.worker"]
+    environment: *backend_environment
+    volumes: *backend_volumes
+    restart: unless-stopped
+    mem_limit: 4g
+  web:
+    build: ./frontend
+    environment:
+      EOG_SITE: ${EOG_SITE:-http://localhost:8080}
+      EOG_USER: ${EOG_USER:?Set an authentication user}
+      EOG_PASSWORD_HASH: ${EOG_PASSWORD_HASH:?Set a Caddy bcrypt hash}
+      EOG_PROXY_TOKEN: ${EOG_PROXY_TOKEN:?Set a random proxy token}
+    ports:
+      - ${EOG_HTTP_BIND:-127.0.0.1:8080}:8080
+      - ${EOG_HTTPS_BIND:-127.0.0.1:8443}:443
+      - ${EOG_ACME_BIND:-127.0.0.1:8081}:80
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+volumes:
+  caddy_data:
+  caddy_config:

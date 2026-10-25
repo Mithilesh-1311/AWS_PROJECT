@@ -1,0 +1,22 @@
+services:
+  api:
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: ${AWS_REGION:?Set AWS_REGION}
+        awslogs-group: ${EOG_LOG_GROUP:?Set log group}
+        awslogs-stream: api
+  worker:
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: ${AWS_REGION:?Set AWS_REGION}
+        awslogs-group: ${EOG_LOG_GROUP:?Set log group}
+        awslogs-stream: worker
+  web:
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: ${AWS_REGION:?Set AWS_REGION}
+        awslogs-group: ${EOG_LOG_GROUP:?Set log group}
+        awslogs-stream: web

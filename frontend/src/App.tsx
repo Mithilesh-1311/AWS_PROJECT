@@ -1,108 +1,45 @@
-import { BrowserRouter, Routes, Route, NavLink, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+﻿import { BrowserRouter, Routes, Route, NavLink, useLocation } from 'react-router-dom';
+import { useEffect, useRef, useState, lazy, Suspense } from 'react';
+import { Activity, Database, SlidersHorizontal, Timer, Target, Radio, BarChart3, ShieldCheck, Workflow, FileText, Menu, X } from 'lucide-react';
 import { api } from './services/api';
-import OverviewPage from './pages/OverviewPage';
-import DatasetPage from './pages/DatasetPage';
-import SignalPage from './pages/SignalPage';
-import EarlyWindowPage from './pages/EarlyWindowPage';
-import ExperimentsPage from './pages/ExperimentsPage';
-import QualityPage from './pages/QualityPage';
-import MethodologyPage from './pages/MethodologyPage';
+import type { Readiness } from './services/types';
+import { Loading } from './components/RequestState';
 import './index.css';
-
-const NAV_ITEMS = [
-  { path: '/', label: 'Overview', icon: '◈' },
-  { path: '/dataset', label: 'Dataset', icon: '◉' },
-  { path: '/signal', label: 'Signal Processing', icon: '∿' },
-  { path: '/early-window', label: 'Early Window', icon: '⧗' },
-  { path: '/experiments', label: 'Experiments', icon: '◎' },
-  { path: '/quality', label: 'Data Quality', icon: '✓' },
-  { path: '/methodology', label: 'Methodology', icon: '⊞' },
+const Overview = lazy(() => import('./pages/OverviewPage'));
+const Dataset = lazy(() => import('./pages/DatasetPage'));
+const Signal = lazy(() => import('./pages/SignalPage'));
+const EarlyWindow = lazy(() => import('./pages/EarlyWindowPage'));
+const Predictions = lazy(() => import('./pages/PredictionsPage'));
+const Replay = lazy(() => import('./pages/ReplayPage'));
+const Evaluation = lazy(() => import('./pages/EvaluationPage'));
+const Quality = lazy(() => import('./pages/QualityPage'));
+const Methodology = lazy(() => import('./pages/MethodologyPage'));
+const Reports = lazy(() => import('./pages/ReportsPage'));
+const navigation = [
+  { path: '/', label: 'Overview', icon: Activity }, { path: '/dataset', label: 'Dataset Explorer', icon: Database },
+  { path: '/signal', label: 'Signal Processing', icon: SlidersHorizontal }, { path: '/early-window', label: 'Early Windows', icon: Timer },
+  { path: '/predictions', label: 'Predictions', icon: Target }, { path: '/replay', label: 'Live Replay', icon: Radio },
+  { path: '/experiments', label: 'Model Evaluation', icon: BarChart3 }, { path: '/quality', label: 'Data Quality', icon: ShieldCheck },
+  { path: '/methodology', label: 'Methodology', icon: Workflow }, { path: '/reports', label: 'Reports', icon: FileText },
 ];
-
-function Sidebar() {
-  return (
-    <div className="sidebar">
-      <div className="sidebar-logo">
-        <h2>EOG Intent</h2>
-        <p>Early Saccade Direction Prediction</p>
-      </div>
-      <nav className="sidebar-nav">
-        {NAV_ITEMS.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-            end={item.path === '/'}
-          >
-            <span className="nav-icon">{item.icon}</span>
-            {item.label}
-          </NavLink>
-        ))}
-      </nav>
-      <BackendStatus />
-    </div>
-  );
+function Navigation({ close }: { close?: () => void }) {
+  return <><div className="sidebar-logo"><Activity size={23} aria-hidden="true" /><div><strong>EOG Intent</strong><span>RESEARCH WORKSPACE</span></div></div><nav className="sidebar-nav" aria-label="Main navigation">{navigation.map(({ path, label, icon: Icon }) => <NavLink key={path} to={path} end={path === '/'} onClick={close} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}><Icon size={16} aria-hidden="true" />{label}</NavLink>)}</nav><div className="sidebar-status"><span className="badge badge-info">RECORDED EOG</span><p>Research use · eight directions<br />No live sensor attached</p></div></>;
 }
-
-function BackendStatus() {
-  const [status, setStatus] = useState<'online' | 'offline'>('offline');
-  useEffect(() => {
-    const check = () => {
-      api.health()
-        .then(() => setStatus('online'))
-        .catch(() => setStatus('offline'));
-    };
-    check();
-    const interval = setInterval(check, 10000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div className="sidebar-status">
-      <span className={`status-dot ${status}`}></span>
-      Backend {status}
-    </div>
-  );
-}
-
-function Topbar() {
+function Shell() {
   const location = useLocation();
-  const current = NAV_ITEMS.find(n => n.path === location.pathname) || NAV_ITEMS[0];
-  return (
-    <div className="topbar">
-      <span className="topbar-title">
-        Low-Latency EOG-Based Early Intent Detection — {current.label}
-      </span>
-      <div className="topbar-status">
-        <span>16-Channel Isotropic EOG System</span>
-      </div>
-    </div>
-  );
+  const dialog = useRef<HTMLDialogElement>(null);
+  const [ready, setReady] = useState<Readiness | null>(null);
+  const [connection, setConnection] = useState('checking');
+  useEffect(() => {
+    const controller = new AbortController();
+    const check = () => api.ready(controller.signal).then(result => { setReady(result); setConnection('connected'); }).catch(() => { if (!controller.signal.aborted) { setReady(null); setConnection('disconnected'); } });
+    void check(); const interval = setInterval(check, 10000);
+    return () => { controller.abort(); clearInterval(interval); };
+  }, []);
+  return <div className="app-layout"><a href="#main" className="skip-link">Skip to content</a><aside className="sidebar desktop-nav"><Navigation /></aside>
+    <dialog ref={dialog} className="navigation-dialog" aria-label="Navigation"><button className="drawer-close" aria-label="Close navigation" onClick={() => dialog.current?.close()}><X size={18} /></button><Navigation close={() => dialog.current?.close()} /></dialog>
+    <div className="main-content"><header className="topbar"><div className="brand-line"><button className="mobile-menu" aria-label="Open navigation" onClick={() => dialog.current?.showModal()}><Menu size={20} /></button><strong>EOG Intent</strong><span>EARLY EYE-MOVEMENT INTELLIGENCE</span></div><div className="topbar-status">{(['dataset', 'model', 'worker'] as const).map(key => <span key={key} className={ready?.[key] ? 'status-ready' : 'status-unavailable'}><i aria-hidden="true" />{key} {ready ? ready[key] ? 'ready' : 'unavailable' : 'unknown'}</span>)}</div></header>
+      <main id="main" className="page-content" key={location.pathname}><Suspense fallback={<Loading label="Loading research workspace" />}><Routes><Route path="/" element={<Overview />} /><Route path="/dataset" element={<Dataset />} /><Route path="/signal" element={<Signal />} /><Route path="/early-window" element={<EarlyWindow />} /><Route path="/predictions" element={<Predictions />} /><Route path="/replay" element={<Replay />} /><Route path="/experiments" element={<Evaluation />} /><Route path="/quality" element={<Quality />} /><Route path="/methodology" element={<Methodology />} /><Route path="/reports" element={<Reports />} /><Route path="*" element={<div className="notice">Page not found. Use the navigation to choose a research tool.</div>} /></Routes></Suspense></main>
+      <footer className="app-footer"><span>API {connection}</span><span>Application {ready?.version ?? 'version unavailable'} · build {import.meta.env.VITE_BUILD_ID || 'local'}</span></footer></div></div>;
 }
-
-function App() {
-  return (
-    <BrowserRouter>
-      <div className="app-layout">
-        <Sidebar />
-        <div className="main-content">
-          <Topbar />
-          <div className="page-content">
-            <Routes>
-              <Route path="/" element={<OverviewPage />} />
-              <Route path="/dataset" element={<DatasetPage />} />
-              <Route path="/signal" element={<SignalPage />} />
-              <Route path="/early-window" element={<EarlyWindowPage />} />
-              <Route path="/experiments" element={<ExperimentsPage />} />
-              <Route path="/quality" element={<QualityPage />} />
-              <Route path="/methodology" element={<MethodologyPage />} />
-            </Routes>
-          </div>
-        </div>
-      </div>
-    </BrowserRouter>
-  );
-}
-
-export default App;
+export default function App() { return <BrowserRouter><Shell /></BrowserRouter>; }

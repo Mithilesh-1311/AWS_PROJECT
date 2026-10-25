@@ -10,7 +10,7 @@ router = APIRouter()
 
 
 @router.get("/subjects")
-async def list_subjects():
+def list_subjects():
     """List all available subjects with summary metadata."""
     loader = get_loader()
     subjects = []
@@ -29,7 +29,7 @@ async def list_subjects():
 
 
 @router.get("/subjects/{subject_id}/summary")
-async def subject_summary(subject_id: str):
+def subject_summary(subject_id: str):
     """Get detailed summary for a specific subject."""
     loader = get_loader()
     if subject_id not in loader.subject_ids:
@@ -50,7 +50,7 @@ async def subject_summary(subject_id: str):
 
 
 @router.get("/subjects/{subject_id}/trials")
-async def list_trials(subject_id: str):
+def list_trials(subject_id: str):
     """List all trials for a subject with metadata."""
     loader = get_loader()
     if subject_id not in loader.subject_ids:

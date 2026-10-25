@@ -1,3 +1,5 @@
+> Historical Review 1 document. Current scientific claims, causal timing and measured evaluation are in [MODEL_CARD.md](MODEL_CARD.md), [DATASET_CARD.md](DATASET_CARD.md) and [EXPERIMENTS.md](EXPERIMENTS.md). Earlier causality/completion statements below are not current evidence.
+
 # Dataset Validation Report
 
 **Generated**: 2026-09-15  

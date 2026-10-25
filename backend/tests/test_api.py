@@ -4,6 +4,7 @@ Integration tests for FastAPI endpoints
 import pytest
 from starlette.testclient import TestClient
 from app.main import app
+from app.core.config import DATASET_ROOT
 
 @pytest.fixture
 def client():
@@ -14,8 +15,9 @@ def test_health(client):
     assert res.status_code == 200
     data = res.json()
     assert data["status"] == "ok"
-    assert data["dataset_loaded"] is True
+    assert data["dataset_loaded"] is (DATASET_ROOT is not None)
 
+@pytest.mark.skipif(DATASET_ROOT is None, reason="Real dataset is not distributed in Git")
 def test_dataset_summary(client):
     res = client.get("/api/dataset/summary")
     assert res.status_code == 200
@@ -24,6 +26,7 @@ def test_dataset_summary(client):
     assert data["sampling_rate_hz"] == 256
     assert data["n_channels"] == 16
 
+@pytest.mark.skipif(DATASET_ROOT is None, reason="Real dataset is not distributed in Git")
 def test_subjects_list(client):
     res = client.get("/api/subjects")
     assert res.status_code == 200
@@ -38,6 +41,7 @@ def test_latest_experiment(client):
     assert "window_results" in data
     assert len(data["window_results"]) > 0
 
+@pytest.mark.skipif(DATASET_ROOT is None, reason="Real dataset is not distributed in Git")
 def test_quality_summary(client):
     res = client.get("/api/data-quality")
     assert res.status_code == 200

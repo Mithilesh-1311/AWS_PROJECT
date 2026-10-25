@@ -12,12 +12,13 @@ router = APIRouter()
 
 
 @router.get("/dataset/summary")
-async def dataset_summary():
+def dataset_summary():
     """Get overall dataset summary statistics."""
     try:
         loader = get_loader()
         subjects = loader.subject_ids
-        total_trials = len(subjects) * EXPECTED_TRIALS_PER_SUBJECT
+        from app.data.trial_segmenter import segment_trials
+        total_trials = sum(loader.get_subject_metadata(sid).n_trials for sid in subjects)
 
         window_specs = get_window_specs()
 
@@ -36,5 +37,5 @@ async def dataset_summary():
             },
             "window_specs": [s.to_dict() for s in window_specs],
         }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    except FileNotFoundError:
+        raise HTTPException(status_code=503, detail="Dataset unavailable; configure EOG_DATASET_ROOT")

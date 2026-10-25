@@ -11,14 +11,14 @@ export default function SignalPage() {
   const [highpass, setHighpass] = useState(false);
   const [normalize, setNormalize] = useState(false);
 
-  const { data: subjects } = useFetch(() => api.subjects(), []);
-  const { data, loading } = useFetch(
-    () => api.signalProcessing(subjectId, trialId, {
+  const { data: subjects } = useFetch(api.subjects, []);
+  const { data, loading, error } = useFetch(
+    (abort) => api.signalProcessing(subjectId, trialId, {
       baseline_correct: String(baseline),
       detrend: String(detrend),
       highpass: String(highpass),
       normalize: String(normalize),
-    }),
+    }, abort),
     [subjectId, trialId, baseline, detrend, highpass, normalize]
   );
 
@@ -38,18 +38,21 @@ export default function SignalPage() {
 
   return (
     <div>
+      <h1>Signal Processing</h1>
+      <p className="notice">Retrospective diagnostics: onset and preprocessing may use later samples. Predictions and Replay use the separately tested causal processor.</p>
+      {error && <div className="error-box" role="alert">{error}</div>}
       <div className="controls-row">
         <div className="control-group">
-          <span className="control-label">Subject</span>
-          <select value={subjectId} onChange={e => { setSubjectId(e.target.value); setTrialId(5); }}>
-            {subjects?.subjects?.map((s: any) => (
+          <label className="control-label" htmlFor="subject">Subject</label>
+          <select id="subject" value={subjectId} onChange={e => { setSubjectId(e.target.value); setTrialId(5); }}>
+            {subjects?.subjects?.map((s) => (
               <option key={s.subject_id} value={s.subject_id}>{s.subject_id}</option>
             ))}
           </select>
         </div>
         <div className="control-group">
-          <span className="control-label">Trial</span>
-          <input type="number" min={0} max={287} value={trialId}
+          <label className="control-label" htmlFor="trial">Trial</label>
+          <input id="trial" type="number" min={0} max={287} value={trialId}
             onChange={e => setTrialId(Number(e.target.value))} style={{ width: 80 }} />
         </div>
         <label style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: 'var(--text-secondary)' }}>
@@ -83,17 +86,18 @@ export default function SignalPage() {
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={rawData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                  <XAxis dataKey="time" stroke="var(--text-muted)" fontSize={11} />
+                  <XAxis dataKey="time" type="number" domain={['dataMin', 'dataMax']} stroke="var(--text-muted)" fontSize={11} />
                   <YAxis stroke="var(--text-muted)" fontSize={11} />
                   <Tooltip contentStyle={{ background: 'var(--bg-card)', border: '1px solid var(--border)', fontSize: 12 }} />
-                  <Line type="monotone" dataKey="raw" stroke="var(--text-muted)" dot={false} strokeWidth={1} name="Raw" strokeDasharray="4 2" />
-                  <Line type="monotone" dataKey="processed" stroke="var(--accent)" dot={false} strokeWidth={1.5} name="Processed" />
+                  <Line type="linear" isAnimationActive={false} dataKey="raw" stroke="var(--text-muted)" dot={false} strokeWidth={1} name="Raw" strokeDasharray="4 2" />
+                  <Line type="linear" isAnimationActive={false} dataKey="processed" stroke="var(--accent)" dot={false} strokeWidth={1.5} name="Processed" />
                   {onsetMs != null && <ReferenceLine x={onsetMs} stroke="var(--warning)" strokeDasharray="3 3" label={{ value: 'Onset', fill: 'var(--warning)', fontSize: 10 }} />}
                 </LineChart>
               </ResponsiveContainer>
             </div>
           </div>
 
+          <details><summary>Accessible channel 0 samples</summary><div className="table-scroll"><table className="data-table"><thead><tr><th>Time (ms)</th><th>Raw</th><th>Processed</th></tr></thead><tbody>{rawData.map((row, i) => <tr key={i}><td>{row.time}</td><td>{row.raw?.toFixed(4)}</td><td>{row.processed?.toFixed(4)}</td></tr>)}</tbody></table></div></details>
           {/* Derivative */}
           <div className="card" style={{ marginBottom: 16 }}>
             <div className="card-header">
@@ -107,7 +111,7 @@ export default function SignalPage() {
                   <XAxis dataKey="idx" stroke="var(--text-muted)" fontSize={11} />
                   <YAxis stroke="var(--text-muted)" fontSize={11} />
                   <Tooltip contentStyle={{ background: 'var(--bg-card)', border: '1px solid var(--border)', fontSize: 12 }} />
-                  <Line type="monotone" dataKey="value" stroke="#10b981" dot={false} strokeWidth={1} />
+                  <Line type="linear" isAnimationActive={false} dataKey="value" stroke="#10b981" dot={false} strokeWidth={1} />
                   {data?.onset?.threshold && (
                     <ReferenceLine y={data.onset.threshold} stroke="var(--danger)" strokeDasharray="3 3" />
                   )}
@@ -121,7 +125,7 @@ export default function SignalPage() {
             <div className="card-title" style={{ marginBottom: 8 }}>Preprocessing Notes</div>
             <ul style={{ color: 'var(--text-secondary)', fontSize: 12, paddingLeft: 20 }}>
               <li>Acquisition already applied: 30 Hz low-pass, 50 Hz notch filter</li>
-              <li>Baseline correction: subtracts mean of initial ~100ms quiet period</li>
+              <li>Baseline correction: subtracts mean of first 25 cue samples; quietness is not guaranteed</li>
               <li>High-pass filter: 1st-order Butterworth at 0.1 Hz (zero-phase = non-causal, for offline use)</li>
               <li>Onset detection: derivative thresholding with MAD-based noise estimation</li>
               <li style={{ color: 'var(--warning)' }}>⚠ Zero-phase filtering is non-causal and cannot be claimed as real-time compatible</li>

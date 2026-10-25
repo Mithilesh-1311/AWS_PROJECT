@@ -4,8 +4,9 @@ import { api } from '../services/api';
 const DIR_NAMES = ['Right', 'Up-Right', 'Up', 'Up-Left', 'Left', 'Down-Left', 'Down', 'Down-Right'];
 
 export default function QualityPage() {
-  const { data, loading } = useFetch(() => api.dataQuality(), []);
+  const { data, loading, error } = useFetch(api.dataQuality, []);
 
+  if (error) return <div className="error-box" role="alert">{error}</div>;
   if (loading) return <div className="skeleton" style={{ height: 600 }} />;
 
   return (
@@ -25,13 +26,13 @@ export default function QualityPage() {
             <div className="stat-label">Subjects Validated</div>
           </div>
           <div className="stat-card">
-            <div className="stat-value" style={{ color: data?.total_anomalies > 0 ? 'var(--warning)' : 'var(--success)' }}>
+            <div className="stat-value" style={{ color: (data?.total_anomalies ?? 0) > 0 ? 'var(--warning)' : 'var(--success)' }}>
               {data?.total_anomalies}
             </div>
             <div className="stat-label">Total Anomalies</div>
           </div>
           <div className="stat-card">
-            <div className="stat-value">{data?.subjects?.filter((s: any) => s.passed).length}</div>
+            <div className="stat-value">{data?.subjects?.filter((s) => s.passed).length}</div>
             <div className="stat-label">Subjects Passed</div>
           </div>
         </div>
@@ -49,7 +50,7 @@ export default function QualityPage() {
               </tr>
             </thead>
             <tbody>
-              {data?.subjects?.map((s: any) => (
+              {data?.subjects?.map((s) => (
                 <tr key={s.subject_id}>
                   <td style={{ fontWeight: 600 }}>{s.subject_id}</td>
                   <td>
@@ -89,9 +90,9 @@ export default function QualityPage() {
               </tr>
             </thead>
             <tbody>
-              {data?.subjects?.map((s: any) => {
+              {data?.subjects?.map((s) => {
                 const dist = s.direction_distribution || {};
-                const total = Object.values(dist).reduce((a: any, b: any) => a + b, 0) as number;
+                const total = Object.values(dist).reduce((a, b) => a + b, 0) as number;
                 return (
                   <tr key={s.subject_id}>
                     <td style={{ fontWeight: 600 }}>{s.subject_id}</td>

@@ -1,21 +1,21 @@
 import { useState } from 'react';
 import { useFetch } from '../hooks/useFetch';
+import { useTrialSelection } from '../hooks/useTrialSelection';
 import { api } from '../services/api';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default function DatasetPage() {
-  const [subjectId, setSubjectId] = useState('S1');
-  const [trialId, setTrialId] = useState(0);
+  const { subjectId, setSubjectId, trialId, setTrialId } = useTrialSelection();
   const [selectedChannels, setSelectedChannels] = useState('0,1,2,3');
 
-  const { data: subjects } = useFetch(() => api.subjects(), []);
-  const { data: trials } = useFetch(() => api.trials(subjectId), [subjectId]);
-  const { data: signal, loading: sigLoading } = useFetch(
-    () => api.trialSignal(subjectId, trialId, {
+  const { data: subjects } = useFetch(api.subjects, []);
+  const { data: trials } = useFetch((abort) => api.trials(subjectId, abort), [subjectId]);
+  const { data: signal, loading: sigLoading, error } = useFetch(
+    (abort) => api.trialSignal(subjectId, trialId, {
       channels: selectedChannels,
       phase: 'outward',
-      preprocess: 'true',
-    }),
+      preprocess: 'false',
+    }, abort),
     [subjectId, trialId, selectedChannels]
   );
 
@@ -24,7 +24,7 @@ export default function DatasetPage() {
 
   // Prepare chart data
   const chartData = signal?.time_ms?.map((t: number, i: number) => {
-    const point: any = { time: Math.round(t * 10) / 10 };
+    const point: Record<string, number> = { time: Math.round(t * 10) / 10 };
     Object.keys(signal.data || {}).forEach((ch: string) => {
       point[`ch${ch}`] = signal.data[ch][i];
     });
@@ -33,20 +33,23 @@ export default function DatasetPage() {
 
   return (
     <div>
+<h1>Dataset Explorer</h1>
+      <p className="muted">Raw recordings; target direction is evaluation metadata.</p>
+      {error && <div className="error-box" role="alert">{error}</div>}
       {/* Controls */}
       <div className="controls-row">
         <div className="control-group">
-          <span className="control-label">Subject</span>
-          <select value={subjectId} onChange={e => { setSubjectId(e.target.value); setTrialId(0); }}>
-            {subjects?.subjects?.map((s: any) => (
+          <label className="control-label" htmlFor="subject">Subject</label>
+          <select id="subject" value={subjectId} onChange={e => { setSubjectId(e.target.value); setTrialId(0); }}>
+            {subjects?.subjects?.map((s) => (
               <option key={s.subject_id} value={s.subject_id}>{s.subject_id} ({s.n_trials} trials)</option>
             ))}
           </select>
         </div>
         <div className="control-group">
-          <span className="control-label">Trial</span>
-          <select value={trialId} onChange={e => setTrialId(Number(e.target.value))}>
-            {trials?.trials?.slice(0, 50).map((t: any) => (
+          <label className="control-label" htmlFor="trial">Trial</label>
+          <select id="trial" value={trialId} onChange={e => setTrialId(Number(e.target.value))}>
+            {trials?.trials?.map((t) => (
               <option key={t.trial_id} value={t.trial_id}>
                 #{t.trial_id} — {t.direction_label_8_name} ({t.target_angle_deg}°)
               </option>
@@ -54,9 +57,9 @@ export default function DatasetPage() {
           </select>
         </div>
         <div className="control-group">
-          <span className="control-label">Channels (comma-sep)</span>
+          <label className="control-label" htmlFor="channels">Channels (comma-sep)</label>
           <input
-            type="text"
+            id="channels" type="text"
             value={selectedChannels}
             onChange={e => setSelectedChannels(e.target.value)}
             style={{ width: 120 }}
@@ -90,7 +93,7 @@ export default function DatasetPage() {
                   labelStyle={{ color: 'var(--text-muted)' }}
                 />
                 {Object.keys(signal?.data || {}).map((ch, i) => (
-                  <Line key={ch} type="monotone" dataKey={`ch${ch}`} stroke={COLORS[i % COLORS.length]}
+                  <Line key={ch} type="linear" isAnimationActive={false} dataKey={`ch${ch}`} stroke={COLORS[i % COLORS.length]}
                     dot={false} strokeWidth={1.5} name={`Ch ${ch}`} />
                 ))}
               </LineChart>
@@ -98,6 +101,8 @@ export default function DatasetPage() {
           </div>
         )}
       </div>
+
+      <details><summary>Accessible waveform samples</summary><div className="table-scroll"><table className="data-table"><thead><tr><th>Time (ms)</th>{Object.keys(signal?.data || {}).map(ch => <th key={ch}>Ch {ch}</th>)}</tr></thead><tbody>{chartData.map((row, i) => <tr key={i}><td>{row.time}</td>{Object.keys(signal?.data || {}).map(ch => <td key={ch}>{row[`ch${ch}`]?.toFixed(4)}</td>)}</tr>)}</tbody></table></div></details>
 
       {/* Trial metadata */}
       {currentTrial && (
@@ -117,7 +122,7 @@ export default function DatasetPage() {
           <div className="card">
             <div className="card-title" style={{ marginBottom: 12 }}>Direction Compass</div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 200 }}>
-              <svg width="180" height="180" viewBox="-100 -100 200 200">
+              <svg role="img" aria-label="Evaluation target direction compass" width="180" height="180" viewBox="-100 -100 200 200">
                 <circle cx="0" cy="0" r="85" fill="none" stroke="var(--border)" strokeWidth="1" />
                 <circle cx="0" cy="0" r="45" fill="none" stroke="var(--border)" strokeWidth="0.5" />
                 {/* Direction labels */}

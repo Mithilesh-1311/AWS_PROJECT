@@ -1,18 +1,19 @@
 import { useState } from 'react';
 import { useFetch } from '../hooks/useFetch';
 import { api } from '../services/api';
+import { Notice } from '../components/RequestState';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from 'recharts';
 
-const DIR_NAMES = ['Right', 'Up-Right', 'Up', 'Up-Left', 'Left', 'Down-Left', 'Down', 'Down-Right'];
+
 
 export default function ExperimentsPage() {
-  const { data: results, loading } = useFetch(() => api.latestResults(), []);
+  const { data: results, loading, error, refetch } = useFetch(api.latestResults, []);
   const [selectedWindow, setSelectedWindow] = useState<number | null>(null);
 
   // Latency-accuracy chart data
-  const chartData = results?.window_results?.map((w: any) => ({
+  const chartData = results?.window_results?.map((w) => ({
     window: w.effective_ms,
     label: `${w.window_ms}ms`,
     accuracy: +(w.accuracy * 100).toFixed(1),
@@ -23,8 +24,10 @@ export default function ExperimentsPage() {
   // Selected window confusion matrix
   const selIdx = selectedWindow ?? Math.min(4, (results?.window_results?.length || 1) - 1);
   const selResult = results?.window_results?.[selIdx];
+  const DIR_NAMES = results?.class_names ?? [];
   const cm = selResult?.confusion_matrix || [];
 
+  if (error) return <Notice message={error} retry={refetch} />;
   return (
     <div>
       <div style={{ marginBottom: 8 }}>
@@ -62,15 +65,15 @@ export default function ExperimentsPage() {
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chartData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                  <XAxis dataKey="window" stroke="var(--text-muted)" fontSize={11}
+                  <XAxis dataKey="window" type="number" domain={['dataMin', 'dataMax']} stroke="var(--text-muted)" fontSize={11}
                     label={{ value: 'Effective Observation Duration (ms)', position: 'bottom', offset: -5 }} />
                   <YAxis domain={[0, 100]} stroke="var(--text-muted)" fontSize={11}
                     label={{ value: '%', angle: -90, position: 'insideLeft' }} />
                   <Tooltip contentStyle={{ background: 'var(--bg-card)', border: '1px solid var(--border)', fontSize: 12 }} />
                   <Legend />
-                  <Line type="monotone" dataKey="accuracy" stroke="var(--accent)" strokeWidth={2.5}
+                  <Line type="linear" isAnimationActive={false} dataKey="accuracy" stroke="var(--accent)" strokeWidth={2.5}
                     dot={{ fill: 'var(--accent)', r: 4 }} name="Accuracy (%)" />
-                  <Line type="monotone" dataKey="macro_f1" stroke="#10b981" strokeWidth={2.5}
+                  <Line type="linear" isAnimationActive={false} dataKey="macro_f1" stroke="#10b981" strokeWidth={2.5}
                     dot={{ fill: '#10b981', r: 4 }} name="Macro F1 (%)" />
                 </LineChart>
               </ResponsiveContainer>
@@ -82,7 +85,7 @@ export default function ExperimentsPage() {
             <div className="card-header">
               <span className="card-title">Per-Window Results</span>
             </div>
-            <table className="data-table">
+            <div className="table-scroll"><table className="data-table">
               <thead>
                 <tr>
                   <th>Window</th><th>Samples</th><th>Eff. ms</th>
@@ -90,7 +93,7 @@ export default function ExperimentsPage() {
                 </tr>
               </thead>
               <tbody>
-                {results?.window_results?.map((w: any, i: number) => (
+                {results?.window_results?.map((w, i: number) => (
                   <tr key={i} style={i === selIdx ? { background: 'var(--accent-glow)' } : {}}>
                     <td>{w.window_ms}ms</td>
                     <td>{w.n_samples}</td>
@@ -106,7 +109,7 @@ export default function ExperimentsPage() {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </table></div>
           </div>
 
           {/* Confusion Matrix */}
@@ -117,7 +120,7 @@ export default function ExperimentsPage() {
                   <span className="card-title">Confusion Matrix — {selResult.window_ms}ms</span>
                 </div>
                 <div style={{ overflowX: 'auto' }}>
-                  <table className="data-table" style={{ fontSize: 11 }}>
+                  <div className="table-scroll"><table className="data-table" style={{ fontSize: 11 }}>
                     <thead>
                       <tr>
                         <th>Pred →</th>
@@ -145,7 +148,7 @@ export default function ExperimentsPage() {
                         </tr>
                       ))}
                     </tbody>
-                  </table>
+                  </table></div>
                 </div>
               </div>
 
@@ -153,7 +156,7 @@ export default function ExperimentsPage() {
                 <div className="card-header">
                   <span className="card-title">Per-Class Metrics — {selResult.window_ms}ms</span>
                 </div>
-                <table className="data-table">
+                <div className="table-scroll"><table className="data-table">
                   <thead>
                     <tr><th>Direction</th><th>Precision</th><th>Recall</th><th>F1</th></tr>
                   </thead>
@@ -167,7 +170,7 @@ export default function ExperimentsPage() {
                       </tr>
                     ))}
                   </tbody>
-                </table>
+                </table></div>
               </div>
             </div>
           )}
@@ -179,7 +182,7 @@ export default function ExperimentsPage() {
               <p><strong>Train subjects:</strong> {results?.subjects_train?.join(', ')}</p>
               <p><strong>Test subjects:</strong> {results?.subjects_test?.join(', ')}</p>
               <p style={{ color: 'var(--text-muted)', marginTop: 8 }}>
-                ℹ Stratified subject-level split evaluation. Extended benchmarks include Leave-One-Subject-Out (LOSO) cross-validation.
+                ℹ Historical subject holdout. This retrospective pipeline is distinct from the corrected causal LOSO experiments.
               </p>
             </div>
           </div>

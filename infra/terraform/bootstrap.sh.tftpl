@@ -1,0 +1,44 @@
+#!/bin/bash
+set -euo pipefail
+# No secrets in user-data. Runtime .env comes from a pre-created SSM SecureString.
+dnf install -y docker amazon-cloudwatch-agent
+systemctl enable --now docker
+mkdir -p /usr/local/lib/docker/cli-plugins /opt/eog /data/eog
+curl --fail --location --retry 3 https://github.com/docker/compose/releases/download/v2.39.4/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose
+curl --fail --location --retry 3 https://github.com/docker/compose/releases/download/v2.39.4/docker-compose-linux-x86_64.sha256 -o /tmp/compose.sha256
+printf '%s  %s\n' "$(cut -d' ' -f1 /tmp/compose.sha256)" /usr/local/lib/docker/cli-plugins/docker-compose | sha256sum -c -
+chmod 755 /usr/local/lib/docker/cli-plugins/docker-compose
+cat >/opt/eog/start.sh <<'START'
+#!/bin/bash
+set -euo pipefail
+cd /opt/eog
+aws s3 cp 's3://${bucket}/${release_key}' /tmp/eog-release.tar.gz --region '${region}'
+printf '%s  %s\n' '${release_sha256}' /tmp/eog-release.tar.gz | sha256sum -c -
+tar -xzf /tmp/eog-release.tar.gz -C /opt/eog
+umask 077
+aws ssm get-parameter --name '${config_parameter}' --with-decryption --query Parameter.Value --output text --region '${region}' > /opt/eog/.env
+mkdir -p backend/artifacts /data/eog
+chown -R 10001:10001 backend/artifacts
+docker compose -f compose.yaml -f ops/compose.aws.yaml up -d --build
+START
+chmod 700 /opt/eog/start.sh
+cat >/etc/systemd/system/eog.service <<'UNIT'
+[Unit]
+Description=EOG Intent research application
+After=docker.service network-online.target
+Requires=docker.service
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/opt/eog/start.sh
+WorkingDirectory=/opt/eog
+[Install]
+WantedBy=multi-user.target
+UNIT
+# Start explicitly after uploading the reviewed release and provisioning runtime config/data.
+systemctl daemon-reload
+systemctl enable eog
+cat >/opt/aws/amazon-cloudwatch-agent/etc/eog.json <<'LOGS'
+{"metrics":{"namespace":"EOGIntent","metrics_collected":{"mem":{"measurement":["mem_used_percent"]},"disk":{"measurement":["used_percent"],"resources":["/"]}}},"logs":{"logs_collected":{"files":{"collect_list":[{"file_path":"/var/log/cloud-init-output.log","log_group_name":"${log_group}","log_stream_name":"{instance_id}/bootstrap"}]}}}}
+LOGS
+/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/etc/eog.json -s

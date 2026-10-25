@@ -9,18 +9,22 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 BACKEND_ROOT = PROJECT_ROOT
 
 # Dataset path - try multiple locations
-_candidates = [
+_override = os.environ.get("EOG_DATASET_ROOT")
+_bases = [Path(_override)] if _override else [
+    PROJECT_ROOT.parent / "Dataset_Isotropic",
     PROJECT_ROOT.parent / "data" / "Dataset_Isotropic",
-    PROJECT_ROOT.parent / "Dataset_Isotropic" / "Dataset_Isotropic",
-    Path("c:/Users/Admin/OneDrive/Desktop/AWS project/Dataset_Isotropic/Dataset_Isotropic"),
 ]
+_candidates = [p for base in _bases for p in (base, base / "Dataset_Isotropic")]
 DATASET_ROOT = None
 for c in _candidates:
-    if c.exists():
+    if (c / "S1").is_dir():
         DATASET_ROOT = c
         break
 
-ARTIFACTS_DIR = BACKEND_ROOT / "artifacts"
+ARTIFACTS_DIR = Path(os.environ.get("EOG_ARTIFACTS_ROOT", BACKEND_ROOT / "artifacts"))
+EXPERIMENTS_DIR = ARTIFACTS_DIR / "experiments"
+PUBLISHED_DIR = BACKEND_ROOT / "published"
+STATE_DIR = ARTIFACTS_DIR / "state"
 MODELS_DIR = ARTIFACTS_DIR / "models"
 REPORTS_DIR = ARTIFACTS_DIR / "reports"
 CACHE_DIR = ARTIFACTS_DIR / "cache"

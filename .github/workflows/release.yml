@@ -1,0 +1,23 @@
+name: Publish reviewed AWS release
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  id-token: write
+jobs:
+  publish:
+    environment: aws-release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_RELEASE_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - run: |
+          git archive --format=tar.gz --output=release.tar.gz HEAD
+          sha256sum release.tar.gz
+          aws s3 cp release.tar.gz "s3://${RELEASE_BUCKET}/releases/${GITHUB_SHA}.tar.gz"
+          echo "Release uploaded. Update the reviewed Terraform release key/checksum and deploy through SSM."
+        env:
+          RELEASE_BUCKET: ${{ vars.AWS_RELEASE_BUCKET }}

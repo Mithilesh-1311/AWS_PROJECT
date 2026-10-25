@@ -38,6 +38,18 @@ def segment_trials(loader: DatasetLoader, subject_id: str) -> List[TrialMetadata
     cs = loader.get_control_signal(subject_id)
     tga = loader.get_target_ga_stream(subject_id)
 
+    if tga.shape != (2, len(cs)) or loader.get_eog(subject_id).shape[1] != len(cs):
+        raise ValueError("EOG/control/target sample counts or target shape mismatch")
+    termination = np.flatnonzero(cs == CS_TERMINATION)
+    if len(termination) and (len(termination) != 1 or termination[0] != len(cs) - 1):
+        raise ValueError("Termination marker must occur once at the last sample")
+    if not np.isin(cs, [CS_OUTWARD, CS_RETURN, CS_BLINK, CS_TERMINATION]).all():
+        raise ValueError("Unexpected control value")
+    valid_cs = cs[:-1] if len(termination) else cs
+    runs = valid_cs[np.r_[True, np.diff(valid_cs) != 0]]
+    if len(runs) % 3 or not np.array_equal(runs, np.tile([1, 2, 3], len(runs) // 3)):
+        raise ValueError("Incomplete or misordered outward/return/blink sequence")
+
     # Find segments for each phase
     outward_segs = _find_segments(cs, CS_OUTWARD)
     return_segs = _find_segments(cs, CS_RETURN)
@@ -63,11 +75,8 @@ def segment_trials(loader: DatasetLoader, subject_id: str) -> List[TrialMetadata
         b_start, b_end = blink_segs[i]
 
         # Verify ordering: outward < return < blink
-        if not (o_start < r_start < b_start):
-            logger.warning(
-                f"{subject_id} trial {i}: Non-sequential phases "
-                f"(out={o_start}, ret={r_start}, blk={b_start})"
-            )
+        if not (o_end == r_start and r_end == b_start):
+            raise ValueError(f"Non-consecutive phases in trial {i}")
 
         # Target angles during the outward phase
         # Use the value at the start of the outward segment
@@ -177,5 +186,7 @@ def get_trial_eog(
         raise ValueError(f"Unknown phase: {phase}")
 
     if channels is not None:
+        if not channels or len(set(channels)) != len(channels) or any(ch < 0 or ch >= eog.shape[0] for ch in channels):
+            raise ValueError("Channels must be distinct valid zero-based indices")
         return eog[channels, start:end]
     return eog[:, start:end]

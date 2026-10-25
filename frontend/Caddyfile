@@ -1,0 +1,24 @@
+{$EOG_SITE:http://localhost:8080} {
+    basic_auth {
+        {$EOG_USER} {$EOG_PASSWORD_HASH}
+    }
+    header {
+        X-Content-Type-Options nosniff
+        Referrer-Policy same-origin
+        X-Frame-Options DENY
+        -Server
+    }
+    handle /api/* {
+        reverse_proxy {$EOG_UPSTREAM:api:8000} {
+            header_up X-EOG-Proxy-Token "{$EOG_PROXY_TOKEN}"
+            header_up X-EOG-User {http.auth.user.id}
+            header_up -Authorization
+        }
+    }
+    handle {
+        root * "{$EOG_STATIC_ROOT:/srv}"
+        try_files {path} /index.html
+        file_server
+    }
+    log
+}

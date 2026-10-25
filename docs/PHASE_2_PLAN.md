@@ -1,3 +1,5 @@
+> Historical Review 1 document. Current scientific claims, causal timing and measured evaluation are in [MODEL_CARD.md](MODEL_CARD.md), [DATASET_CARD.md](DATASET_CARD.md) and [EXPERIMENTS.md](EXPERIMENTS.md). Earlier causality/completion statements below are not current evidence.
+
 # Phase 2 Implementation Roadmap (Final 50%)
 
 Following the successful completion of Review 1 (~50% milestone establishing data mastery, causal signal preprocessing, early window extraction, baseline ML, and interactive web dashboard), Phase 2 transitions from exploratory baselines to advanced deep architectures, subject-independent transfer learning, and real-time streaming validation.

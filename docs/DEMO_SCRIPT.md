@@ -1,0 +1,11 @@
+# Demonstration (approximately 6 minutes)
+
+Prerequisites: API, separate worker and frontend running; real dataset available; a compatible serving model activated. Use README launch commands. On a new clone, published reports are available immediately but model serving requires training/restoration.
+
+1. **Dataset and quality (60 seconds):** open Dataset Explorer, select S1/trial 287 to show all trials are reachable. Raw amplitude is in unverified recorded units. Open Data Quality: 14 subjects, 4,032 actual trials; final CS=30 is expected termination, not an anomaly.
+2. **Processing and early windows (60 seconds):** open Signal Processing and toggle baseline/high-pass. Read the retrospective label. In Early Windows compare 20 and 100 ms. Explain sample ceiling, calibration availability and the difference between a legacy diagnostic window and a causal decision.
+3. **Prediction (60 seconds):** open Predictions with S1/trial 0; choose the active 100 ms model and Predict direction. Show the real Up-Left result, uncalibrated class scores, 26 samples / 101.56 ms budget / 97.66 ms span, 97.66 ms calibration budget and 320.31 ms cue-to-decision readiness. Show the experiment ID; target is separate evaluation metadata. Change trial and observe the previous result clear.
+4. **Recorded replay (60 seconds):** follow Replay this trial. Connect at 1x, pause/play, reset, change speed and disconnect. Show ordered sample counters, bounded chart buffer and the same model output. State explicitly that this replays recorded data; no live sensor is attached.
+5. **Evaluation and reports (120 seconds):** select the final primary LOSO experiment, inspect subject results/confusion matrix and coverage limits. Compare the matched-cohort nine-window report and TCN report as separate experiments. Export CSV/JSON or open the printable report. Optionally run the S1-S3 smoke job on Overview, follow its own job ID to completion and show its SMOKE label.
+
+Closing fact to explain if asked: 77.84% is eligible-trial accuracy on a 14-subject recorded cohort. It is not accuracy across all cues, a clinical guarantee or the complete physical-system latency. AWS is prepared/locally validated and has not been deployed.

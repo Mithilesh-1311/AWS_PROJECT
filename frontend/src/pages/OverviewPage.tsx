@@ -1,106 +1,32 @@
+﻿import { Link } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
+import { useExperiment } from '../hooks/useExperiment';
 import { api } from '../services/api';
-
-const PIPELINE_STEPS = [
-  'EOG Signal', '→', 'Saccade Onset', '→', 'Partial Window', '→',
-  'Feature Extraction', '→', 'Direction Prediction', '→', 'Latency / Accuracy'
-];
+import { ExperimentPicker, Provenance, AccuracyChart, ResultTable } from '../components/ExperimentPanels';
+import { JobsPanel, Pipeline, Notice, Waveform, Loading } from '../components/ResearchPanels';
 
 export default function OverviewPage() {
-  const { data: summary, loading } = useFetch(() => api.datasetSummary(), []);
-
-  if (loading) return <div className="skeleton" style={{ height: 400 }} />;
-
-  return (
-    <div>
-      {/* Hero */}
-      <div style={{ textAlign: 'center', marginBottom: 32 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 8 }}>
-          Low-Latency EOG-Based Early Intent Detection
-        </h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: 14, maxWidth: 600, margin: '0 auto' }}>
-          Predicting saccadic eye-movement direction from partial electrooculographic observations.
-        </p>
-      </div>
-
-      {/* Stats grid */}
-      <div className="stats-grid">
-        <div className="stat-card">
-          <div className="stat-value">{summary?.n_subjects || '—'}</div>
-          <div className="stat-label">Subjects</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-value">{summary?.n_channels || '—'}</div>
-          <div className="stat-label">EOG Channels</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-value">{summary?.sampling_rate_hz || '—'}</div>
-          <div className="stat-label">Sampling Rate (Hz)</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-value">{summary?.total_trials?.toLocaleString() || '—'}</div>
-          <div className="stat-label">Total Trials</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-value">{summary?.n_directions || '—'}</div>
-          <div className="stat-label">Target Directions</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-value">{summary?.target_magnitude_deg || '—'}°</div>
-          <div className="stat-label">Target Magnitude</div>
-        </div>
-      </div>
-
-      {/* Pipeline */}
-      <div className="card" style={{ marginBottom: 24 }}>
-        <div className="card-header">
-          <span className="card-title">Research Pipeline</span>
-        </div>
-        <div className="pipeline">
-          {PIPELINE_STEPS.map((step, i) =>
-            step === '→'
-              ? <span key={i} className="pipeline-arrow">→</span>
-              : <div key={i} className="pipeline-step">{step}</div>
-          )}
-        </div>
-      </div>
-
-      {/* Window specs */}
-      <div className="card" style={{ marginBottom: 24 }}>
-        <div className="card-header">
-          <span className="card-title">Observation Windows</span>
-          <span className="card-subtitle">Rounding: ceil(T_ms × 256 / 1000)</span>
-        </div>
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>Requested (ms)</th>
-              <th>Samples</th>
-              <th>Effective (ms)</th>
-            </tr>
-          </thead>
-          <tbody>
-            {summary?.window_specs?.map((w: any) => (
-              <tr key={w.requested_ms}>
-                <td>{w.requested_ms}</td>
-                <td>{w.n_samples}</td>
-                <td>{w.effective_ms}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Pipeline Capabilities */}
-      <div className="card">
-        <div className="card-header">
-          <span className="card-title">System Pipeline Status</span>
-          <span className="badge badge-success">Active</span>
-        </div>
-        <p style={{ color: 'var(--text-secondary)', fontSize: 13, lineHeight: 1.6 }}>
-          End-to-end 16-channel EOG acquisition, causal baseline centering, physiological saccade onset detection, early-window extraction (20ms–200ms), and multi-class directional decoding pipeline operational.
-        </p>
-      </div>
-    </div>
-  );
+  const summary = useFetch(api.datasetSummary);
+  const signal = useFetch(abort => api.trialSignal('S1', 0, { channels: '0,1,2', phase: 'outward' }, abort));
+  const { list, detail, experimentId, setExperimentId } = useExperiment();
+  const results = detail.data?.results || [];
+  const primary = results.find(r => r.model_name === 'logistic_regression' && r.window_ms === 100) || results[0];
+  const metrics = [
+    { label: 'Recorded subjects', value: summary.data?.n_subjects, to: '/dataset' },
+    { label: 'Validated trials', value: summary.data?.total_trials.toLocaleString(), to: '/quality' },
+    { label: 'Channels / Hz', value: summary.data ? `${summary.data.n_channels} / ${summary.data.sampling_rate_hz}` : undefined, to: '/signal' },
+    { label: primary ? `${primary.window_ms} ms · accuracy` : 'Selected accuracy', value: primary ? `${(primary.metrics.accuracy * 100).toFixed(2)}%` : undefined, to: `/experiments?experiment=${experimentId}` },
+    { label: 'Selected macro F1', value: primary?.metrics.macro_f1.toFixed(4), to: `/experiments?experiment=${experimentId}` },
+  ];
+  const rows = signal.data?.time_ms.map((time, i) => ({ time, ...Object.fromEntries(Object.entries(signal.data!.data).map(([ch, values]) => [ch, values[i]])) })) || [];
+  return <><div className="page-heading"><div><h1>EOG INTENT COMMAND CENTRE</h1><p>Low-Latency EOG-Based Early Intent Detection for Eye Movements</p></div><Link className="button-link primary" to="/predictions">Run a prediction</Link></div>
+    <div className="metric-strip">{metrics.map(metric => <Link to={metric.to} key={metric.label} className="metric"><span>{metric.label}</span><strong>{metric.value ?? 'Unavailable'}</strong></Link>)}</div>
+    {(summary.error || list.error || detail.error) && <Notice message={summary.error || list.error || detail.error!} />}
+    <ExperimentPicker entries={list.data?.experiments || []} value={experimentId} onChange={setExperimentId} />
+    {detail.data && <Provenance experiment={detail.data} />}
+    <JobsPanel />
+    <div className="analysis-grid section"><div className="card"><div className="card-header"><div><h2>Recorded EOG · S1 / trial 0</h2><p className="muted">Raw outward phase · source sample order</p></div><Link to="/predictions?subject=S1&trial=0">Predict this trial</Link></div>{signal.error ? <Notice message={signal.error} /> : signal.loading ? <Loading /> : <Waveform rows={rows} channels={['0', '1', '2']} />}</div><Pipeline /></div>
+    <div className="card section"><div className="card-header"><h2>Accuracy vs observation budget</h2><Link to={`/experiments?experiment=${experimentId}`}>Full evaluation</Link></div>{results.length ? <><AccuracyChart results={results} /><ResultTable results={results} experimentId={experimentId} /></> : <p className="muted">No completed metrics selected. Choose a completed experiment or run a job.</p>}</div>
+    <p className="muted">Observation duration is not cue-to-decision latency. Results describe recorded-data experiments, not clinical or hardware validation.</p>
+  </>;
 }

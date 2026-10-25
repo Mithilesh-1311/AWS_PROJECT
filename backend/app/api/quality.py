@@ -1,6 +1,7 @@
 """Data quality and validation API routes."""
 from fastapi import APIRouter, HTTPException
 import json
+import logging
 import numpy as np
 from app.data.dataset_loader import get_loader
 from app.data.trial_segmenter import segment_trials
@@ -13,9 +14,11 @@ router = APIRouter()
 
 
 @router.get("/data-quality")
-async def data_quality_report():
+def data_quality_report():
     """Generate live data quality assessment for all subjects."""
     loader = get_loader()
+    if not loader.subject_ids:
+        raise HTTPException(503, "Dataset unavailable")
     subjects_report = []
     total_anomalies = []
 
@@ -38,7 +41,7 @@ async def data_quality_report():
             # Check for CS=30 (termination marker)
             unique_cs = sorted(np.unique(cs).tolist())
             cs_30_count = int(np.sum(cs == CS_TERMINATION))
-            if CS_TERMINATION in unique_cs:
+            if cs_30_count and (cs_30_count != 1 or cs[-1] != CS_TERMINATION):
                 anomalies.append(f"ControlSignal contains value 30 (termination marker, {cs_30_count} samples)")
 
             # Direction distribution
@@ -68,7 +71,7 @@ async def data_quality_report():
                     "std": round(float(np.std(row)), 2),
                 })
 
-            passed = len(anomalies) <= 1  # Allow the CS=30 anomaly (expected)
+            passed = not anomalies
 
             subjects_report.append({
                 "subject_id": sid,
@@ -92,18 +95,24 @@ async def data_quality_report():
             # Release EOG to free memory
             loader.release_subject(sid)
 
-        except Exception as e:
+        except Exception:
+            logging.exception("Invalid dataset subject %s", sid)
+            total_anomalies.append((sid, "Invalid subject schema or data"))
             subjects_report.append({
                 "subject_id": sid,
                 "passed": False,
-                "anomalies": [f"Error: {str(e)}"],
+                "anomalies": ["Invalid subject schema or data; inspect server logs"],
             })
+
+    for sid in set(EXPECTED_SUBJECTS) - set(loader.subject_ids):
+        subjects_report.append({"subject_id": sid, "passed": False, "anomalies": ["Expected subject is missing"]})
+        total_anomalies.append((sid, "Expected subject is missing"))
 
     all_passed = all(s.get("passed", False) for s in subjects_report)
 
     return {
         "all_passed": all_passed,
-        "n_subjects": len(subjects_report),
+        "n_subjects": len(loader.subject_ids),
         "total_anomalies": len(total_anomalies),
         "subjects": subjects_report,
     }

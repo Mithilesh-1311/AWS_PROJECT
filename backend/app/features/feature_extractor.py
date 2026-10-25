@@ -22,6 +22,7 @@ class FeatureConfig:
     include_stats: bool = True
     include_derivative: bool = True
     include_energy: bool = True
+    version: str = "legacy-v1"
 
 
 # Ordered list of per-channel feature names
@@ -40,6 +41,15 @@ PER_CHANNEL_FEATURES = [
     "signal_energy",      # sum of squared values
     "auc",                # area under curve (trapezoidal)
 ]
+
+
+def selected_feature_names(config):
+    groups = [(["voltage_change"], config.include_voltage),
+              (["mean", "std", "min", "max", "range"], config.include_stats),
+              (["slope", "mean_derivative", "max_pos_derivative", "max_neg_derivative", "derivative_energy"], config.include_derivative),
+              (["signal_energy", "auc"], config.include_energy)]
+    enabled = {name for names, include in groups if include for name in names}
+    return [name for name in PER_CHANNEL_FEATURES if name in enabled]
 
 
 def extract_features_single_channel(signal: np.ndarray) -> Dict[str, float]:
@@ -112,7 +122,11 @@ def extract_features(
     if config is None:
         config = FeatureConfig()
 
+    if eog_window.ndim != 2 or not np.isfinite(eog_window).all():
+        raise ValueError("Expected finite channel/sample matrix")
     n_channels, n_samples = eog_window.shape
+    if config.version not in {"legacy-v1", "physical-v2"}:
+        raise ValueError("Unsupported feature version")
 
     # Select channels
     if config.channels is not None:
@@ -120,11 +134,21 @@ def extract_features(
     else:
         channels = list(range(n_channels))
 
+    if not channels or len(set(channels)) != len(channels) or any(type(ch) is not int or ch < 0 or ch >= n_channels for ch in channels):
+        raise ValueError("Select distinct valid channel indices")
+
     # Per-channel features
     all_features = []
     for ch in channels:
         ch_features = extract_features_single_channel(eog_window[ch])
-        all_features.extend(ch_features.values())
+        if config.version == "physical-v2":
+            from app.core.config import SAMPLING_RATE
+            for name in ["slope", "mean_derivative", "max_pos_derivative", "max_neg_derivative"]:
+                ch_features[name] *= SAMPLING_RATE
+            ch_features["derivative_energy"] *= SAMPLING_RATE
+            for name in ["signal_energy", "auc"]:
+                ch_features[name] /= SAMPLING_RATE
+        all_features.extend(ch_features[name] for name in selected_feature_names(config))
 
     # Cross-channel features
     if config.include_cross_channel and len(channels) >= 2:
@@ -175,14 +199,16 @@ def _extract_cross_channel_features(eog: np.ndarray) -> List[float]:
     return features
 
 
-def get_feature_names(n_channels: int = 16, include_cross: bool = True) -> List[str]:
+def get_feature_names(n_channels: int = 16, include_cross: bool = True, config: FeatureConfig = None) -> List[str]:
     """Get ordered list of feature names matching extract_features output."""
+    config = config or FeatureConfig(include_cross_channel=include_cross)
+    channels = config.channels if config.channels is not None else list(range(n_channels))
     names = []
-    for ch in range(n_channels):
-        for feat_name in PER_CHANNEL_FEATURES:
+    for ch in channels:
+        for feat_name in selected_feature_names(config):
             names.append(f"ch{ch}_{feat_name}")
 
-    if include_cross:
+    if config.include_cross_channel and len(channels) >= 2:
         names.extend([
             "cross_max_change_ch_normalized",
             "cross_max_change_value",

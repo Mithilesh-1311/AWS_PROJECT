@@ -18,6 +18,7 @@ from pathlib import Path
 from datetime import datetime
 from sklearn.model_selection import GroupKFold
 import joblib
+import uuid
 
 # Add backend to path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -59,6 +60,13 @@ def run_experiment(
 
     if subjects is None:
         subjects = loader.subject_ids
+    if len(set(subjects)) < 2 or not 0 < test_ratio < 1:
+        raise ValueError("Legacy holdout requires at least two subjects and test_ratio in (0,1)")
+    if n_classes not in {4, 8, 36} or alignment not in {"cue", "onset"}:
+        raise ValueError("Unsupported class scheme or alignment")
+    experiment_id = f"legacy_{model_name}_{n_classes}c_{alignment}_{uuid.uuid4().hex}"
+    model_directory = MODELS_DIR / experiment_id
+    model_directory.mkdir(parents=True, exist_ok=False)
 
     logger.info(f"Experiment: model={model_name}, n_classes={n_classes}, "
                 f"alignment={alignment}, subjects={subjects}")
@@ -213,7 +221,7 @@ def run_experiment(
                      f"(train={wr.n_train}, test={wr.n_test})")
 
         # Save model for this window
-        model_path = MODELS_DIR / f"{model_name}_{n_classes}class_{int(spec.requested_ms)}ms.joblib"
+        model_path = model_directory / f"{int(spec.requested_ms)}ms.joblib"
         joblib.dump(model, model_path)
 
     # --- Phase 5: Save results ---
@@ -225,7 +233,7 @@ def run_experiment(
         class_names = [f"Dir_{i*10}" for i in range(36)]
 
     experiment = ExperimentResult(
-        experiment_id=f"baseline_{model_name}_{n_classes}c_{alignment}_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+        experiment_id=experiment_id,
         model_name=model_name,
         n_classes=n_classes,
         class_names=class_names,
@@ -233,10 +241,10 @@ def run_experiment(
         preprocessing=preprocess_config.to_dict(),
         subjects_train=sorted(train_subjects),
         subjects_test=sorted(test_subjects),
-        split_method="subject_split_70_30",
+        split_method=f"subject_holdout_test_ratio_{test_ratio}",
         window_results=window_results,
         timestamp=datetime.now().isoformat(),
-        notes="Review 1 preliminary baseline. Subject-level 70/30 split. NOT final LOSO evaluation.",
+        notes="Legacy retrospective reproduction. Whole-phase channel selection and post-cue calibration; not causal replay. Models in experiment-specific directory.",
     )
 
     filepath = save_experiment_result(experiment)
