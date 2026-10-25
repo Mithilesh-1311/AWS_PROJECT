@@ -17,4 +17,5 @@ venv/
 *.key
 .DS_Store
 __MACOSX/
+Dataset_Isotropic/
 Dataset_Isotropic.zip
