@@ -19,3 +19,5 @@
 - Native Caddy is sufficient to verify actual proxy auth/HTTP/WS behavior when Docker is absent; it does not establish container or cloud readiness. Terraform JSON avoids fragile generated compact HCL; provider validation and a mocked plan pass without AWS access.
 - Keep cloud training single-host, with one durable worker and explicit backup/restore. No apply, raw-data upload, domain provisioning or cost claim is authorized by missing configuration.
 - PyTorch and sklearn DLL initialization conflict in this Windows environment when torch loads late; preload torch before pytest for optional sequence tests. Serving has no torch dependency.
+
+- Remote CI found the worker inheriting the API HTTP health check. Override it with worker heartbeat health; all four jobs then passed at 264d72c. Record container build/health/auth separately from unrun real-data container/cloud inference.

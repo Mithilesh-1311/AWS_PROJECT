@@ -1,0 +1,12 @@
+{
+  "source_commit": "264d72cda1af2599e7012da0c22ea1471ac5a125",
+  "run_id": 40233699129,
+  "url": "https://github.com/Mithilesh-1311/AWS_PROJECT/actions/runs/40233699129",
+  "jobs": {
+    "backend": "success",
+    "frontend": "success",
+    "infrastructure": "success",
+    "containers": "success"
+  },
+  "container_scope": "Linux builds, API liveness, worker heartbeat, unauthenticated denial and authenticated proxy health; no raw dataset on CI runners"
+}

@@ -59,7 +59,7 @@ The clean runtime passed 47 tests with one optional TCN test skipped; the dedica
 
 Docker Compose provides Caddy/static frontend, API and a separate worker. Copy `.env.example` to `.env`, generate the required bcrypt hash/token, then use `docker compose up -d --build`. [AWS_DEPLOYMENT.md](docs/AWS_DEPLOYMENT.md) gives the complete configuration and rollback/backup path.
 
-AWS status: **prepared; Terraform schema and mocked security plan validated; not deployed; not cloud-verified**. No AWS resources or raw-data uploads were performed. Docker/container execution was not run locally because Docker is unavailable; CI contains that gate.
+AWS status: **prepared; Terraform schema and mocked security plan validated; not deployed; not cloud-verified**. No AWS resources or raw-data uploads were performed. Linux container build, worker/API health and authenticated proxy checks passed in GitHub Actions. Full real-data container inference and AWS smoke remain unrun.
 
 Demo: Dataset Explorer → Signal Processing (retrospective diagnostics) → Early Windows → Predictions (causal) → Live Replay (recorded data) → Model Evaluation → Reports. Follow the [demo script](docs/DEMO_SCRIPT.md).
 

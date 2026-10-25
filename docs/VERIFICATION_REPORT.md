@@ -1,6 +1,6 @@
 # Verification report
 
-Executed locally on Windows, Python 3.10.9 / Node 22.17.1, 2026-10-26. These are observed results, not estimates. Current runtime pins include FastAPI 0.162.0, Starlette 1.7.0, sklearn 1.5.2, NumPy 1.24.4, SciPy 1.15.3 and joblib 1.4.2. Runtime constraints record the audited Windows dependency closure; Linux-only dependencies still require the container CI gate.
+Executed locally on Windows, Python 3.10.9 / Node 22.17.1, 2026-10-26. These are observed results, not estimates. Current runtime pins include FastAPI 0.162.0, Starlette 1.7.0, sklearn 1.5.2, NumPy 1.24.4, SciPy 1.15.3 and joblib 1.4.2. Runtime constraints record the audited Windows dependency closure; Linux clean installation and the container CI gate also passed remotely.
 
 | Gate / command | Observed result |
 |---|---|
@@ -19,6 +19,7 @@ Executed locally on Windows, Python 3.10.9 / Node 22.17.1, 2026-10-26. These are
 | `.\backend\.venv-clean\Scripts\python.exe ops/smoke_proxy.py` | Pass: actual production Caddy config, auth/static/API readiness/inference/export, unauthenticated/forged-header denial, real WS continuity and identical scores |
 | `terraform init -backend=false`, `terraform validate` | Pass with Terraform 1.14.0 / AWS provider 6.70.0; lockfile committed |
 | `terraform test` | One mocked-provider plan passed: private/versioned bucket, IMDSv2/encrypted EBS, proxy-only ingress; **no AWS resources** |
+| GitHub Actions source commit `264d72c` | All four jobs passed: backend, frontend, infrastructure and Linux containers; [run evidence](https://github.com/Mithilesh-1311/AWS_PROJECT/actions/runs/40233699129) |
 | YAML parsing; UTF-8/LF bootstrap check; `git diff --check` | Pass; Compose/workflows parse, bootstrap has no BOM/CRLF, no whitespace errors |
 | Historical artifact comparison / Git candidate scan | Twelve original model/report artifacts unchanged (JSON comparison normalizes checkout line endings); no raw data, environments, tools or files above 10 MB in Git candidates; no key/token signatures detected |
 
@@ -38,12 +39,16 @@ Full fixed classical comparison: 378 folds (3 families x 9 budgets x 14 subjects
 
 | Gate | Status and reason |
 |---|---|
-| Docker Compose/container build and clean Linux container smoke | **NOT RUN locally**: Docker is not installed. `verify.yml` contains build/health/auth checks. Native Caddy smoke proves proxy behavior, not image execution. |
+| Docker Compose/container build and clean Linux container smoke | **PASS remotely in GitHub Actions**: API/worker/web images built, API and worker heartbeat health passed, unauthenticated requests denied and authenticated health passed. Docker remains unavailable locally. |
 | Real AWS account plan/apply, EC2 bootstrap, S3 transfer, TLS domain, cloud smoke | **NOT RUN**: account/credentials, region/budget approval, domain and dataset transfer permission were not provided. No resources or raw-data uploads occurred. |
-| Remote GitHub Actions result | **Not observed during local verification**; workflow files are prepared, not a claimed remote pass. |
+| Full real-data inference/replay inside Linux containers | **NOT RUN**: recordings and generated serving weights are not distributed to GitHub runners. Actual real-data inference/replay passed natively through the same Caddy configuration. |
 | Connected sensor, physical acquisition timing, clinical/external validation | **NOT RUN**: only supplied recordings and the local computer were available. |
 | GRU/LSTM/ST-CNN, regression, adaptation, calibrated stopping | **Not implemented**; optional research extensions, not completed features. |
 
-AWS status is independently **prepared / locally validated / not deployed / not cloud-verified**. Local real-data API, job, inference, replay, proxy and browser paths passed. Docker/cloud acceptance remains open and must not be inferred from local tests.
+AWS status is independently **prepared / locally validated / not deployed / not cloud-verified**. Local real-data API, job, inference, replay, proxy and browser paths passed. Basic Linux container acceptance passed remotely; full real-data container and AWS cloud acceptance remain open.
 
 Known non-failing warnings: Starlette's test-client HTTPX deprecation, sklearn's pinned `multi_class` deprecation; historical environment also reports multipart deprecation. PyTorch loads successfully when imported before other scientific DLLs on this Windows installation; importing it late can produce `c10.dll` initialization errors. Serving has no Torch dependency. Dataset voltage scale/license and external validity remain unverified.
+
+## Remote CI follow-up
+
+The first run built all images but exposed the worker inheriting the API HTTP health check. Compose now overrides it with the actual worker heartbeat check. The subsequent run at source commit `264d72c` passed all four jobs. CI cleanup/log collection now runs on success and failure. This is a tested configuration fix, not a retry hiding the failure. A documentation-only follow-up records the evidence without rerunning unchanged executable code.

@@ -1,6 +1,6 @@
 # Deployment and operations
 
-Status on 2026-10-26: **prepared**, Terraform **validated** with a mocked-provider security plan; **not deployed**, **not cloud-verified**. Native Caddy authenticated static/API/WebSocket smoke passed locally. Docker, AWS CLI/account authorization, a domain and an approved budget were unavailable, so no container runtime or cloud resource creation is claimed.
+Status on 2026-10-26: **prepared**, Terraform **validated** with a mocked-provider security plan; **not deployed**, **not cloud-verified**. Native Caddy authenticated static/API/WebSocket smoke passed locally. Docker, AWS CLI/account authorization, a domain and an approved budget were unavailable, so no local Docker or cloud resource creation is claimed. Subsequent GitHub Actions verification passed Linux image builds, API/worker health and proxy authentication; full real-data inference in containers remains unrun.
 
 ## Local containers
 
@@ -57,7 +57,7 @@ Bootstrap verifies release SHA256 before extraction. Compose's binary is pinned 
 
 ## CI, updates and recovery
 
-`verify.yml` checks backend, frontend, audits, Terraform/mock plan and container health/auth on GitHub Actions. Its browser boundary test uses explicit fixtures; full real-data browser tests run locally because Git contains no dataset. GitHub Actions has not run until this commit is pushed and the workflow result is observed.
+`verify.yml` checks backend, frontend, audits, Terraform/mock plan and container health/auth on GitHub Actions. Its browser boundary test uses explicit fixtures; full real-data browser tests run locally because Git contains no dataset. GitHub Actions run 40233699129 passed all four jobs at source commit 264d72c, including Linux container build/health/auth. See VERIFICATION_REPORT.md for the observed scope.
 
 `release.yml` is manual-only and uses OIDC with environment `aws-release`. Configure AWS_RELEASE_ROLE_ARN, AWS_REGION and AWS_RELEASE_BUCKET as environment variables; require environment approval. The AWS trust policy must restrict `aud=sts.amazonaws.com` and `sub=repo:Mithilesh-1311/AWS_PROJECT:environment:aws-release`. Grant that release role only PutObject under the specific bucket's `releases/*` prefix. The workflow publishes an archive/checksum and performs no apply or SSM command. Do not configure long-lived repository access keys.
 
