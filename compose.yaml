@@ -15,6 +15,12 @@ services:
   worker:
     build: ./backend
     command: ["python", "-m", "scripts.worker"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "from app.evaluation.jobs import worker_ready; raise SystemExit(0 if worker_ready() else 1)"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
     environment: *backend_environment
     volumes: *backend_volumes
     restart: unless-stopped

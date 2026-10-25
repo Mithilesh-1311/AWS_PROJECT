@@ -58,8 +58,8 @@ jobs:
           export EOG_USER=ci EOG_PROXY_TOKEN=$(openssl rand -hex 32)
           export EOG_PASSWORD_HASH=$(docker run --rm caddy:2.10.2-alpine caddy hash-password --plaintext ci-test-only)
           export EOG_DATASET_PATH=./data/empty
+          trap 'docker compose logs --tail 100; docker compose down' EXIT
           docker compose config --quiet
           docker compose up -d --build --wait
           test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/api/health)" = 401
           curl --fail --retry 10 --retry-delay 2 -u ci:ci-test-only http://localhost:8080/api/health
-          docker compose down
