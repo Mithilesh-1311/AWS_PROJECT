@@ -1,0 +1,5143 @@
+{
+  "generated_at": "2026-09-15T22:34:38.109323",
+  "dataset_root": "C:\\Users\\Admin\\OneDrive\\Desktop\\AWS project\\Dataset_Isotropic\\Dataset_Isotropic",
+  "expected_subjects": [
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6",
+    "S7",
+    "S8",
+    "S9",
+    "S10",
+    "S11",
+    "S12",
+    "S13",
+    "S14"
+  ],
+  "sampling_rate_hz": 256,
+  "subjects": {
+    "S1": {
+      "subject_id": "S1",
+      "exists": true,
+      "files": {
+        "EOG.mat": {
+          "keys": [
+            "EOG"
+          ],
+          "variables": {
+            "EOG": {
+              "shape": [
+                16,
+                299821
+              ],
+              "dtype": "float64",
+              "min": -4844.29443359375,
+              "max": 2138.09375,
+              "mean": -1469.677655501847,
+              "std": 1188.0638447356419,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 4797136,
+              "unique_count": 3618164
+            }
+          },
+          "file_size_bytes": 16984913
+        },
+        "ControlSignal.mat": {
+          "keys": [
+            "ControlSignal"
+          ],
+          "variables": {
+            "ControlSignal": {
+              "shape": [
+                1,
+                299821
+              ],
+              "dtype": "uint8",
+              "min": 1.0,
+              "max": 30.0,
+              "mean": 2.2501659323396295,
+              "std": 0.8306760666531937,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 299821,
+              "unique_values": [
+                1,
+                2,
+                3,
+                30
+              ],
+              "unique_count": 4
+            }
+          },
+          "file_size_bytes": 3792
+        },
+        "Target_GA_stream.mat": {
+          "keys": [
+            "Target_GA_stream"
+          ],
+          "variables": {
+            "Target_GA_stream": {
+              "shape": [
+                2,
+                299821
+              ],
+              "dtype": "float64",
+              "min": -12.0,
+              "max": 12.000000000000004,
+              "mean": -0.00015964823869507822,
+              "std": 4.257899541226991,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 599642,
+              "unique_values": [
+                -12.0,
+                -11.822861946285633,
+                -11.295488389157633,
+                -10.430207782400052,
+                -9.248182147108105,
+                -7.780076629823701,
+                -6.066524724887447,
+                -4.15800957170429,
+                -2.1138310566188285,
+                0.0,
+                2.1138310566188285,
+                2.113831056618832,
+                4.15800957170429,
+                6.066524724887447,
+                7.780076629823701,
+                9.248182147108103,
+                9.248182147108105,
+                10.430207782400052,
+                11.295488389157633,
+                11.822861946285633,
+                12.0,
+                12.000000000000004
+              ],
+              "unique_count": 22
+            }
+          },
+          "file_size_bytes": 32028
+        },
+        "PD.mat": {
+          "keys": [
+            "PD"
+          ],
+          "variables": {
+            "PD": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.067,
+              "max": 0.067,
+              "mean": 0.067,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.067
+                ]
+              ],
+              "unique_values": [
+                0.067
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 180
+        },
+        "Dist_screen.mat": {
+          "keys": [
+            "Dist_screen"
+          ],
+          "variables": {
+            "Dist_screen": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.56,
+              "max": 0.56,
+              "mean": 0.56,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.56
+                ]
+              ],
+              "unique_values": [
+                0.56
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 189
+        }
+      },
+      "missing_files": [],
+      "anomalies": [
+        "ControlSignal contains value 30 (not documented as 1,2,3)"
+      ],
+      "validation_passed": true,
+      "eog_channels": 16,
+      "eog_samples": 299821,
+      "eog_duration_sec": 1171.18,
+      "eog_variable_name": "EOG",
+      "control_signal_variable_name": "ControlSignal",
+      "control_signal_unique_values": [
+        1,
+        2,
+        3,
+        30
+      ],
+      "target_ga_shape": [
+        2,
+        299821
+      ],
+      "target_ga_variable_name": "Target_GA_stream",
+      "pd_value": [
+        [
+          0.067
+        ]
+      ],
+      "pd_variable_name": "PD",
+      "dist_screen_value": [
+        [
+          0.56
+        ]
+      ],
+      "dist_screen_variable_name": "Dist_screen",
+      "eog_channel_stats": [
+        {
+          "channel": 1,
+          "min": -3959.53515625,
+          "max": 883.900390625,
+          "mean": -2113.27577748343,
+          "std": 1154.5089046179116,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 2,
+          "min": -4024.865234375,
+          "max": 218.349609375,
+          "mean": -1881.0994643633462,
+          "std": 1217.6952988794465,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 3,
+          "min": -2978.835205078125,
+          "max": 192.7919921875,
+          "mean": -1355.0037465697633,
+          "std": 986.1341234031696,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 4,
+          "min": -3027.1318359375,
+          "max": 237.86669921875,
+          "mean": -1310.367625099154,
+          "std": 898.6780525840976,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 5,
+          "min": -2821.260986328125,
+          "max": 973.07421875,
+          "mean": -1182.8837540204327,
+          "std": 876.4326844286409,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 6,
+          "min": -3068.9111328125,
+          "max": 248.583984375,
+          "mean": -1470.8503104508607,
+          "std": 861.6035246445919,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 7,
+          "min": -3265.106201171875,
+          "max": 635.3798828125,
+          "mean": -1473.7778786093345,
+          "std": 1028.2791411707253,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 8,
+          "min": -2201.111328125,
+          "max": 886.158203125,
+          "mean": -947.0096607007415,
+          "std": 653.3423087870904,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 9,
+          "min": -741.37890625,
+          "max": 2138.09375,
+          "mean": 513.9451017134234,
+          "std": 669.3934038193173,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 10,
+          "min": -2926.157470703125,
+          "max": 878.4228515625,
+          "mean": -1462.496699632343,
+          "std": 886.0170123409106,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 11,
+          "min": -3236.418701171875,
+          "max": 221.6259765625,
+          "mean": -1431.9670231615476,
+          "std": 1010.4393638904397,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 12,
+          "min": -3755.572998046875,
+          "max": 204.587890625,
+          "mean": -1878.5844049893292,
+          "std": 1105.5506300298562,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 13,
+          "min": -3648.261474609375,
+          "max": 410.2578125,
+          "mean": -2043.0124737382366,
+          "std": 1129.8646268061598,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 14,
+          "min": -3190.51953125,
+          "max": 538.7822265625,
+          "mean": -1616.579063766511,
+          "std": 977.5722862408351,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 15,
+          "min": -4844.29443359375,
+          "max": 138.7294921875,
+          "mean": -2504.9666959977526,
+          "std": 1441.4509052673618,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 16,
+          "min": -2968.461715698242,
+          "max": 237.29876708984375,
+          "mean": -1356.913011160194,
+          "std": 831.4830503381038,
+          "nan_count": 0,
+          "inf_count": 0
+        }
+      ],
+      "trial_info": {
+        "unique_values": [
+          1,
+          2,
+          3,
+          30
+        ],
+        "total_transitions": 864,
+        "segments_per_value": {
+          "1": 288,
+          "2": 288,
+          "3": 288,
+          "30": 1
+        },
+        "signal_length": 299821
+      }
+    },
+    "S2": {
+      "subject_id": "S2",
+      "exists": true,
+      "files": {
+        "EOG.mat": {
+          "keys": [
+            "EOG"
+          ],
+          "variables": {
+            "EOG": {
+              "shape": [
+                16,
+                299822
+              ],
+              "dtype": "float64",
+              "min": -4017.148681640625,
+              "max": 657.900634765625,
+              "mean": -914.2858414155281,
+              "std": 772.7077130448275,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 4797152,
+              "unique_count": 4199820
+            }
+          },
+          "file_size_bytes": 18299613
+        },
+        "ControlSignal.mat": {
+          "keys": [
+            "ControlSignal"
+          ],
+          "variables": {
+            "ControlSignal": {
+              "shape": [
+                1,
+                299822
+              ],
+              "dtype": "uint8",
+              "min": 1.0,
+              "max": 30.0,
+              "mean": 2.250038356091281,
+              "std": 0.8307450852809198,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 299822,
+              "unique_values": [
+                1,
+                2,
+                3,
+                30
+              ],
+              "unique_count": 4
+            }
+          },
+          "file_size_bytes": 3787
+        },
+        "Target_GA_stream.mat": {
+          "keys": [
+            "Target_GA_stream"
+          ],
+          "variables": {
+            "Target_GA_stream": {
+              "shape": [
+                2,
+                299822
+              ],
+              "dtype": "float64",
+              "min": -11.999999999999998,
+              "max": 11.999999999999998,
+              "mean": 0.0002620956043896772,
+              "std": 4.258656309920223,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 599644,
+              "unique_values": [
+                -11.999999999999998,
+                -11.822861946285634,
+                -11.295488389157633,
+                -10.43020778240005,
+                -9.248182147108103,
+                -7.780076629823699,
+                -6.0665247248874445,
+                -4.158009571704291,
+                -2.113831056618829,
+                0.0,
+                2.113831056618829,
+                2.1138310566188325,
+                4.158009571704291,
+                6.0665247248874445,
+                7.780076629823699,
+                7.780076629823703,
+                9.248182147108103,
+                10.43020778240005,
+                10.430207782400052,
+                11.295488389157633,
+                11.822861946285634,
+                11.999999999999998
+              ],
+              "unique_count": 22
+            }
+          },
+          "file_size_bytes": 32131
+        },
+        "PD.mat": {
+          "keys": [
+            "PD"
+          ],
+          "variables": {
+            "PD": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.0665,
+              "max": 0.0665,
+              "mean": 0.0665,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.0665
+                ]
+              ],
+              "unique_values": [
+                0.0665
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 179
+        },
+        "Dist_screen.mat": {
+          "keys": [
+            "Dist_screen"
+          ],
+          "variables": {
+            "Dist_screen": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.54,
+              "max": 0.54,
+              "mean": 0.54,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.54
+                ]
+              ],
+              "unique_values": [
+                0.54
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 189
+        }
+      },
+      "missing_files": [],
+      "anomalies": [
+        "ControlSignal contains value 30 (not documented as 1,2,3)"
+      ],
+      "validation_passed": true,
+      "eog_channels": 16,
+      "eog_samples": 299822,
+      "eog_duration_sec": 1171.18,
+      "eog_variable_name": "EOG",
+      "control_signal_variable_name": "ControlSignal",
+      "control_signal_unique_values": [
+        1,
+        2,
+        3,
+        30
+      ],
+      "target_ga_shape": [
+        2,
+        299822
+      ],
+      "target_ga_variable_name": "Target_GA_stream",
+      "pd_value": [
+        [
+          0.0665
+        ]
+      ],
+      "pd_variable_name": "PD",
+      "dist_screen_value": [
+        [
+          0.54
+        ]
+      ],
+      "dist_screen_variable_name": "Dist_screen",
+      "eog_channel_stats": [
+        {
+          "channel": 1,
+          "min": -1419.912353515625,
+          "max": 352.866455078125,
+          "mean": -791.8340174968658,
+          "std": 260.2693053330415,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 2,
+          "min": -1190.68701171875,
+          "max": 40.100830078125,
+          "mean": -796.4983225617253,
+          "std": 276.94097924289485,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 3,
+          "min": -1620.7913513183594,
+          "max": 79.15841674804688,
+          "mean": -855.5566162468681,
+          "std": 396.1973812804368,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 4,
+          "min": -1206.387939453125,
+          "max": 125.164306640625,
+          "mean": -622.9250050509298,
+          "std": 250.0067452157114,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 5,
+          "min": -2373.6448364257812,
+          "max": 420.539794921875,
+          "mean": -1455.6249083618238,
+          "std": 632.2442250780826,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 6,
+          "min": -784.9760284423828,
+          "max": 66.23248291015625,
+          "mean": -273.39555919461026,
+          "std": 199.21911818572096,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 7,
+          "min": -1473.619140625,
+          "max": 353.76708984375,
+          "mean": -886.384751119323,
+          "std": 300.21403892982005,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 8,
+          "min": -1358.453857421875,
+          "max": 335.0877685546875,
+          "mean": -766.4091995112739,
+          "std": 312.0833270021872,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 9,
+          "min": -897.9892578125,
+          "max": 299.9219970703125,
+          "mean": -369.3682556227665,
+          "std": 199.65524481996283,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 10,
+          "min": -969.809326171875,
+          "max": 657.900634765625,
+          "mean": -251.0255013303336,
+          "std": 311.47540859531705,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 11,
+          "min": -1629.4734115600586,
+          "max": 121.1575698852539,
+          "mean": -979.0759053744868,
+          "std": 393.3217844754464,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 12,
+          "min": -1370.343994140625,
+          "max": 111.13916015625,
+          "mean": -903.7865327706744,
+          "std": 339.02582222257143,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 13,
+          "min": -1140.67138671875,
+          "max": 297.509765625,
+          "mean": -355.8549867680605,
+          "std": 321.75715032660264,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 14,
+          "min": -1396.7690124511719,
+          "max": 239.5238037109375,
+          "mean": -720.5099417343874,
+          "std": 292.76689704621134,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 15,
+          "min": -2643.5784912109375,
+          "max": 68.2698974609375,
+          "mean": -1987.257329473269,
+          "std": 730.2200637754436,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 16,
+          "min": -4017.148681640625,
+          "max": 77.701416015625,
+          "mean": -2613.0666300310513,
+          "std": 1209.1642189877305,
+          "nan_count": 0,
+          "inf_count": 0
+        }
+      ],
+      "trial_info": {
+        "unique_values": [
+          1,
+          2,
+          3,
+          30
+        ],
+        "total_transitions": 864,
+        "segments_per_value": {
+          "1": 288,
+          "2": 288,
+          "3": 288,
+          "30": 1
+        },
+        "signal_length": 299822
+      }
+    },
+    "S3": {
+      "subject_id": "S3",
+      "exists": true,
+      "files": {
+        "EOG.mat": {
+          "keys": [
+            "EOG"
+          ],
+          "variables": {
+            "EOG": {
+              "shape": [
+                16,
+                299821
+              ],
+              "dtype": "float64",
+              "min": -5309.47216796875,
+              "max": 1358.16015625,
+              "mean": -671.3683522745642,
+              "std": 1014.7142047936087,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 4797136,
+              "unique_count": 3993027
+            }
+          },
+          "file_size_bytes": 17318214
+        },
+        "ControlSignal.mat": {
+          "keys": [
+            "ControlSignal"
+          ],
+          "variables": {
+            "ControlSignal": {
+              "shape": [
+                1,
+                299821
+              ],
+              "dtype": "uint8",
+              "min": 1.0,
+              "max": 30.0,
+              "mean": 2.250012507462786,
+              "std": 0.8307543756734005,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 299821,
+              "unique_values": [
+                1,
+                2,
+                3,
+                30
+              ],
+              "unique_count": 4
+            }
+          },
+          "file_size_bytes": 3795
+        },
+        "Target_GA_stream.mat": {
+          "keys": [
+            "Target_GA_stream"
+          ],
+          "variables": {
+            "Target_GA_stream": {
+              "shape": [
+                2,
+                299821
+              ],
+              "dtype": "float64",
+              "min": -12.000000000000002,
+              "max": 12.000000000000002,
+              "mean": -0.0002240524061256267,
+              "std": 4.258778725595031,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 599642,
+              "unique_values": [
+                -12.000000000000002,
+                -11.822861946285636,
+                -11.295488389157635,
+                -10.430207782400052,
+                -9.248182147108103,
+                -7.780076629823703,
+                -6.066524724887446,
+                -4.158009571704291,
+                -2.1138310566188285,
+                0.0,
+                2.1138310566188285,
+                2.113831056618832,
+                4.158009571704291,
+                4.1580095717042935,
+                6.066524724887446,
+                7.780076629823703,
+                9.248182147108103,
+                10.430207782400052,
+                11.295488389157635,
+                11.822861946285636,
+                12.000000000000002
+              ],
+              "unique_count": 21
+            }
+          },
+          "file_size_bytes": 32270
+        },
+        "PD.mat": {
+          "keys": [
+            "PD"
+          ],
+          "variables": {
+            "PD": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.064,
+              "max": 0.064,
+              "mean": 0.064,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.064
+                ]
+              ],
+              "unique_values": [
+                0.064
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 180
+        },
+        "Dist_screen.mat": {
+          "keys": [
+            "Dist_screen"
+          ],
+          "variables": {
+            "Dist_screen": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.55,
+              "max": 0.55,
+              "mean": 0.55,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.55
+                ]
+              ],
+              "unique_values": [
+                0.55
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 187
+        }
+      },
+      "missing_files": [],
+      "anomalies": [
+        "ControlSignal contains value 30 (not documented as 1,2,3)"
+      ],
+      "validation_passed": true,
+      "eog_channels": 16,
+      "eog_samples": 299821,
+      "eog_duration_sec": 1171.18,
+      "eog_variable_name": "EOG",
+      "control_signal_variable_name": "ControlSignal",
+      "control_signal_unique_values": [
+        1,
+        2,
+        3,
+        30
+      ],
+      "target_ga_shape": [
+        2,
+        299821
+      ],
+      "target_ga_variable_name": "Target_GA_stream",
+      "pd_value": [
+        [
+          0.064
+        ]
+      ],
+      "pd_variable_name": "PD",
+      "dist_screen_value": [
+        [
+          0.55
+        ]
+      ],
+      "dist_screen_variable_name": "Dist_screen",
+      "eog_channel_stats": [
+        {
+          "channel": 1,
+          "min": -1870.458251953125,
+          "max": 753.97705078125,
+          "mean": -950.7661898715452,
+          "std": 422.5932039497574,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 2,
+          "min": -3785.269287109375,
+          "max": 15.103515625,
+          "mean": -1955.0510777208397,
+          "std": 1078.7993853862604,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 3,
+          "min": -1962.286376953125,
+          "max": 191.50927734375,
+          "mean": -864.2267260230652,
+          "std": 658.8582872676618,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 4,
+          "min": -2878.1937255859375,
+          "max": 155.15283203125,
+          "mean": -1110.5071739932105,
+          "std": 873.4493690673112,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 5,
+          "min": -414.18359375,
+          "max": 1358.16015625,
+          "mean": 301.44830850962427,
+          "std": 311.74310613475205,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 6,
+          "min": -1875.736572265625,
+          "max": 101.228515625,
+          "mean": -812.4693621222316,
+          "std": 521.9818246253501,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 7,
+          "min": -1487.9794921875,
+          "max": 650.705078125,
+          "mean": -533.1983167632469,
+          "std": 461.93542803629066,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 8,
+          "min": -164.8994140625,
+          "max": 1299.6259765625,
+          "mean": 420.1426964117236,
+          "std": 246.10073249823236,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 9,
+          "min": -1945.834457397461,
+          "max": 488.4207763671875,
+          "mean": -724.5289680734102,
+          "std": 564.7715904409463,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 10,
+          "min": -397.1275634765625,
+          "max": 1237.613899230957,
+          "mean": 202.536667008458,
+          "std": 285.15418485870805,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 11,
+          "min": -2750.169921875,
+          "max": 85.9931640625,
+          "mean": -1034.0334043274077,
+          "std": 812.1472967003272,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 12,
+          "min": -5309.47216796875,
+          "max": 178.6533203125,
+          "mean": -2064.10400440948,
+          "std": 1724.766440402295,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 13,
+          "min": -1843.2572021484375,
+          "max": 483.53961181640625,
+          "mean": -607.8698872179281,
+          "std": 598.0735857010297,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 14,
+          "min": -2062.50732421875,
+          "max": 462.688720703125,
+          "mean": -949.7840867047743,
+          "std": 673.0806940173306,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 15,
+          "min": -877.8525695800781,
+          "max": 1156.611083984375,
+          "mean": 164.93083504484989,
+          "std": 521.465629783811,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 16,
+          "min": -1174.0947265625,
+          "max": 670.4931640625,
+          "mean": -224.41294614054615,
+          "std": 471.99805599284446,
+          "nan_count": 0,
+          "inf_count": 0
+        }
+      ],
+      "trial_info": {
+        "unique_values": [
+          1,
+          2,
+          3,
+          30
+        ],
+        "total_transitions": 864,
+        "segments_per_value": {
+          "1": 288,
+          "2": 288,
+          "3": 288,
+          "30": 1
+        },
+        "signal_length": 299821
+      }
+    },
+    "S4": {
+      "subject_id": "S4",
+      "exists": true,
+      "files": {
+        "EOG.mat": {
+          "keys": [
+            "EOG"
+          ],
+          "variables": {
+            "EOG": {
+              "shape": [
+                16,
+                299822
+              ],
+              "dtype": "float64",
+              "min": -5529.783203125,
+              "max": 2419.9443359375,
+              "mean": -1472.4787342972515,
+              "std": 1704.9412712121216,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 4797152,
+              "unique_count": 3631291
+            }
+          },
+          "file_size_bytes": 16745536
+        },
+        "ControlSignal.mat": {
+          "keys": [
+            "ControlSignal"
+          ],
+          "variables": {
+            "ControlSignal": {
+              "shape": [
+                1,
+                299822
+              ],
+              "dtype": "uint8",
+              "min": 1.0,
+              "max": 30.0,
+              "mean": 2.250155092021266,
+              "std": 0.8306999034607134,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 299822,
+              "unique_values": [
+                1,
+                2,
+                3,
+                30
+              ],
+              "unique_count": 4
+            }
+          },
+          "file_size_bytes": 3794
+        },
+        "Target_GA_stream.mat": {
+          "keys": [
+            "Target_GA_stream"
+          ],
+          "variables": {
+            "Target_GA_stream": {
+              "shape": [
+                2,
+                299822
+              ],
+              "dtype": "float64",
+              "min": -12.0,
+              "max": 12.0,
+              "mean": -0.00012147082787763503,
+              "std": 4.258089492375925,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 599644,
+              "unique_values": [
+                -12.0,
+                -11.822861946285634,
+                -11.295488389157633,
+                -10.43020778240005,
+                -9.248182147108107,
+                -7.780076629823699,
+                -6.066524724887445,
+                -4.158009571704293,
+                -2.113831056618829,
+                0.0,
+                2.113831056618829,
+                4.158009571704288,
+                4.158009571704293,
+                6.066524724887445,
+                6.066524724887449,
+                7.780076629823699,
+                9.248182147108107,
+                10.43020778240005,
+                11.295488389157633,
+                11.822861946285634,
+                12.0
+              ],
+              "unique_count": 21
+            }
+          },
+          "file_size_bytes": 31834
+        },
+        "PD.mat": {
+          "keys": [
+            "PD"
+          ],
+          "variables": {
+            "PD": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.074,
+              "max": 0.074,
+              "mean": 0.074,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.074
+                ]
+              ],
+              "unique_values": [
+                0.074
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 180
+        },
+        "Dist_screen.mat": {
+          "keys": [
+            "Dist_screen"
+          ],
+          "variables": {
+            "Dist_screen": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.545,
+              "max": 0.545,
+              "mean": 0.545,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.545
+                ]
+              ],
+              "unique_values": [
+                0.545
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 189
+        }
+      },
+      "missing_files": [],
+      "anomalies": [
+        "ControlSignal contains value 30 (not documented as 1,2,3)"
+      ],
+      "validation_passed": true,
+      "eog_channels": 16,
+      "eog_samples": 299822,
+      "eog_duration_sec": 1171.18,
+      "eog_variable_name": "EOG",
+      "control_signal_variable_name": "ControlSignal",
+      "control_signal_unique_values": [
+        1,
+        2,
+        3,
+        30
+      ],
+      "target_ga_shape": [
+        2,
+        299822
+      ],
+      "target_ga_variable_name": "Target_GA_stream",
+      "pd_value": [
+        [
+          0.074
+        ]
+      ],
+      "pd_variable_name": "PD",
+      "dist_screen_value": [
+        [
+          0.545
+        ]
+      ],
+      "dist_screen_variable_name": "Dist_screen",
+      "eog_channel_stats": [
+        {
+          "channel": 1,
+          "min": -3522.01171875,
+          "max": 683.89453125,
+          "mean": -1913.1916088799928,
+          "std": 982.756400443729,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 2,
+          "min": -5529.783203125,
+          "max": 72.912109375,
+          "mean": -3497.7227505442293,
+          "std": 1615.0495652516638,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 3,
+          "min": -484.0771484375,
+          "max": 1666.269287109375,
+          "mean": 737.2524882024077,
+          "std": 317.3058491982116,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 4,
+          "min": -3212.4619140625,
+          "max": 321.572265625,
+          "mean": -1647.752060685564,
+          "std": 720.9400067550135,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 5,
+          "min": -1559.236328125,
+          "max": 808.0390625,
+          "mean": -141.7215085247455,
+          "std": 288.6356398665803,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 6,
+          "min": -362.86865234375,
+          "max": 2419.9443359375,
+          "mean": 1409.9759922707135,
+          "std": 527.6231635714399,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 7,
+          "min": -3673.37841796875,
+          "max": 1040.8486328125,
+          "mean": -1770.3866619650055,
+          "std": 948.8408013532786,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 8,
+          "min": -3394.1619873046875,
+          "max": 514.64990234375,
+          "mean": -1743.338397570889,
+          "std": 745.7739622920225,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 9,
+          "min": -2886.7109375,
+          "max": 438.9033203125,
+          "mean": -1264.0339896202997,
+          "std": 540.799540712489,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 10,
+          "min": -5435.436706542969,
+          "max": 535.5439453125,
+          "mean": -3417.751613874232,
+          "std": 1682.527335521542,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 11,
+          "min": -1805.7783203125,
+          "max": 391.58984375,
+          "mean": -511.53778174008244,
+          "std": 375.4991986003364,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 12,
+          "min": -1647.267578125,
+          "max": 885.12109375,
+          "mean": -106.10851819605675,
+          "std": 465.7702381305152,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 13,
+          "min": -4953.207214355469,
+          "max": 351.24853515625,
+          "mean": -2966.2765530676456,
+          "std": 1172.9843884553973,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 14,
+          "min": -5216.015625,
+          "max": 303.48828125,
+          "mean": -3069.0173564830757,
+          "std": 1350.7070369856747,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 15,
+          "min": -4307.349609375,
+          "max": 215.75390625,
+          "mean": -2454.5670219538592,
+          "std": 1188.4656322553542,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 16,
+          "min": -2757.6962890625,
+          "max": 535.015625,
+          "mean": -1203.4824061234665,
+          "std": 718.4353759925895,
+          "nan_count": 0,
+          "inf_count": 0
+        }
+      ],
+      "trial_info": {
+        "unique_values": [
+          1,
+          2,
+          3,
+          30
+        ],
+        "total_transitions": 864,
+        "segments_per_value": {
+          "1": 288,
+          "2": 288,
+          "3": 288,
+          "30": 1
+        },
+        "signal_length": 299822
+      }
+    },
+    "S5": {
+      "subject_id": "S5",
+      "exists": true,
+      "files": {
+        "EOG.mat": {
+          "keys": [
+            "EOG"
+          ],
+          "variables": {
+            "EOG": {
+              "shape": [
+                16,
+                299822
+              ],
+              "dtype": "float64",
+              "min": -1540.05810546875,
+              "max": 4331.14794921875,
+              "mean": 388.97844127098745,
+              "std": 1114.5731985417522,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 4797152,
+              "unique_count": 4290783
+            }
+          },
+          "file_size_bytes": 17247924
+        },
+        "ControlSignal.mat": {
+          "keys": [
+            "ControlSignal"
+          ],
+          "variables": {
+            "ControlSignal": {
+              "shape": [
+                1,
+                299822
+              ],
+              "dtype": "uint8",
+              "min": 1.0,
+              "max": 30.0,
+              "mean": 2.2501017270247012,
+              "std": 0.83069991170987,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 299822,
+              "unique_values": [
+                1,
+                2,
+                3,
+                30
+              ],
+              "unique_count": 4
+            }
+          },
+          "file_size_bytes": 3794
+        },
+        "Target_GA_stream.mat": {
+          "keys": [
+            "Target_GA_stream"
+          ],
+          "variables": {
+            "Target_GA_stream": {
+              "shape": [
+                2,
+                299822
+              ],
+              "dtype": "float64",
+              "min": -11.999999999999998,
+              "max": 11.999999999999998,
+              "mean": -0.0001910475299349229,
+              "std": 4.258205088529362,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 599644,
+              "unique_values": [
+                -11.999999999999998,
+                -11.822861946285633,
+                -11.295488389157633,
+                -10.430207782400046,
+                -9.248182147108105,
+                -7.780076629823699,
+                -6.0665247248874445,
+                -4.15800957170429,
+                -2.1138310566188294,
+                0.0,
+                2.1138310566188263,
+                2.1138310566188294,
+                4.15800957170429,
+                4.158009571704293,
+                6.0665247248874445,
+                6.066524724887447,
+                7.780076629823699,
+                9.248182147108103,
+                9.248182147108105,
+                10.430207782400046,
+                11.295488389157633,
+                11.822861946285633,
+                11.999999999999998
+              ],
+              "unique_count": 23
+            }
+          },
+          "file_size_bytes": 32025
+        },
+        "PD.mat": {
+          "keys": [
+            "PD"
+          ],
+          "variables": {
+            "PD": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.062,
+              "max": 0.062,
+              "mean": 0.062,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.062
+                ]
+              ],
+              "unique_values": [
+                0.062
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 179
+        },
+        "Dist_screen.mat": {
+          "keys": [
+            "Dist_screen"
+          ],
+          "variables": {
+            "Dist_screen": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.547,
+              "max": 0.547,
+              "mean": 0.547,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.547
+                ]
+              ],
+              "unique_values": [
+                0.547
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 189
+        }
+      },
+      "missing_files": [],
+      "anomalies": [
+        "ControlSignal contains value 30 (not documented as 1,2,3)"
+      ],
+      "validation_passed": true,
+      "eog_channels": 16,
+      "eog_samples": 299822,
+      "eog_duration_sec": 1171.18,
+      "eog_variable_name": "EOG",
+      "control_signal_variable_name": "ControlSignal",
+      "control_signal_unique_values": [
+        1,
+        2,
+        3,
+        30
+      ],
+      "target_ga_shape": [
+        2,
+        299822
+      ],
+      "target_ga_variable_name": "Target_GA_stream",
+      "pd_value": [
+        [
+          0.062
+        ]
+      ],
+      "pd_variable_name": "PD",
+      "dist_screen_value": [
+        [
+          0.547
+        ]
+      ],
+      "dist_screen_variable_name": "Dist_screen",
+      "eog_channel_stats": [
+        {
+          "channel": 1,
+          "min": -1461.05712890625,
+          "max": 881.6712036132812,
+          "mean": -567.0631249293037,
+          "std": 492.934702820958,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 2,
+          "min": -232.1103515625,
+          "max": 2110.9478759765625,
+          "mean": 570.6401678293313,
+          "std": 726.1754097635369,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 3,
+          "min": -1540.05810546875,
+          "max": 576.46923828125,
+          "mean": -573.7118194979281,
+          "std": 513.35859159992,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 4,
+          "min": -1372.97509765625,
+          "max": 1613.00390625,
+          "mean": -303.8208052989044,
+          "std": 801.399150504755,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 5,
+          "min": -127.659423828125,
+          "max": 3824.203125,
+          "mean": 1451.106807824954,
+          "std": 1069.0234814889939,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 6,
+          "min": -322.146240234375,
+          "max": 3354.6961669921875,
+          "mean": 1330.5620515521582,
+          "std": 1076.81815958048,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 7,
+          "min": -452.4757080078125,
+          "max": 2037.1951904296875,
+          "mean": 294.25436639606687,
+          "std": 673.2229581205088,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 8,
+          "min": -254.8125,
+          "max": 2893.8466796875,
+          "mean": 748.4061538435005,
+          "std": 862.6739332907814,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 9,
+          "min": -202.0341796875,
+          "max": 4331.14794921875,
+          "mean": 1685.6733373447087,
+          "std": 1335.6361735956,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 10,
+          "min": -260.493896484375,
+          "max": 3513.517578125,
+          "mean": 1023.8169021236455,
+          "std": 999.5268580123077,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 11,
+          "min": -1129.0924377441406,
+          "max": 937.6932067871094,
+          "mean": -318.7798501923967,
+          "std": 554.8616550281972,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 12,
+          "min": -1190.844970703125,
+          "max": 1560.648193359375,
+          "mean": -257.1595564279597,
+          "std": 671.0278601473805,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 13,
+          "min": -217.7823486328125,
+          "max": 3196.8367919921875,
+          "mean": 832.2545084872103,
+          "std": 965.1654588768196,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 14,
+          "min": -464.827392578125,
+          "max": 2195.1185455322266,
+          "mean": 364.108296464154,
+          "std": 757.5082583730978,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 15,
+          "min": -1491.7724609375,
+          "max": 872.6767578125,
+          "mean": -554.257158869992,
+          "std": 637.2730912128192,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 16,
+          "min": -296.071044921875,
+          "max": 2451.7913208007812,
+          "mean": 497.62478368655474,
+          "std": 799.880863584156,
+          "nan_count": 0,
+          "inf_count": 0
+        }
+      ],
+      "trial_info": {
+        "unique_values": [
+          1,
+          2,
+          3,
+          30
+        ],
+        "total_transitions": 864,
+        "segments_per_value": {
+          "1": 288,
+          "2": 288,
+          "3": 288,
+          "30": 1
+        },
+        "signal_length": 299822
+      }
+    },
+    "S6": {
+      "subject_id": "S6",
+      "exists": true,
+      "files": {
+        "EOG.mat": {
+          "keys": [
+            "EOG"
+          ],
+          "variables": {
+            "EOG": {
+              "shape": [
+                16,
+                299821
+              ],
+              "dtype": "float64",
+              "min": -525.01904296875,
+              "max": 3010.8324432373047,
+              "mean": 919.3728624902275,
+              "std": 682.0445749583353,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 4797136,
+              "unique_count": 4218493
+            }
+          },
+          "file_size_bytes": 18394673
+        },
+        "ControlSignal.mat": {
+          "keys": [
+            "ControlSignal"
+          ],
+          "variables": {
+            "ControlSignal": {
+              "shape": [
+                1,
+                299821
+              ],
+              "dtype": "uint8",
+              "min": 1.0,
+              "max": 30.0,
+              "mean": 2.2501759383098583,
+              "std": 0.8306871062972064,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 299821,
+              "unique_values": [
+                1,
+                2,
+                3,
+                30
+              ],
+              "unique_count": 4
+            }
+          },
+          "file_size_bytes": 3791
+        },
+        "Target_GA_stream.mat": {
+          "keys": [
+            "Target_GA_stream"
+          ],
+          "variables": {
+            "Target_GA_stream": {
+              "shape": [
+                2,
+                299821
+              ],
+              "dtype": "float64",
+              "min": -12.000000000000002,
+              "max": 12.000000000000002,
+              "mean": -0.0001399804715148328,
+              "std": 4.257957773840296,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 599642,
+              "unique_values": [
+                -12.000000000000002,
+                -11.822861946285636,
+                -11.295488389157635,
+                -10.430207782400052,
+                -9.248182147108103,
+                -7.780076629823703,
+                -6.066524724887446,
+                -4.158009571704291,
+                -2.1138310566188285,
+                0.0,
+                2.1138310566188285,
+                2.113831056618832,
+                4.158009571704291,
+                4.1580095717042935,
+                6.066524724887446,
+                7.780076629823703,
+                9.248182147108103,
+                10.430207782400052,
+                11.295488389157635,
+                11.822861946285636,
+                12.000000000000002
+              ],
+              "unique_count": 21
+            }
+          },
+          "file_size_bytes": 32310
+        },
+        "PD.mat": {
+          "keys": [
+            "PD"
+          ],
+          "variables": {
+            "PD": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.064,
+              "max": 0.064,
+              "mean": 0.064,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.064
+                ]
+              ],
+              "unique_values": [
+                0.064
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 180
+        },
+        "Dist_screen.mat": {
+          "keys": [
+            "Dist_screen"
+          ],
+          "variables": {
+            "Dist_screen": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.55,
+              "max": 0.55,
+              "mean": 0.55,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.55
+                ]
+              ],
+              "unique_values": [
+                0.55
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 187
+        }
+      },
+      "missing_files": [],
+      "anomalies": [
+        "ControlSignal contains value 30 (not documented as 1,2,3)"
+      ],
+      "validation_passed": true,
+      "eog_channels": 16,
+      "eog_samples": 299821,
+      "eog_duration_sec": 1171.18,
+      "eog_variable_name": "EOG",
+      "control_signal_variable_name": "ControlSignal",
+      "control_signal_unique_values": [
+        1,
+        2,
+        3,
+        30
+      ],
+      "target_ga_shape": [
+        2,
+        299821
+      ],
+      "target_ga_variable_name": "Target_GA_stream",
+      "pd_value": [
+        [
+          0.064
+        ]
+      ],
+      "pd_variable_name": "PD",
+      "dist_screen_value": [
+        [
+          0.55
+        ]
+      ],
+      "dist_screen_variable_name": "Dist_screen",
+      "eog_channel_stats": [
+        {
+          "channel": 1,
+          "min": -205.83631896972656,
+          "max": 1527.7955932617188,
+          "mean": 539.7872315073129,
+          "std": 273.5238282882568,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 2,
+          "min": -353.4300537109375,
+          "max": 989.5596733093262,
+          "mean": 455.94128295126137,
+          "std": 214.80292540495137,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 3,
+          "min": -226.9720458984375,
+          "max": 1738.6828994750977,
+          "mean": 1004.9296311284365,
+          "std": 372.3694150119791,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 4,
+          "min": -525.01904296875,
+          "max": 968.066650390625,
+          "mean": 144.2544237548228,
+          "std": 397.8182583642785,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 5,
+          "min": -417.3165283203125,
+          "max": 1397.8828125,
+          "mean": 249.44756590955714,
+          "std": 372.05958211043446,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 6,
+          "min": -234.13671875,
+          "max": 2952.775390625,
+          "mean": 2135.486939744816,
+          "std": 708.7693503481008,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 7,
+          "min": -330.20361328125,
+          "max": 1852.1923828125,
+          "mean": 914.8676592243332,
+          "std": 325.158797762278,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 8,
+          "min": -215.76636123657227,
+          "max": 2447.9821166992188,
+          "mean": 1400.6000364167103,
+          "std": 480.4155605440662,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 9,
+          "min": -263.5604248046875,
+          "max": 1722.693603515625,
+          "mean": 824.1513156426662,
+          "std": 272.94177099623727,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 10,
+          "min": -199.986572265625,
+          "max": 1974.06103515625,
+          "mean": 966.151086492675,
+          "std": 386.17670576671225,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 11,
+          "min": -289.89208984375,
+          "max": 1505.3486328125,
+          "mean": 882.8621972226632,
+          "std": 311.107198163084,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 12,
+          "min": -269.2178955078125,
+          "max": 1018.16455078125,
+          "mean": 562.4867371548618,
+          "std": 203.38837668500074,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 13,
+          "min": -238.038330078125,
+          "max": 1965.41357421875,
+          "mean": 1109.9724219321304,
+          "std": 387.5882155099233,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 14,
+          "min": -247.84375,
+          "max": 1277.97265625,
+          "mean": 691.0423894639297,
+          "std": 241.83765471727605,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 15,
+          "min": -261.0341796875,
+          "max": 3010.8324432373047,
+          "mean": 2117.7465241192126,
+          "std": 754.7446668101126,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 16,
+          "min": -344.75091552734375,
+          "max": 1317.8264122009277,
+          "mean": 710.2383571782476,
+          "std": 270.3106212808359,
+          "nan_count": 0,
+          "inf_count": 0
+        }
+      ],
+      "trial_info": {
+        "unique_values": [
+          1,
+          2,
+          3,
+          30
+        ],
+        "total_transitions": 864,
+        "segments_per_value": {
+          "1": 288,
+          "2": 288,
+          "3": 288,
+          "30": 1
+        },
+        "signal_length": 299821
+      }
+    },
+    "S7": {
+      "subject_id": "S7",
+      "exists": true,
+      "files": {
+        "EOG.mat": {
+          "keys": [
+            "EOG"
+          ],
+          "variables": {
+            "EOG": {
+              "shape": [
+                16,
+                299821
+              ],
+              "dtype": "float64",
+              "min": -2319.626953125,
+              "max": 1845.87109375,
+              "mean": -345.9770463106056,
+              "std": 574.9202456901013,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 4797136,
+              "unique_count": 1426358
+            }
+          },
+          "file_size_bytes": 15997675
+        },
+        "ControlSignal.mat": {
+          "keys": [
+            "ControlSignal"
+          ],
+          "variables": {
+            "ControlSignal": {
+              "shape": [
+                1,
+                299821
+              ],
+              "dtype": "uint8",
+              "min": 1.0,
+              "max": 30.0,
+              "mean": 2.2499924955223283,
+              "std": 0.8307322939690708,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 299821,
+              "unique_values": [
+                1,
+                2,
+                3,
+                30
+              ],
+              "unique_count": 4
+            }
+          },
+          "file_size_bytes": 3791
+        },
+        "Target_GA_stream.mat": {
+          "keys": [
+            "Target_GA_stream"
+          ],
+          "variables": {
+            "Target_GA_stream": {
+              "shape": [
+                2,
+                299821
+              ],
+              "dtype": "float64",
+              "min": -12.0,
+              "max": 12.0,
+              "mean": -0.00010521991611475537,
+              "std": 4.258666468443313,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 599642,
+              "unique_values": [
+                -12.0,
+                -11.822861946285634,
+                -11.295488389157633,
+                -10.43020778240005,
+                -9.248182147108107,
+                -7.780076629823699,
+                -6.066524724887445,
+                -4.158009571704293,
+                -2.113831056618829,
+                0.0,
+                2.113831056618829,
+                4.158009571704288,
+                4.158009571704293,
+                6.066524724887445,
+                6.066524724887449,
+                7.780076629823699,
+                9.248182147108107,
+                10.43020778240005,
+                11.295488389157633,
+                11.822861946285634,
+                12.0
+              ],
+              "unique_count": 21
+            }
+          },
+          "file_size_bytes": 31904
+        },
+        "PD.mat": {
+          "keys": [
+            "PD"
+          ],
+          "variables": {
+            "PD": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.065,
+              "max": 0.065,
+              "mean": 0.065,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.065
+                ]
+              ],
+              "unique_values": [
+                0.065
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 179
+        },
+        "Dist_screen.mat": {
+          "keys": [
+            "Dist_screen"
+          ],
+          "variables": {
+            "Dist_screen": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.545,
+              "max": 0.545,
+              "mean": 0.545,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.545
+                ]
+              ],
+              "unique_values": [
+                0.545
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 189
+        }
+      },
+      "missing_files": [],
+      "anomalies": [
+        "ControlSignal contains value 30 (not documented as 1,2,3)"
+      ],
+      "validation_passed": true,
+      "eog_channels": 16,
+      "eog_samples": 299821,
+      "eog_duration_sec": 1171.18,
+      "eog_variable_name": "EOG",
+      "control_signal_variable_name": "ControlSignal",
+      "control_signal_unique_values": [
+        1,
+        2,
+        3,
+        30
+      ],
+      "target_ga_shape": [
+        2,
+        299821
+      ],
+      "target_ga_variable_name": "Target_GA_stream",
+      "pd_value": [
+        [
+          0.065
+        ]
+      ],
+      "pd_variable_name": "PD",
+      "dist_screen_value": [
+        [
+          0.545
+        ]
+      ],
+      "dist_screen_variable_name": "Dist_screen",
+      "eog_channel_stats": [
+        {
+          "channel": 1,
+          "min": -1752.388671875,
+          "max": 1170.33984375,
+          "mean": -181.81258137667976,
+          "std": 523.5594119150792,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 2,
+          "min": -2296.1328125,
+          "max": 222.4453125,
+          "mean": -565.0796958005255,
+          "std": 520.8758023353292,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 3,
+          "min": -1759.7666015625,
+          "max": 197.75,
+          "mean": -660.1051345662287,
+          "std": 322.53123776597795,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 4,
+          "min": -2097.6201171875,
+          "max": 127.017578125,
+          "mean": -813.6953412769359,
+          "std": 429.58818118755653,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 5,
+          "min": -763.515625,
+          "max": 1845.87109375,
+          "mean": 385.4586690305945,
+          "std": 344.3056256148534,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 6,
+          "min": -2051.634765625,
+          "max": 345.142578125,
+          "mean": -448.06484746185015,
+          "std": 479.1960057568935,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 7,
+          "min": -2120.77734375,
+          "max": 747.30859375,
+          "mean": -585.0576545112021,
+          "std": 522.8004006409572,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 8,
+          "min": -682.7890625,
+          "max": 1412.103515625,
+          "mean": 320.7231246316813,
+          "std": 464.95540227288205,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 9,
+          "min": -1869.708984375,
+          "max": 659.224609375,
+          "mean": -537.1930489163221,
+          "std": 392.1115061579593,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 10,
+          "min": -1127.8828125,
+          "max": 1447.076171875,
+          "mean": 87.60556002190683,
+          "std": 399.4506992125423,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 11,
+          "min": -1677.94140625,
+          "max": 359.330078125,
+          "mean": -347.75441596168,
+          "std": 431.6933221983659,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 12,
+          "min": -1856.810546875,
+          "max": 139.662109375,
+          "mean": -550.4273146584233,
+          "std": 344.6966643326866,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 13,
+          "min": -1521.5732421875,
+          "max": 1020.876953125,
+          "mean": -267.0806287562777,
+          "std": 472.2538744203333,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 14,
+          "min": -2319.626953125,
+          "max": 337.091796875,
+          "mean": -795.9478139990715,
+          "std": 526.5883338028731,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 15,
+          "min": -1885.921875,
+          "max": 305.080078125,
+          "mean": -572.1985661535862,
+          "std": 374.8211520135482,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 16,
+          "min": -1700.568359375,
+          "max": 868.080078125,
+          "mean": -5.003051215089587,
+          "std": 524.9745043223311,
+          "nan_count": 0,
+          "inf_count": 0
+        }
+      ],
+      "trial_info": {
+        "unique_values": [
+          1,
+          2,
+          3,
+          30
+        ],
+        "total_transitions": 864,
+        "segments_per_value": {
+          "1": 288,
+          "2": 288,
+          "3": 288,
+          "30": 1
+        },
+        "signal_length": 299821
+      }
+    },
+    "S8": {
+      "subject_id": "S8",
+      "exists": true,
+      "files": {
+        "EOG.mat": {
+          "keys": [
+            "EOG"
+          ],
+          "variables": {
+            "EOG": {
+              "shape": [
+                16,
+                299825
+              ],
+              "dtype": "float64",
+              "min": -566.3896484375,
+              "max": 3220.1805419921875,
+              "mean": 633.9394696234393,
+              "std": 667.98293095982,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 4797200,
+              "unique_count": 3770625
+            }
+          },
+          "file_size_bytes": 17909805
+        },
+        "ControlSignal.mat": {
+          "keys": [
+            "ControlSignal"
+          ],
+          "variables": {
+            "ControlSignal": {
+              "shape": [
+                1,
+                299825
+              ],
+              "dtype": "uint8",
+              "min": 1.0,
+              "max": 30.0,
+              "mean": 2.2500325189693986,
+              "std": 0.8307764347137827,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 299825,
+              "unique_values": [
+                1,
+                2,
+                3,
+                30
+              ],
+              "unique_count": 4
+            }
+          },
+          "file_size_bytes": 3796
+        },
+        "Target_GA_stream.mat": {
+          "keys": [
+            "Target_GA_stream"
+          ],
+          "variables": {
+            "Target_GA_stream": {
+              "shape": [
+                2,
+                299825
+              ],
+              "dtype": "float64",
+              "min": -11.999999999999998,
+              "max": 11.999999999999998,
+              "mean": 0.0004422894732077004,
+              "std": 4.2588910389024575,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 599650,
+              "unique_values": [
+                -11.999999999999998,
+                -11.822861946285634,
+                -11.295488389157637,
+                -10.43020778240005,
+                -9.248182147108107,
+                -7.780076629823701,
+                -6.0665247248874445,
+                -4.158009571704293,
+                -2.1138310566188294,
+                0.0,
+                2.1138310566188294,
+                4.158009571704293,
+                6.0665247248874445,
+                6.066524724887448,
+                7.780076629823701,
+                9.248182147108107,
+                10.43020778240005,
+                11.295488389157637,
+                11.822861946285634,
+                11.999999999999998
+              ],
+              "unique_count": 20
+            }
+          },
+          "file_size_bytes": 31928
+        },
+        "PD.mat": {
+          "keys": [
+            "PD"
+          ],
+          "variables": {
+            "PD": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.06,
+              "max": 0.06,
+              "mean": 0.06,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.06
+                ]
+              ],
+              "unique_values": [
+                0.06
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 179
+        },
+        "Dist_screen.mat": {
+          "keys": [
+            "Dist_screen"
+          ],
+          "variables": {
+            "Dist_screen": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.535,
+              "max": 0.535,
+              "mean": 0.535,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.535
+                ]
+              ],
+              "unique_values": [
+                0.535
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 189
+        }
+      },
+      "missing_files": [],
+      "anomalies": [
+        "ControlSignal contains value 30 (not documented as 1,2,3)"
+      ],
+      "validation_passed": true,
+      "eog_channels": 16,
+      "eog_samples": 299825,
+      "eog_duration_sec": 1171.19,
+      "eog_variable_name": "EOG",
+      "control_signal_variable_name": "ControlSignal",
+      "control_signal_unique_values": [
+        1,
+        2,
+        3,
+        30
+      ],
+      "target_ga_shape": [
+        2,
+        299825
+      ],
+      "target_ga_variable_name": "Target_GA_stream",
+      "pd_value": [
+        [
+          0.06
+        ]
+      ],
+      "pd_variable_name": "PD",
+      "dist_screen_value": [
+        [
+          0.535
+        ]
+      ],
+      "dist_screen_variable_name": "Dist_screen",
+      "eog_channel_stats": [
+        {
+          "channel": 1,
+          "min": -566.3896484375,
+          "max": 1080.36962890625,
+          "mean": 151.98355867908623,
+          "std": 243.75424921659618,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 2,
+          "min": -191.1279296875,
+          "max": 970.4228515625,
+          "mean": 418.82032574828804,
+          "std": 228.3973749046152,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 3,
+          "min": -113.68359375,
+          "max": 2383.398681640625,
+          "mean": 1178.2703399680088,
+          "std": 567.5309116019037,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 4,
+          "min": -347.89599609375,
+          "max": 592.21630859375,
+          "mean": 102.44916585618955,
+          "std": 151.78632487140058,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 5,
+          "min": -551.44482421875,
+          "max": 880.623291015625,
+          "mean": -92.56964639447881,
+          "std": 182.80770539546666,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 6,
+          "min": -133.791259765625,
+          "max": 1925.771240234375,
+          "mean": 1074.8515943374196,
+          "std": 475.4213374318421,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 7,
+          "min": -495.6357421875,
+          "max": 944.27099609375,
+          "mean": -50.485050418408136,
+          "std": 207.12239724093914,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 8,
+          "min": -329.63818359375,
+          "max": 1653.76806640625,
+          "mean": 319.35781255577797,
+          "std": 318.1972295641608,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 9,
+          "min": -113.421875,
+          "max": 2017.8421630859375,
+          "mean": 776.9551517264873,
+          "std": 393.47473205165323,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 10,
+          "min": -70.35791015625,
+          "max": 2559.6923828125,
+          "mean": 1275.924731462107,
+          "std": 524.5678558314818,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 11,
+          "min": -541.8303985595703,
+          "max": 957.2109375,
+          "mean": 319.7818638296342,
+          "std": 276.8305110826763,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 12,
+          "min": -43.58990478515625,
+          "max": 1493.7977600097656,
+          "mean": 776.3494258235619,
+          "std": 338.78712007471734,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 13,
+          "min": -139.76220703125,
+          "max": 1584.26806640625,
+          "mean": 666.4753002198873,
+          "std": 300.5168805299858,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 14,
+          "min": -51.7646484375,
+          "max": 1963.7236328125,
+          "mean": 943.4582088495714,
+          "std": 468.840147578559,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 15,
+          "min": -169.6529541015625,
+          "max": 3220.1805419921875,
+          "mean": 1890.4356501178015,
+          "std": 911.8409112929361,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 16,
+          "min": -453.198486328125,
+          "max": 938.787841796875,
+          "mean": 390.97308161409586,
+          "std": 287.6277889394513,
+          "nan_count": 0,
+          "inf_count": 0
+        }
+      ],
+      "trial_info": {
+        "unique_values": [
+          1,
+          2,
+          3,
+          30
+        ],
+        "total_transitions": 864,
+        "segments_per_value": {
+          "1": 288,
+          "2": 288,
+          "3": 288,
+          "30": 1
+        },
+        "signal_length": 299825
+      }
+    },
+    "S9": {
+      "subject_id": "S9",
+      "exists": true,
+      "files": {
+        "EOG.mat": {
+          "keys": [
+            "EOG"
+          ],
+          "variables": {
+            "EOG": {
+              "shape": [
+                16,
+                299822
+              ],
+              "dtype": "float64",
+              "min": -317.6220703125,
+              "max": 4995.4700927734375,
+              "mean": 1883.8093712101993,
+              "std": 1126.913776709111,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 4797152,
+              "unique_count": 4352840
+            }
+          },
+          "file_size_bytes": 18243208
+        },
+        "ControlSignal.mat": {
+          "keys": [
+            "ControlSignal"
+          ],
+          "variables": {
+            "ControlSignal": {
+              "shape": [
+                1,
+                299822
+              ],
+              "dtype": "uint8",
+              "min": 1.0,
+              "max": 30.0,
+              "mean": 2.2499683145332896,
+              "std": 0.8307280222980314,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 299822,
+              "unique_values": [
+                1,
+                2,
+                3,
+                30
+              ],
+              "unique_count": 4
+            }
+          },
+          "file_size_bytes": 3792
+        },
+        "Target_GA_stream.mat": {
+          "keys": [
+            "Target_GA_stream"
+          ],
+          "variables": {
+            "Target_GA_stream": {
+              "shape": [
+                2,
+                299822
+              ],
+              "dtype": "float64",
+              "min": -12.0,
+              "max": 12.0,
+              "mean": 0.0001769422168868524,
+              "std": 4.2586847629830125,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 599644,
+              "unique_values": [
+                -12.0,
+                -11.822861946285634,
+                -11.295488389157633,
+                -10.43020778240005,
+                -9.248182147108107,
+                -7.780076629823699,
+                -6.066524724887445,
+                -4.158009571704293,
+                -2.113831056618829,
+                0.0,
+                2.113831056618829,
+                4.158009571704288,
+                4.158009571704293,
+                6.066524724887445,
+                6.066524724887449,
+                7.780076629823699,
+                9.248182147108107,
+                10.43020778240005,
+                11.295488389157633,
+                11.822861946285634,
+                12.0
+              ],
+              "unique_count": 21
+            }
+          },
+          "file_size_bytes": 31880
+        },
+        "PD.mat": {
+          "keys": [
+            "PD"
+          ],
+          "variables": {
+            "PD": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.064,
+              "max": 0.064,
+              "mean": 0.064,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.064
+                ]
+              ],
+              "unique_values": [
+                0.064
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 180
+        },
+        "Dist_screen.mat": {
+          "keys": [
+            "Dist_screen"
+          ],
+          "variables": {
+            "Dist_screen": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.545,
+              "max": 0.545,
+              "mean": 0.545,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.545
+                ]
+              ],
+              "unique_values": [
+                0.545
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 189
+        }
+      },
+      "missing_files": [],
+      "anomalies": [
+        "ControlSignal contains value 30 (not documented as 1,2,3)"
+      ],
+      "validation_passed": true,
+      "eog_channels": 16,
+      "eog_samples": 299822,
+      "eog_duration_sec": 1171.18,
+      "eog_variable_name": "EOG",
+      "control_signal_variable_name": "ControlSignal",
+      "control_signal_unique_values": [
+        1,
+        2,
+        3,
+        30
+      ],
+      "target_ga_shape": [
+        2,
+        299822
+      ],
+      "target_ga_variable_name": "Target_GA_stream",
+      "pd_value": [
+        [
+          0.064
+        ]
+      ],
+      "pd_variable_name": "PD",
+      "dist_screen_value": [
+        [
+          0.545
+        ]
+      ],
+      "dist_screen_variable_name": "Dist_screen",
+      "eog_channel_stats": [
+        {
+          "channel": 1,
+          "min": -200.826171875,
+          "max": 3674.31689453125,
+          "mean": 2049.130753973462,
+          "std": 941.0985396150816,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 2,
+          "min": -222.9981689453125,
+          "max": 3045.9008197784424,
+          "mean": 1993.5276012797794,
+          "std": 855.6049152798851,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 3,
+          "min": -213.921875,
+          "max": 2891.3310546875,
+          "mean": 1715.2649068036878,
+          "std": 805.811121741285,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 4,
+          "min": -317.6220703125,
+          "max": 1011.0673828125,
+          "mean": 389.06930046072125,
+          "std": 245.10203479859686,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 5,
+          "min": -257.7122802734375,
+          "max": 3076.90087890625,
+          "mean": 1558.3011688501747,
+          "std": 629.3642171440949,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 6,
+          "min": -233.306396484375,
+          "max": 2059.9388427734375,
+          "mean": 1244.1516352212893,
+          "std": 517.7980831057118,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 7,
+          "min": -274.38427734375,
+          "max": 3021.5182495117188,
+          "mean": 1740.305273790566,
+          "std": 700.4699640848614,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 8,
+          "min": -214.9755859375,
+          "max": 3580.242889404297,
+          "mean": 2068.295407014224,
+          "std": 952.3358704610164,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 9,
+          "min": -255.4306640625,
+          "max": 1737.087890625,
+          "mean": 668.5465403352864,
+          "std": 367.1037669068071,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 10,
+          "min": -149.33251953125,
+          "max": 4995.4700927734375,
+          "mean": 3157.180659240706,
+          "std": 1160.789215130301,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 11,
+          "min": -126.18133544921875,
+          "max": 3434.289794921875,
+          "mean": 2171.8598107120138,
+          "std": 853.1169713886505,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 12,
+          "min": -235.1630859375,
+          "max": 2538.9689865112305,
+          "mean": 1403.1065366379526,
+          "std": 705.777637323788,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 13,
+          "min": -158.4365234375,
+          "max": 3986.0630111694336,
+          "mean": 2732.9981705260248,
+          "std": 1017.6798415486317,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 14,
+          "min": -87.1597900390625,
+          "max": 4462.268463134766,
+          "mean": 2928.7740888115068,
+          "std": 1155.235008030066,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 15,
+          "min": -266.33294677734375,
+          "max": 3073.9300537109375,
+          "mean": 1781.1080444202803,
+          "std": 923.6591975582876,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 16,
+          "min": -238.42236328125,
+          "max": 4007.6668701171875,
+          "mean": 2539.330041285515,
+          "std": 1208.721285990049,
+          "nan_count": 0,
+          "inf_count": 0
+        }
+      ],
+      "trial_info": {
+        "unique_values": [
+          1,
+          2,
+          3,
+          30
+        ],
+        "total_transitions": 864,
+        "segments_per_value": {
+          "1": 288,
+          "2": 288,
+          "3": 288,
+          "30": 1
+        },
+        "signal_length": 299822
+      }
+    },
+    "S10": {
+      "subject_id": "S10",
+      "exists": true,
+      "files": {
+        "EOG.mat": {
+          "keys": [
+            "EOG"
+          ],
+          "variables": {
+            "EOG": {
+              "shape": [
+                16,
+                299822
+              ],
+              "dtype": "float64",
+              "min": -4505.5869140625,
+              "max": 1767.9564208984375,
+              "mean": -850.9625037052692,
+              "std": 911.9752352873043,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 4797152,
+              "unique_count": 3004063
+            }
+          },
+          "file_size_bytes": 16685933
+        },
+        "ControlSignal.mat": {
+          "keys": [
+            "ControlSignal"
+          ],
+          "variables": {
+            "ControlSignal": {
+              "shape": [
+                1,
+                299822
+              ],
+              "dtype": "uint8",
+              "min": 1.0,
+              "max": 30.0,
+              "mean": 2.2501484213966956,
+              "std": 0.8307260021775961,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 299822,
+              "unique_values": [
+                1,
+                2,
+                3,
+                30
+              ],
+              "unique_count": 4
+            }
+          },
+          "file_size_bytes": 3798
+        },
+        "Target_GA_stream.mat": {
+          "keys": [
+            "Target_GA_stream"
+          ],
+          "variables": {
+            "Target_GA_stream": {
+              "shape": [
+                2,
+                299822
+              ],
+              "dtype": "float64",
+              "min": -12.000000000000002,
+              "max": 12.000000000000002,
+              "mean": 0.00013354713302265704,
+              "std": 4.258288539874124,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 599644,
+              "unique_values": [
+                -12.000000000000002,
+                -11.822861946285636,
+                -11.295488389157635,
+                -10.430207782400052,
+                -9.248182147108103,
+                -7.780076629823703,
+                -6.066524724887446,
+                -4.158009571704291,
+                -2.1138310566188285,
+                0.0,
+                2.1138310566188285,
+                2.113831056618832,
+                4.158009571704291,
+                4.1580095717042935,
+                6.066524724887446,
+                7.780076629823703,
+                9.248182147108103,
+                10.430207782400052,
+                11.295488389157635,
+                11.822861946285636,
+                12.000000000000002
+              ],
+              "unique_count": 21
+            }
+          },
+          "file_size_bytes": 32185
+        },
+        "PD.mat": {
+          "keys": [
+            "PD"
+          ],
+          "variables": {
+            "PD": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.063,
+              "max": 0.063,
+              "mean": 0.063,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.063
+                ]
+              ],
+              "unique_values": [
+                0.063
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 180
+        },
+        "Dist_screen.mat": {
+          "keys": [
+            "Dist_screen"
+          ],
+          "variables": {
+            "Dist_screen": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.55,
+              "max": 0.55,
+              "mean": 0.55,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.55
+                ]
+              ],
+              "unique_values": [
+                0.55
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 187
+        }
+      },
+      "missing_files": [],
+      "anomalies": [
+        "ControlSignal contains value 30 (not documented as 1,2,3)"
+      ],
+      "validation_passed": true,
+      "eog_channels": 16,
+      "eog_samples": 299822,
+      "eog_duration_sec": 1171.18,
+      "eog_variable_name": "EOG",
+      "control_signal_variable_name": "ControlSignal",
+      "control_signal_unique_values": [
+        1,
+        2,
+        3,
+        30
+      ],
+      "target_ga_shape": [
+        2,
+        299822
+      ],
+      "target_ga_variable_name": "Target_GA_stream",
+      "pd_value": [
+        [
+          0.063
+        ]
+      ],
+      "pd_variable_name": "PD",
+      "dist_screen_value": [
+        [
+          0.55
+        ]
+      ],
+      "dist_screen_variable_name": "Dist_screen",
+      "eog_channel_stats": [
+        {
+          "channel": 1,
+          "min": -150.893798828125,
+          "max": 1767.9564208984375,
+          "mean": 580.7338365130701,
+          "std": 348.1830568141121,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 2,
+          "min": -1897.412109375,
+          "max": 92.2734375,
+          "mean": -968.4849799764658,
+          "std": 460.89928725263985,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 3,
+          "min": -2537.36474609375,
+          "max": 146.66162109375,
+          "mean": -1532.2343595644093,
+          "std": 642.986708657593,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 4,
+          "min": -3379.892578125,
+          "max": 115.4228515625,
+          "mean": -1795.9552420047874,
+          "std": 882.8206245968898,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 5,
+          "min": -1171.4453125,
+          "max": 716.88134765625,
+          "mean": -516.0320144200273,
+          "std": 329.2338233355254,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 6,
+          "min": -2758.90234375,
+          "max": 64.6552734375,
+          "mean": -1353.3335413256657,
+          "std": 704.1709933447886,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 7,
+          "min": -926.486328125,
+          "max": 703.91015625,
+          "mean": -422.92671506741135,
+          "std": 287.0694153553754,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 8,
+          "min": -400.70654296875,
+          "max": 891.49365234375,
+          "mean": 24.665132399129735,
+          "std": 172.57803256892683,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 9,
+          "min": -553.49609375,
+          "max": 701.08984375,
+          "mean": -194.5505539194792,
+          "std": 165.91223387648202,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 10,
+          "min": -1486.2890625,
+          "max": 599.85546875,
+          "mean": -859.3512524657859,
+          "std": 405.34451681787414,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 11,
+          "min": -1711.689453125,
+          "max": 76.2978515625,
+          "mean": -867.4755756758776,
+          "std": 501.90625280336883,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 12,
+          "min": -1996.873046875,
+          "max": 145.82421875,
+          "mean": -1005.2163447773283,
+          "std": 508.11774003064534,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 13,
+          "min": -1090.7138671875,
+          "max": 513.26953125,
+          "mean": -605.6531037321728,
+          "std": 245.22234166367096,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 14,
+          "min": -919.7470703125,
+          "max": 438.8359375,
+          "mean": -458.8447741265286,
+          "std": 238.1526541181196,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 15,
+          "min": -2298.2919921875,
+          "max": 81.4033203125,
+          "mean": -1077.6203881848803,
+          "std": 565.9273221417695,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 16,
+          "min": -4505.5869140625,
+          "max": 114.51513671875,
+          "mean": -2563.120182955689,
+          "std": 1240.249201577004,
+          "nan_count": 0,
+          "inf_count": 0
+        }
+      ],
+      "trial_info": {
+        "unique_values": [
+          1,
+          2,
+          3,
+          30
+        ],
+        "total_transitions": 864,
+        "segments_per_value": {
+          "1": 288,
+          "2": 288,
+          "3": 288,
+          "30": 1
+        },
+        "signal_length": 299822
+      }
+    },
+    "S11": {
+      "subject_id": "S11",
+      "exists": true,
+      "files": {
+        "EOG.mat": {
+          "keys": [
+            "EOG"
+          ],
+          "variables": {
+            "EOG": {
+              "shape": [
+                16,
+                299819
+              ],
+              "dtype": "float64",
+              "min": -1824.7656555175781,
+              "max": 2303.2509765625,
+              "mean": 147.83676898242697,
+              "std": 677.2379820548816,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 4797104,
+              "unique_count": 4157758
+            }
+          },
+          "file_size_bytes": 18365184
+        },
+        "ControlSignal.mat": {
+          "keys": [
+            "ControlSignal"
+          ],
+          "variables": {
+            "ControlSignal": {
+              "shape": [
+                1,
+                299819
+              ],
+              "dtype": "uint8",
+              "min": 1.0,
+              "max": 30.0,
+              "mean": 2.250084217477878,
+              "std": 0.8306856251746375,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 299819,
+              "unique_values": [
+                1,
+                2,
+                3,
+                30
+              ],
+              "unique_count": 4
+            }
+          },
+          "file_size_bytes": 3785
+        },
+        "Target_GA_stream.mat": {
+          "keys": [
+            "Target_GA_stream"
+          ],
+          "variables": {
+            "Target_GA_stream": {
+              "shape": [
+                2,
+                299819
+              ],
+              "dtype": "float64",
+              "min": -12.0,
+              "max": 12.0,
+              "mean": -9.576301205436463e-05,
+              "std": 4.258136654609507,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 599638,
+              "unique_values": [
+                -12.0,
+                -11.822861946285634,
+                -11.295488389157633,
+                -10.43020778240005,
+                -9.248182147108107,
+                -7.780076629823699,
+                -6.066524724887445,
+                -4.158009571704293,
+                -2.113831056618829,
+                0.0,
+                2.113831056618829,
+                4.158009571704288,
+                4.158009571704293,
+                6.066524724887445,
+                6.066524724887449,
+                7.780076629823699,
+                9.248182147108107,
+                10.43020778240005,
+                11.295488389157633,
+                11.822861946285634,
+                12.0
+              ],
+              "unique_count": 21
+            }
+          },
+          "file_size_bytes": 31895
+        },
+        "PD.mat": {
+          "keys": [
+            "PD"
+          ],
+          "variables": {
+            "PD": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.061,
+              "max": 0.061,
+              "mean": 0.061,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.061
+                ]
+              ],
+              "unique_values": [
+                0.061
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 179
+        },
+        "Dist_screen.mat": {
+          "keys": [
+            "Dist_screen"
+          ],
+          "variables": {
+            "Dist_screen": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.545,
+              "max": 0.545,
+              "mean": 0.545,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.545
+                ]
+              ],
+              "unique_values": [
+                0.545
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 189
+        }
+      },
+      "missing_files": [],
+      "anomalies": [
+        "ControlSignal contains value 30 (not documented as 1,2,3)"
+      ],
+      "validation_passed": true,
+      "eog_channels": 16,
+      "eog_samples": 299819,
+      "eog_duration_sec": 1171.17,
+      "eog_variable_name": "EOG",
+      "control_signal_variable_name": "ControlSignal",
+      "control_signal_unique_values": [
+        1,
+        2,
+        3,
+        30
+      ],
+      "target_ga_shape": [
+        2,
+        299819
+      ],
+      "target_ga_variable_name": "Target_GA_stream",
+      "pd_value": [
+        [
+          0.061
+        ]
+      ],
+      "pd_variable_name": "PD",
+      "dist_screen_value": [
+        [
+          0.545
+        ]
+      ],
+      "dist_screen_variable_name": "Dist_screen",
+      "eog_channel_stats": [
+        {
+          "channel": 1,
+          "min": -174.970703125,
+          "max": 1543.44873046875,
+          "mean": 411.92394640884834,
+          "std": 282.4273424429893,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 2,
+          "min": -1533.5257263183594,
+          "max": 134.9263916015625,
+          "mean": -746.1728085721973,
+          "std": 421.9208459282139,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 3,
+          "min": -177.98681640625,
+          "max": 1545.07373046875,
+          "mean": 609.2803014899067,
+          "std": 359.29411539995397,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 4,
+          "min": -487.5263671875,
+          "max": 906.33642578125,
+          "mean": 97.52463048539285,
+          "std": 277.60314368749937,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 5,
+          "min": -150.822509765625,
+          "max": 2076.298828125,
+          "mean": 1011.9433678965802,
+          "std": 441.6277807709682,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 6,
+          "min": -1824.7656555175781,
+          "max": 29.003662109375,
+          "mean": -924.237726726951,
+          "std": 517.306665049981,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 7,
+          "min": -154.99560546875,
+          "max": 2303.2509765625,
+          "mean": 1081.7491618527163,
+          "std": 458.44893767524985,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 8,
+          "min": -125.34475517272949,
+          "max": 1810.9674377441406,
+          "mean": 929.4446908746221,
+          "std": 370.4132014827096,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 9,
+          "min": -263.481201171875,
+          "max": 1149.7701416015625,
+          "mean": 188.1466372646881,
+          "std": 270.91510762735015,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 10,
+          "min": -320.803955078125,
+          "max": 1092.3727054595947,
+          "mean": 211.94901885265196,
+          "std": 278.9997127380224,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 11,
+          "min": -809.905517578125,
+          "max": 809.96923828125,
+          "mean": -96.92389810455823,
+          "std": 340.78781360493457,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 12,
+          "min": -1477.908935546875,
+          "max": 422.916015625,
+          "mean": -615.6978651541964,
+          "std": 431.9713434558461,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 13,
+          "min": -304.5146484375,
+          "max": 898.82470703125,
+          "mean": 217.9996793316766,
+          "std": 244.53331082354813,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 14,
+          "min": -338.767578125,
+          "max": 1012.6767578125,
+          "mean": 302.5666130072305,
+          "std": 292.679759270957,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 15,
+          "min": -716.326904296875,
+          "max": 638.143310546875,
+          "mean": -53.53131391877266,
+          "std": 238.53003777147472,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 16,
+          "min": -898.8688049316406,
+          "max": 355.3111572265625,
+          "mean": -260.57613126880756,
+          "std": 244.3508986328298,
+          "nan_count": 0,
+          "inf_count": 0
+        }
+      ],
+      "trial_info": {
+        "unique_values": [
+          1,
+          2,
+          3,
+          30
+        ],
+        "total_transitions": 864,
+        "segments_per_value": {
+          "1": 288,
+          "2": 288,
+          "3": 288,
+          "30": 1
+        },
+        "signal_length": 299819
+      }
+    },
+    "S12": {
+      "subject_id": "S12",
+      "exists": true,
+      "files": {
+        "EOG.mat": {
+          "keys": [
+            "EOG"
+          ],
+          "variables": {
+            "EOG": {
+              "shape": [
+                16,
+                299822
+              ],
+              "dtype": "float64",
+              "min": -874.507568359375,
+              "max": 3150.47998046875,
+              "mean": 835.8308680079552,
+              "std": 730.5274752322173,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 4797152,
+              "unique_count": 3647142
+            }
+          },
+          "file_size_bytes": 17390653
+        },
+        "ControlSignal.mat": {
+          "keys": [
+            "ControlSignal"
+          ],
+          "variables": {
+            "ControlSignal": {
+              "shape": [
+                1,
+                299822
+              ],
+              "dtype": "uint8",
+              "min": 1.0,
+              "max": 30.0,
+              "mean": 2.2500950564001307,
+              "std": 0.8307380547205446,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 299822,
+              "unique_values": [
+                1,
+                2,
+                3,
+                30
+              ],
+              "unique_count": 4
+            }
+          },
+          "file_size_bytes": 3795
+        },
+        "Target_GA_stream.mat": {
+          "keys": [
+            "Target_GA_stream"
+          ],
+          "variables": {
+            "Target_GA_stream": {
+              "shape": [
+                2,
+                299822
+              ],
+              "dtype": "float64",
+              "min": -12.000000000000002,
+              "max": 12.000000000000002,
+              "mean": 0.00016909842824791837,
+              "std": 4.2584877045097205,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 599644,
+              "unique_values": [
+                -12.000000000000002,
+                -11.822861946285636,
+                -11.295488389157635,
+                -10.430207782400052,
+                -9.248182147108103,
+                -7.780076629823703,
+                -6.066524724887446,
+                -4.158009571704291,
+                -2.1138310566188285,
+                0.0,
+                2.1138310566188285,
+                2.113831056618832,
+                4.158009571704291,
+                4.1580095717042935,
+                6.066524724887446,
+                7.780076629823703,
+                9.248182147108103,
+                10.430207782400052,
+                11.295488389157635,
+                11.822861946285636,
+                12.000000000000002
+              ],
+              "unique_count": 21
+            }
+          },
+          "file_size_bytes": 32188
+        },
+        "PD.mat": {
+          "keys": [
+            "PD"
+          ],
+          "variables": {
+            "PD": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.06,
+              "max": 0.06,
+              "mean": 0.06,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.06
+                ]
+              ],
+              "unique_values": [
+                0.06
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 179
+        },
+        "Dist_screen.mat": {
+          "keys": [
+            "Dist_screen"
+          ],
+          "variables": {
+            "Dist_screen": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.55,
+              "max": 0.55,
+              "mean": 0.55,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.55
+                ]
+              ],
+              "unique_values": [
+                0.55
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 187
+        }
+      },
+      "missing_files": [],
+      "anomalies": [
+        "ControlSignal contains value 30 (not documented as 1,2,3)"
+      ],
+      "validation_passed": true,
+      "eog_channels": 16,
+      "eog_samples": 299822,
+      "eog_duration_sec": 1171.18,
+      "eog_variable_name": "EOG",
+      "control_signal_variable_name": "ControlSignal",
+      "control_signal_unique_values": [
+        1,
+        2,
+        3,
+        30
+      ],
+      "target_ga_shape": [
+        2,
+        299822
+      ],
+      "target_ga_variable_name": "Target_GA_stream",
+      "pd_value": [
+        [
+          0.06
+        ]
+      ],
+      "pd_variable_name": "PD",
+      "dist_screen_value": [
+        [
+          0.55
+        ]
+      ],
+      "dist_screen_variable_name": "Dist_screen",
+      "eog_channel_stats": [
+        {
+          "channel": 1,
+          "min": -111.5390625,
+          "max": 1517.87890625,
+          "mean": 527.1447891373882,
+          "std": 285.6074970234519,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 2,
+          "min": -160.7431640625,
+          "max": 2735.0745391845703,
+          "mean": 1574.6962121699528,
+          "std": 717.1842341986574,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 3,
+          "min": -214.7926025390625,
+          "max": 1036.6304016113281,
+          "mean": 385.69818106155094,
+          "std": 242.65212398709537,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 4,
+          "min": -874.507568359375,
+          "max": 1034.941650390625,
+          "mean": 177.54715882786905,
+          "std": 357.15337261267973,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 5,
+          "min": -95.96875,
+          "max": 1507.98828125,
+          "mean": 615.2077763714674,
+          "std": 262.47944688128246,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 6,
+          "min": -384.289794921875,
+          "max": 3150.47998046875,
+          "mean": 2027.7688679169694,
+          "std": 606.1787109431098,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 7,
+          "min": -137.4814453125,
+          "max": 2077.54248046875,
+          "mean": 959.2301550173024,
+          "std": 452.9531962755256,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 8,
+          "min": -119.345947265625,
+          "max": 2585.7152099609375,
+          "mean": 1127.832478143982,
+          "std": 642.2005915747562,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 9,
+          "min": -524.13916015625,
+          "max": 850.1708984375,
+          "mean": 46.1904806861837,
+          "std": 208.2343812375947,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 10,
+          "min": -87.7470703125,
+          "max": 1988.77880859375,
+          "mean": 1002.7861004055766,
+          "std": 442.051290572358,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 11,
+          "min": -166.12109375,
+          "max": 1543.2158203125,
+          "mean": 944.1793791204135,
+          "std": 353.71632125674796,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 12,
+          "min": -114.2728271484375,
+          "max": 2740.077362060547,
+          "mean": 1618.4981118971002,
+          "std": 675.2845855389714,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 13,
+          "min": -559.94970703125,
+          "max": 914.97900390625,
+          "mean": 156.03372733251416,
+          "std": 244.06593195534057,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 14,
+          "min": -171.71728515625,
+          "max": 989.75537109375,
+          "mean": 297.44449132347825,
+          "std": 211.65150784606777,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 15,
+          "min": -298.55908203125,
+          "max": 1968.7701721191406,
+          "mean": 697.4919606067504,
+          "std": 734.3089102487636,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 16,
+          "min": -196.37451171875,
+          "max": 2165.721435546875,
+          "mean": 1215.544018108785,
+          "std": 448.2084249767913,
+          "nan_count": 0,
+          "inf_count": 0
+        }
+      ],
+      "trial_info": {
+        "unique_values": [
+          1,
+          2,
+          3,
+          30
+        ],
+        "total_transitions": 864,
+        "segments_per_value": {
+          "1": 288,
+          "2": 288,
+          "3": 288,
+          "30": 1
+        },
+        "signal_length": 299822
+      }
+    },
+    "S13": {
+      "subject_id": "S13",
+      "exists": true,
+      "files": {
+        "EOG.mat": {
+          "keys": [
+            "EOG"
+          ],
+          "variables": {
+            "EOG": {
+              "shape": [
+                16,
+                299821
+              ],
+              "dtype": "float64",
+              "min": -840.98779296875,
+              "max": 4340.924072265625,
+              "mean": 1737.8375530841981,
+              "std": 1129.9878348264515,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 4797136,
+              "unique_count": 4173608
+            }
+          },
+          "file_size_bytes": 17864583
+        },
+        "ControlSignal.mat": {
+          "keys": [
+            "ControlSignal"
+          ],
+          "variables": {
+            "ControlSignal": {
+              "shape": [
+                1,
+                299821
+              ],
+              "dtype": "uint8",
+              "min": 1.0,
+              "max": 30.0,
+              "mean": 2.2500992258714367,
+              "std": 0.8307001680986372,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 299821,
+              "unique_values": [
+                1,
+                2,
+                3,
+                30
+              ],
+              "unique_count": 4
+            }
+          },
+          "file_size_bytes": 3796
+        },
+        "Target_GA_stream.mat": {
+          "keys": [
+            "Target_GA_stream"
+          ],
+          "variables": {
+            "Target_GA_stream": {
+              "shape": [
+                2,
+                299821
+              ],
+              "dtype": "float64",
+              "min": -12.0,
+              "max": 12.0,
+              "mean": 0.00011540545440868928,
+              "std": 4.258209296419997,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 599642,
+              "unique_values": [
+                -12.0,
+                -11.822861946285634,
+                -11.295488389157633,
+                -10.43020778240005,
+                -9.248182147108107,
+                -7.780076629823699,
+                -6.066524724887445,
+                -4.158009571704293,
+                -2.113831056618829,
+                0.0,
+                2.113831056618829,
+                4.158009571704288,
+                4.158009571704293,
+                6.066524724887445,
+                6.066524724887449,
+                7.780076629823699,
+                9.248182147108107,
+                10.43020778240005,
+                11.295488389157633,
+                11.822861946285634,
+                12.0
+              ],
+              "unique_count": 21
+            }
+          },
+          "file_size_bytes": 31841
+        },
+        "PD.mat": {
+          "keys": [
+            "PD"
+          ],
+          "variables": {
+            "PD": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.059,
+              "max": 0.059,
+              "mean": 0.059,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.059
+                ]
+              ],
+              "unique_values": [
+                0.059
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 179
+        },
+        "Dist_screen.mat": {
+          "keys": [
+            "Dist_screen"
+          ],
+          "variables": {
+            "Dist_screen": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.545,
+              "max": 0.545,
+              "mean": 0.545,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.545
+                ]
+              ],
+              "unique_values": [
+                0.545
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 189
+        }
+      },
+      "missing_files": [],
+      "anomalies": [
+        "ControlSignal contains value 30 (not documented as 1,2,3)"
+      ],
+      "validation_passed": true,
+      "eog_channels": 16,
+      "eog_samples": 299821,
+      "eog_duration_sec": 1171.18,
+      "eog_variable_name": "EOG",
+      "control_signal_variable_name": "ControlSignal",
+      "control_signal_unique_values": [
+        1,
+        2,
+        3,
+        30
+      ],
+      "target_ga_shape": [
+        2,
+        299821
+      ],
+      "target_ga_variable_name": "Target_GA_stream",
+      "pd_value": [
+        [
+          0.059
+        ]
+      ],
+      "pd_variable_name": "PD",
+      "dist_screen_value": [
+        [
+          0.545
+        ]
+      ],
+      "dist_screen_variable_name": "Dist_screen",
+      "eog_channel_stats": [
+        {
+          "channel": 1,
+          "min": -41.224609375,
+          "max": 2254.876220703125,
+          "mean": 744.9901009417064,
+          "std": 364.44729980044934,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 2,
+          "min": -134.12109375,
+          "max": 3434.8994140625,
+          "mean": 2480.2497300106184,
+          "std": 843.6504264663321,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 3,
+          "min": -0.900390625,
+          "max": 3777.490478515625,
+          "mean": 2593.800955246233,
+          "std": 1034.640068647034,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 4,
+          "min": -187.71435546875,
+          "max": 2659.6741333007812,
+          "mean": 1685.5467748380029,
+          "std": 648.4893528606872,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 5,
+          "min": 0.0,
+          "max": 2724.98583984375,
+          "mean": 1327.671174052797,
+          "std": 444.8071850493715,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 6,
+          "min": -95.9501953125,
+          "max": 3587.32275390625,
+          "mean": 2427.0577245041363,
+          "std": 843.1371900003113,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 7,
+          "min": -840.98779296875,
+          "max": 1702.478515625,
+          "mean": 379.64556244470657,
+          "std": 490.4910964078526,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 8,
+          "min": -308.3027648925781,
+          "max": 1838.1734619140625,
+          "mean": 559.9030416340555,
+          "std": 374.9797216522655,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 9,
+          "min": -12.1005859375,
+          "max": 2704.20849609375,
+          "mean": 1350.873980042467,
+          "std": 573.9262834279122,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 10,
+          "min": -439.62562561035156,
+          "max": 1891.7647705078125,
+          "mean": 455.339114681015,
+          "std": 374.0567673235928,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 11,
+          "min": -4.432861328125,
+          "max": 4340.924072265625,
+          "mean": 2845.632638080846,
+          "std": 1123.4054436973606,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 12,
+          "min": -194.812744140625,
+          "max": 3506.2930297851562,
+          "mean": 2440.593435978405,
+          "std": 804.2366840668037,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 13,
+          "min": -1.146484375,
+          "max": 4007.2237548828125,
+          "mean": 2477.356560274486,
+          "std": 759.0736281220103,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 14,
+          "min": -107.01025390625,
+          "max": 2124.8592529296875,
+          "mean": 1045.7426753759382,
+          "std": 438.34511118753994,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 15,
+          "min": -121.45159912109375,
+          "max": 4002.1577758789062,
+          "mean": 2774.451565491208,
+          "std": 950.1862860895528,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 16,
+          "min": -166.06640625,
+          "max": 3232.9341430664062,
+          "mean": 2216.5458157505473,
+          "std": 872.9666621177436,
+          "nan_count": 0,
+          "inf_count": 0
+        }
+      ],
+      "trial_info": {
+        "unique_values": [
+          1,
+          2,
+          3,
+          30
+        ],
+        "total_transitions": 864,
+        "segments_per_value": {
+          "1": 288,
+          "2": 288,
+          "3": 288,
+          "30": 1
+        },
+        "signal_length": 299821
+      }
+    },
+    "S14": {
+      "subject_id": "S14",
+      "exists": true,
+      "files": {
+        "EOG.mat": {
+          "keys": [
+            "EOG"
+          ],
+          "variables": {
+            "EOG": {
+              "shape": [
+                16,
+                299821
+              ],
+              "dtype": "float64",
+              "min": -560.760009765625,
+              "max": 3764.197593688965,
+              "mean": 783.5263382991467,
+              "std": 714.9571143170539,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 4797136,
+              "unique_count": 3419351
+            }
+          },
+          "file_size_bytes": 17268763
+        },
+        "ControlSignal.mat": {
+          "keys": [
+            "ControlSignal"
+          ],
+          "variables": {
+            "ControlSignal": {
+              "shape": [
+                1,
+                299821
+              ],
+              "dtype": "uint8",
+              "min": 1.0,
+              "max": 30.0,
+              "mean": 2.2500391900500634,
+              "std": 0.8306861202193946,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 299821,
+              "unique_values": [
+                1,
+                2,
+                3,
+                30
+              ],
+              "unique_count": 4
+            }
+          },
+          "file_size_bytes": 3791
+        },
+        "Target_GA_stream.mat": {
+          "keys": [
+            "Target_GA_stream"
+          ],
+          "variables": {
+            "Target_GA_stream": {
+              "shape": [
+                2,
+                299821
+              ],
+              "dtype": "float64",
+              "min": -12.0,
+              "max": 12.0,
+              "mean": -0.00010776499533185239,
+              "std": 4.258241941054886,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 599642,
+              "unique_values": [
+                -12.0,
+                -11.822861946285634,
+                -11.295488389157633,
+                -10.43020778240005,
+                -9.248182147108107,
+                -7.780076629823699,
+                -6.066524724887445,
+                -4.158009571704293,
+                -2.113831056618829,
+                0.0,
+                2.113831056618829,
+                4.158009571704288,
+                4.158009571704293,
+                6.066524724887445,
+                6.066524724887449,
+                7.780076629823699,
+                9.248182147108107,
+                10.43020778240005,
+                11.295488389157633,
+                11.822861946285634,
+                12.0
+              ],
+              "unique_count": 21
+            }
+          },
+          "file_size_bytes": 31898
+        },
+        "PD.mat": {
+          "keys": [
+            "PD"
+          ],
+          "variables": {
+            "PD": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.062,
+              "max": 0.062,
+              "mean": 0.062,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.062
+                ]
+              ],
+              "unique_values": [
+                0.062
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 179
+        },
+        "Dist_screen.mat": {
+          "keys": [
+            "Dist_screen"
+          ],
+          "variables": {
+            "Dist_screen": {
+              "shape": [
+                1,
+                1
+              ],
+              "dtype": "float64",
+              "min": 0.545,
+              "max": 0.545,
+              "mean": 0.545,
+              "std": 0.0,
+              "nan_count": 0,
+              "inf_count": 0,
+              "size": 1,
+              "values": [
+                [
+                  0.545
+                ]
+              ],
+              "unique_values": [
+                0.545
+              ],
+              "unique_count": 1
+            }
+          },
+          "file_size_bytes": 189
+        }
+      },
+      "missing_files": [],
+      "anomalies": [
+        "ControlSignal contains value 30 (not documented as 1,2,3)"
+      ],
+      "validation_passed": true,
+      "eog_channels": 16,
+      "eog_samples": 299821,
+      "eog_duration_sec": 1171.18,
+      "eog_variable_name": "EOG",
+      "control_signal_variable_name": "ControlSignal",
+      "control_signal_unique_values": [
+        1,
+        2,
+        3,
+        30
+      ],
+      "target_ga_shape": [
+        2,
+        299821
+      ],
+      "target_ga_variable_name": "Target_GA_stream",
+      "pd_value": [
+        [
+          0.062
+        ]
+      ],
+      "pd_variable_name": "PD",
+      "dist_screen_value": [
+        [
+          0.545
+        ]
+      ],
+      "dist_screen_variable_name": "Dist_screen",
+      "eog_channel_stats": [
+        {
+          "channel": 1,
+          "min": -222.4658203125,
+          "max": 1502.1396484375,
+          "mean": 272.34035286154983,
+          "std": 242.2087306593294,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 2,
+          "min": -410.11181640625,
+          "max": 1441.43798828125,
+          "mean": 346.9096458787467,
+          "std": 361.37647342449037,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 3,
+          "min": -321.8955078125,
+          "max": 2534.380859375,
+          "mean": 1193.7794931249082,
+          "std": 588.6395539637963,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 4,
+          "min": -242.91796875,
+          "max": 1697.7333984375,
+          "mean": 580.4800478641058,
+          "std": 346.5838649317019,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 5,
+          "min": -402.69720458984375,
+          "max": 2287.4943771362305,
+          "mean": 694.1519126557848,
+          "std": 508.6762934006857,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 6,
+          "min": -199.1416015625,
+          "max": 2177.5400390625,
+          "mean": 1100.6025701487565,
+          "std": 507.2426498273502,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 7,
+          "min": -147.9326171875,
+          "max": 2886.29931640625,
+          "mean": 1009.5302760073928,
+          "std": 657.1976766168233,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 8,
+          "min": -239.37158203125,
+          "max": 2406.999755859375,
+          "mean": 831.9003837623848,
+          "std": 525.8338594252529,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 9,
+          "min": -290.83251953125,
+          "max": 2623.435546875,
+          "mean": 991.0851834636659,
+          "std": 530.5338486739668,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 10,
+          "min": -244.188232421875,
+          "max": 3186.1436157226562,
+          "mean": 1343.9094940488565,
+          "std": 685.2895375911341,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 11,
+          "min": -283.33575439453125,
+          "max": 3764.197593688965,
+          "mean": 1680.0451029997146,
+          "std": 1040.4279497281964,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 12,
+          "min": -560.760009765625,
+          "max": 1044.245361328125,
+          "mean": -6.912309814419739,
+          "std": 280.28870545365953,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 13,
+          "min": -114.259765625,
+          "max": 2136.7802734375,
+          "mean": 819.9827116898499,
+          "std": 363.8844920845298,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 14,
+          "min": -202.9443359375,
+          "max": 2944.0791015625,
+          "mean": 1274.530112817575,
+          "std": 763.3969550890233,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 15,
+          "min": -424.4287109375,
+          "max": 1172.064453125,
+          "mean": 195.19813127496803,
+          "std": 277.3523461803518,
+          "nan_count": 0,
+          "inf_count": 0
+        },
+        {
+          "channel": 16,
+          "min": -400.1220703125,
+          "max": 1190.625,
+          "mean": 208.88830400250797,
+          "std": 257.31408859095706,
+          "nan_count": 0,
+          "inf_count": 0
+        }
+      ],
+      "trial_info": {
+        "unique_values": [
+          1,
+          2,
+          3,
+          30
+        ],
+        "total_transitions": 864,
+        "segments_per_value": {
+          "1": 288,
+          "2": 288,
+          "3": 288,
+          "30": 1
+        },
+        "signal_length": 299821
+      }
+    }
+  },
+  "summary": {
+    "all_passed": true,
+    "subjects_inspected": 14,
+    "total_anomalies": 14,
+    "anomaly_list": [
+      {
+        "subject": "S1",
+        "message": "ControlSignal contains value 30 (not documented as 1,2,3)"
+      },
+      {
+        "subject": "S2",
+        "message": "ControlSignal contains value 30 (not documented as 1,2,3)"
+      },
+      {
+        "subject": "S3",
+        "message": "ControlSignal contains value 30 (not documented as 1,2,3)"
+      },
+      {
+        "subject": "S4",
+        "message": "ControlSignal contains value 30 (not documented as 1,2,3)"
+      },
+      {
+        "subject": "S5",
+        "message": "ControlSignal contains value 30 (not documented as 1,2,3)"
+      },
+      {
+        "subject": "S6",
+        "message": "ControlSignal contains value 30 (not documented as 1,2,3)"
+      },
+      {
+        "subject": "S7",
+        "message": "ControlSignal contains value 30 (not documented as 1,2,3)"
+      },
+      {
+        "subject": "S8",
+        "message": "ControlSignal contains value 30 (not documented as 1,2,3)"
+      },
+      {
+        "subject": "S9",
+        "message": "ControlSignal contains value 30 (not documented as 1,2,3)"
+      },
+      {
+        "subject": "S10",
+        "message": "ControlSignal contains value 30 (not documented as 1,2,3)"
+      },
+      {
+        "subject": "S11",
+        "message": "ControlSignal contains value 30 (not documented as 1,2,3)"
+      },
+      {
+        "subject": "S12",
+        "message": "ControlSignal contains value 30 (not documented as 1,2,3)"
+      },
+      {
+        "subject": "S13",
+        "message": "ControlSignal contains value 30 (not documented as 1,2,3)"
+      },
+      {
+        "subject": "S14",
+        "message": "ControlSignal contains value 30 (not documented as 1,2,3)"
+      }
+    ]
+  }
+}
