@@ -23,8 +23,12 @@ router = APIRouter()
 
 def authorized(headers, host):
     if os.environ.get("EOG_DEPLOYED") == "1":
+        access_token = os.environ.get("EOG_ACCESS_TOKEN", "")
+        if len(access_token) >= 32 and hmac.compare_digest(
+                headers.get("authorization", "").encode(), f"Bearer {access_token}".encode()):
+            return True
         token = os.environ.get("EOG_PROXY_TOKEN", "")
-        return len(token) >= 32 and hmac.compare_digest(headers.get("x-eog-proxy-token", ""), token) and bool(headers.get("x-eog-user"))
+        return len(token) >= 32 and hmac.compare_digest(headers.get("x-eog-proxy-token", "").encode(), token.encode()) and bool(headers.get("x-eog-user"))
     return host in {"127.0.0.1", "::1", "localhost", "testclient"}
 
 
@@ -161,10 +165,15 @@ _sessions = set()
 async def replay(socket: WebSocket):
     origin = socket.headers.get("origin")
     origins = os.environ.get("EOG_ALLOWED_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",")
-    if (origin and origin not in origins) or not authorized(socket.headers, socket.client.host if socket.client else "") or len(_sessions) >= 4:
+    protocols = [value.strip() for value in socket.headers.get("sec-websocket-protocol", "").split(",")]
+    headers = dict(socket.headers)
+    for protocol in protocols:
+        if protocol.startswith("eog-token."):
+            headers["authorization"] = "Bearer " + protocol.removeprefix("eog-token.")
+    if (origin and origin not in origins) or not authorized(headers, socket.client.host if socket.client else "") or len(_sessions) >= 4:
         await socket.close(code=1008)
         return
-    await socket.accept()
+    await socket.accept(subprotocol="eog-replay" if "eog-replay" in protocols else None)
     session_id = id(socket)
     _sessions.add(session_id)
     try:

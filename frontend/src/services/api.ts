@@ -1,17 +1,30 @@
 ﻿import type { Health, Readiness, DatasetSummary, Subject, Trial, SignalData, Onset, Processing, EarlyWindow, QualityReport, LegacyExperiment, ExperimentSummary, Experiment, ModelRecord, Prediction, Job } from './types';
 
 export const API_BASE = (import.meta.env.VITE_API_BASE || '/api').replace(/\/$/, '');
-export async function fetchJson<T>(url: string, signal?: AbortSignal, body?: unknown): Promise<T> {
+export const remoteApi = new URL(API_BASE, window.location.href).origin !== window.location.origin;
+export const accessToken = () => sessionStorage.getItem('eog-access-token') || '';
+export function replayProtocols() {
+  return accessToken() ? ['eog-replay', `eog-token.${accessToken()}`] : [];
+}
+export async function fetchResponse(url: string, signal?: AbortSignal, body?: unknown): Promise<Response> {
   const timeout = AbortSignal.timeout(30000);
   const res = await fetch(`${API_BASE}${url}`, {
     signal: signal ? AbortSignal.any([signal, timeout]) : timeout,
-    ...(body === undefined ? {} : { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }),
+    headers: { ...(accessToken() ? { Authorization: `Bearer ${accessToken()}` } : {}), ...(body === undefined ? {} : { 'Content-Type': 'application/json' }) },
+    ...(body === undefined ? {} : { method: 'POST', body: JSON.stringify(body) }),
   });
   if (!res.ok) {
+    if (res.status === 403 && remoteApi) {
+      sessionStorage.removeItem('eog-access-token');
+      window.dispatchEvent(new Event('eog-auth-required'));
+    }
     const data: { detail?: unknown } = await res.json().catch(() => ({}));
     throw new Error(typeof data.detail === 'string' ? data.detail : `Request failed (${res.status}). Check the selected inputs and service connection.`);
   }
-  return res.json() as Promise<T>;
+  return res;
+}
+export async function fetchJson<T>(url: string, signal?: AbortSignal, body?: unknown): Promise<T> {
+  return (await fetchResponse(url, signal, body)).json() as Promise<T>;
 }
 const query = (params?: Record<string, string>) => params ? '?' + new URLSearchParams(params) : '';
 const id = encodeURIComponent;

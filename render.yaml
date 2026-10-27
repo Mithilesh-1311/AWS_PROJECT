@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: eog-api
+    runtime: python
+    plan: standard
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m scripts.serve_render
+    healthCheckPath: /api/health
+    autoDeployTrigger: "off"
+    disk:
+      name: eog-data
+      mountPath: /var/data
+      sizeGB: 10
+    envVars:
+      - key: EOG_DEPLOYED
+        value: "1"
+      - key: EOG_ACCESS_TOKEN
+        generateValue: true
+      - key: EOG_ALLOWED_ORIGINS
+        sync: false
+      - key: EOG_DATASET_ROOT
+        value: /var/data/dataset
+      - key: EOG_ARTIFACTS_ROOT
+        value: /var/data/artifacts
+      - key: OPENBLAS_NUM_THREADS
+        value: "1"
+      - key: OMP_NUM_THREADS
+        value: "1"

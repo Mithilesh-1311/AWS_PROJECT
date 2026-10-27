@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { replayUrl, api } from '../services/api';
+import { replayUrl, replayProtocols, api } from '../services/api';
 import type { Predicted, ReplayEvent } from '../services/types';
 import { useFetch } from '../hooks/useFetch';
 import { useTrialSelection } from '../hooks/useTrialSelection';
@@ -28,7 +28,7 @@ export default function ReplayPage() {
     if (!selected.length || selected.length > 16 || selected.some(n => !Number.isInteger(n) || n < 0 || n >= 16) || new Set(selected).size !== selected.length) { setError('Choose distinct channels from 0 to 15.'); return; }
     setError(null); setRows([]); setPrediction(null); setSample(0); setTotal(null);
     expected.current = { sample: 0, sequence: 0 };
-    const ws = new WebSocket(replayUrl()); socket.current = ws; setState('connecting');
+    const ws = new WebSocket(replayUrl(), replayProtocols()); socket.current = ws; setState('connecting');
     ws.onopen = () => { if (socket.current !== ws) return; ws.send(JSON.stringify({ subject_id: selection.subjectId, trial_id: selection.trialId, model_id: registry.data?.active_model_id, speed, channels: selected, chunk_size: 16 })); setState('playing'); };
     ws.onmessage = event => {
       if (socket.current !== ws) return;

@@ -30,15 +30,6 @@ app = FastAPI(
     version="0.2.0",
 )
 
-# CORS for frontend dev server
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=os.environ.get("EOG_ALLOWED_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(","),
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 # Register routers
 app.include_router(dataset_router, prefix="/api", tags=["Dataset"])
 app.include_router(subjects_router, prefix="/api", tags=["Subjects"])
@@ -80,6 +71,16 @@ async def access_limits(request: Request, call_next):
         return JSONResponse({"detail": "Request rate exceeded"}, status_code=429, headers={"Retry-After": "60"})
     queue.append(now)
     return await call_next(request)
+
+
+# Wrap access checks so cross-origin clients can read authentication errors too.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=os.environ.get("EOG_ALLOWED_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(","),
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.exception_handler(ValueError)

@@ -57,6 +57,8 @@ The clean runtime passed 47 tests with one optional TCN test skipped; the dedica
 
 ## Deployment and demonstration
 
+For the Vercel frontend + Render backend setup, use [VERCEL_RENDER_DEPLOYMENT.md](docs/VERCEL_RENDER_DEPLOYMENT.md). Configuration is prepared; no cloud resources have been created. This setup uses a paid Render service and persistent disk for the API, worker, dataset and generated artifacts.
+
 Docker Compose provides Caddy/static frontend, API and a separate worker. Copy `.env.example` to `.env`, generate the required bcrypt hash/token, then use `docker compose up -d --build`. [AWS_DEPLOYMENT.md](docs/AWS_DEPLOYMENT.md) gives the complete configuration and rollback/backup path.
 
 AWS status: **prepared; Terraform schema and mocked security plan validated; not deployed; not cloud-verified**. No AWS resources or raw-data uploads were performed. Linux container build, worker/API health and authenticated proxy checks passed in GitHub Actions. Full real-data container inference and AWS smoke remain unrun.

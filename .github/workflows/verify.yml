@@ -39,6 +39,14 @@ jobs:
           npm run dev > /tmp/eog-vite.log 2>&1 &
           npx playwright test boundaries.spec.ts
         working-directory: frontend
+      - name: Verify separate frontend and API authentication
+        run: |
+          VITE_API_BASE=https://eog-api.example/api npm run dev -- --port 5180 > /tmp/eog-remote-vite.log 2>&1 &
+          VITE_PID=$!
+          trap 'kill "$VITE_PID"' EXIT
+          for attempt in $(seq 1 30); do curl -fsS http://127.0.0.1:5180 >/dev/null && break; sleep 1; done
+          EOG_TEST_REMOTE_API=1 EOG_TEST_URL=http://127.0.0.1:5180 npx playwright test deployment.spec.ts
+        working-directory: frontend
   infrastructure:
     runs-on: ubuntu-latest
     steps:

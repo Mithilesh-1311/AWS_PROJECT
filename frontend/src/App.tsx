@@ -1,7 +1,8 @@
 ﻿import { BrowserRouter, Routes, Route, NavLink, useLocation } from 'react-router-dom';
 import { useEffect, useRef, useState, lazy, Suspense } from 'react';
 import { Activity, Database, SlidersHorizontal, Timer, Target, Radio, BarChart3, ShieldCheck, Workflow, FileText, Menu, X } from 'lucide-react';
-import { api } from './services/api';
+import { api, remoteApi } from './services/api';
+import AccessGate from './components/AccessGate';
 import type { Readiness } from './services/types';
 import { Loading } from './components/RequestState';
 import './index.css';
@@ -40,6 +41,6 @@ function Shell() {
     <dialog ref={dialog} className="navigation-dialog" aria-label="Navigation"><button className="drawer-close" aria-label="Close navigation" onClick={() => dialog.current?.close()}><X size={18} /></button><Navigation close={() => dialog.current?.close()} /></dialog>
     <div className="main-content"><header className="topbar"><div className="brand-line"><button className="mobile-menu" aria-label="Open navigation" onClick={() => dialog.current?.showModal()}><Menu size={20} /></button><strong>EOG Intent</strong><span>EARLY EYE-MOVEMENT INTELLIGENCE</span></div><div className="topbar-status">{(['dataset', 'model', 'worker'] as const).map(key => <span key={key} className={ready?.[key] ? 'status-ready' : 'status-unavailable'}><i aria-hidden="true" />{key} {ready ? ready[key] ? 'ready' : 'unavailable' : 'unknown'}</span>)}</div></header>
       <main id="main" className="page-content" key={location.pathname}><Suspense fallback={<Loading label="Loading research workspace" />}><Routes><Route path="/" element={<Overview />} /><Route path="/dataset" element={<Dataset />} /><Route path="/signal" element={<Signal />} /><Route path="/early-window" element={<EarlyWindow />} /><Route path="/predictions" element={<Predictions />} /><Route path="/replay" element={<Replay />} /><Route path="/experiments" element={<Evaluation />} /><Route path="/quality" element={<Quality />} /><Route path="/methodology" element={<Methodology />} /><Route path="/reports" element={<Reports />} /><Route path="*" element={<div className="notice">Page not found. Use the navigation to choose a research tool.</div>} /></Routes></Suspense></main>
-      <footer className="app-footer"><span>API {connection}</span><span>Application {ready?.version ?? 'version unavailable'} · build {import.meta.env.VITE_BUILD_ID || 'local'}</span></footer></div></div>;
+      <footer className="app-footer"><span>API {connection}</span>{remoteApi && <button onClick={() => { sessionStorage.removeItem('eog-access-token'); window.dispatchEvent(new Event('eog-auth-required')); }}>Sign out</button>}<span>Application {ready?.version ?? 'version unavailable'} · build {import.meta.env.VITE_BUILD_ID || 'local'}</span></footer></div></div>;
 }
-export default function App() { return <BrowserRouter><Shell /></BrowserRouter>; }
+export default function App() { return <AccessGate><BrowserRouter><Shell /></BrowserRouter></AccessGate>; }
