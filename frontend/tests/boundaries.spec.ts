@@ -1,5 +1,31 @@
 import { test, expect } from '@playwright/test';
 
+test('dashboard percentages follow the selected saved result', async ({ page }) => {
+  const result = (window_ms: number, accuracy: number, macro_f1: number) => ({
+    model_name: 'logistic_regression', window_ms, n_samples: Math.ceil(window_ms * .256),
+    metrics: { accuracy, balanced_accuracy: accuracy, macro_f1 }, folds: [], n_predictions: 100,
+    coverage: 1, source_test_trials: 100,
+  });
+  const report = { experiment_id: 'fixture', status: 'complete', timestamp: '2026-10-27T00:00:00Z',
+    config: { subjects: ['S1'], smoke: false, models: ['logistic_regression'], windows: [100, 400], evaluation: 'loso' },
+    dataset: { fingerprint: 'fixture', files: {} }, class_names: [],
+    results: [result(100, .778393, .779398), result(400, .88515, .884124)] };
+  await page.route('**/api/**', route => {
+    const path = new URL(route.request().url()).pathname;
+    if (path === '/api/v1/experiments') return route.fulfill({ json: { experiments: [report] } });
+    if (path === '/api/v1/experiments/fixture') return route.fulfill({ json: report });
+    return route.fulfill({ status: 503, json: { detail: 'Unavailable in this fixture' } });
+  });
+  await page.goto('/');
+  const f1 = page.locator('.metric-strip a').filter({ hasText: 'macro F1' });
+  await expect(f1).toContainText('77.94%');
+  await page.getByLabel('Dashboard result').selectOption('logistic_regression:400');
+  await expect(f1).toContainText('88.41%');
+  await expect(f1).toContainText('400 ms');
+  await page.reload();
+  await expect(f1).toContainText('88.41%');
+});
+
 test('empty registry and unavailable dataset retain actionable navigation', async ({ page }) => {
   await page.route('**/api/**', route => {
     const path = new URL(route.request().url()).pathname;

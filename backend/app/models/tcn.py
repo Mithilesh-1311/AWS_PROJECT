@@ -10,12 +10,13 @@ class CausalConv(nn.Conv1d):
 
 
 class TinyTCN(nn.Module):
-    def __init__(self):
+    def __init__(self, hidden=24, dilations=(1, 2, 4)):
         super().__init__()
-        self.encoder = nn.Sequential(CausalConv(16, 24, 3), nn.ReLU(),
-                                     CausalConv(24, 24, 3, dilation=2), nn.ReLU(),
-                                     CausalConv(24, 24, 3, dilation=4), nn.ReLU())
-        self.head = nn.Linear(24, 8)
+        layers = []
+        for index, dilation in enumerate(dilations):
+            layers.extend([CausalConv(16 if index == 0 else hidden, hidden, 3, dilation=dilation), nn.ReLU()])
+        self.encoder = nn.Sequential(*layers)
+        self.head = nn.Linear(hidden, 8)
 
     def forward(self, x, lengths):
         if x.ndim != 3 or x.shape[1] != 16 or lengths.shape != (x.shape[0],):

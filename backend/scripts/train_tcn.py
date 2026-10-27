@@ -41,9 +41,9 @@ def sequences(loader, subjects, fingerprint):
     return data
 
 
-def fit(x, y, epochs, validation=None):
+def fit(x, y, epochs, validation=None, model_config=None):
     torch.manual_seed(42)
-    model = TinyTCN()
+    model = TinyTCN(**(model_config or {}))
     optimizer = torch.optim.Adam(model.parameters(), lr=.002, weight_decay=1e-4)
     rng = np.random.default_rng(42)
     best, best_epoch, patience = float('inf'), 1, 0
@@ -75,7 +75,11 @@ def normalize(train, others):
     return [torch.from_numpy((item - mean) / scale) for item in [train, *others]], mean, scale
 
 
-def run(resume=None, max_epochs=30):
+def run(resume=None, max_epochs=30, architecture="tiny"):
+    if architecture not in {"tiny", "full_window"}:
+        raise ValueError("Unsupported TCN architecture")
+    model_config = dict(hidden=32, dilations=[1, 2, 4, 8]) if architecture == "full_window" else dict(hidden=24, dilations=[1, 2, 4])
+    model_name = "full_window_tcn" if architecture == "full_window" else "tiny_tcn"
     torch.set_num_threads(2)
     torch.use_deterministic_algorithms(True)
     loader = get_loader()
@@ -88,10 +92,10 @@ def run(resume=None, max_epochs=30):
         raise ValueError("Invalid experiment ID or epoch bound")
     folder = EXPERIMENTS_DIR / eid
     folder.mkdir(parents=True, exist_ok=True)
-    config = dict(subjects=subjects, models=['tiny_tcn'], windows=[100], evaluation='loso', smoke=False,
+    config = dict(subjects=subjects, models=[model_name], windows=[100], evaluation='loso', smoke=False,
                   preprocessing_version=VERSION, feature_version='sequence-v1', seed=42,
                   selection_policy='100ms fixed; epochs selected on one inner training subject then refit all outer training subjects',
-                  max_epochs=max_epochs, patience=5, hidden=24, kernel=3, dilations=[1, 2, 4], learning_rate=.002)
+                  max_epochs=max_epochs, patience=5, hidden=model_config['hidden'], kernel=3, dilations=model_config['dilations'], learning_rate=.002)
     manifest = dict(experiment_id=eid, config=config, dataset=dataset, class_names=DIRECTION_LABELS_8,
                     timestamp=datetime.now(timezone.utc).isoformat(), status='running', torch_version=torch.__version__)
     if (folder / 'manifest.json').exists():
@@ -108,7 +112,7 @@ def run(resume=None, max_epochs=30):
     folds = []
     started = perf_counter()
     for index, sid in enumerate(subjects):
-        path = folder / f'tiny_tcn_100_fold{index}.json'
+        path = folder / f'{model_name}_100_fold{index}.json'
         if path.exists():
             folds.append(json.loads(path.read_text()))
             continue
@@ -118,10 +122,10 @@ def run(resume=None, max_epochs=30):
         inner_val = groups == inner_subject
         inner_train = train & ~inner_val
         tensors, _, _ = normalize(x[inner_train], [x[inner_val]])
-        _, epochs = fit(tensors[0], y[inner_train], max_epochs, (tensors[1], y[inner_val]))
+        _, epochs = fit(tensors[0], y[inner_train], max_epochs, (tensors[1], y[inner_val]), model_config)
         tensors, mean, scale = normalize(x[train], [x[test]])
         fit_start = perf_counter()
-        model, _ = fit(tensors[0], y[train], epochs)
+        model, _ = fit(tensors[0], y[train], epochs, model_config=model_config)
         fit_seconds = perf_counter() - fit_start
         predict_start = perf_counter()
         with torch.no_grad():
@@ -138,12 +142,12 @@ def run(resume=None, max_epochs=30):
         print(f"Fold {index + 1}/14 {sid}: accuracy={fold['metrics']['accuracy']:.4f}, epochs={epochs}", flush=True)
     true = np.array([v for f in folds for v in f['y_true']])
     pred = np.array([v for f in folds for v in f['y_pred']])
-    result = dict(model_name='tiny_tcn', window_ms=100, n_samples=26, metrics=metrics(true, pred), folds=folds,
+    result = dict(model_name=model_name, window_ms=100, n_samples=26, metrics=metrics(true, pred), folds=folds,
                   n_predictions=len(true), eligible_trials=len(true), coverage=len(true) / sum(data['source_counts'].values()),
                   matched_metrics=None, matched_prediction_count=0, subject_accuracy_interval=subject_interval(folds))
     manifest.update(status='complete', results=[result], total_source_trials=sum(data['source_counts'].values()),
                     exclusion_count=len(data['exclusions']), runtime_seconds=perf_counter() - started,
-                    parameter_count=sum(p.numel() for p in TinyTCN().parameters()),
+                    parameter_count=sum(p.numel() for p in TinyTCN(**model_config).parameters()),
                     serving_policy='comparison only; does not replace fixed logistic serving model')
     write_json(folder / 'manifest.json', manifest)
     print('Experiment:', eid, result['metrics'], flush=True)
@@ -154,5 +158,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--resume')
     parser.add_argument('--max-epochs', type=int, default=30)
+    parser.add_argument('--architecture', choices=['tiny', 'full_window'], default='tiny')
     args = parser.parse_args()
-    run(args.resume, args.max_epochs)
+    run(args.resume, args.max_epochs, args.architecture)

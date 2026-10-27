@@ -4,6 +4,8 @@ Recorded EOG research workspace: validated dataset exploration, causal early-win
 
 Final logistic 100 ms result: **77.84% accuracy / 0.7794 macro F1**, 14-subject LOSO, 3,610 eligible trials out of 4,032. The 25-sample calibration delay and onset-confirmation delay are included in decision readiness. Observation budget is not total latency. See [model card](docs/MODEL_CARD.md) and [experiment evidence](docs/EXPERIMENTS.md).
 
+Best recorded 400 ms result: **88.79% accuracy / 0.8870 macro F1**, 14-subject LOSO, 3,596 eligible trials. The active serving model remains the 100 ms logistic model. See [macro-F1 search results](docs/MACRO_F1_SEARCH_RESULTS.md).
+
 ## Local launch (PowerShell)
 
 Use Python 3.10 and Node 22. Raw data is deliberately excluded. Place the supplied archive under `Dataset_Isotropic/Dataset_Isotropic/S1...S14`, or set `EOG_DATASET_ROOT` to a folder containing S1...S14. Published reports can be viewed without raw data; training/prediction/replay require it.

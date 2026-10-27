@@ -48,3 +48,9 @@ TCN uses three left-padded convolutions (24 hidden channels; dilations 1,2,4), l
 Published JSONs contain derived predictions, not raw EOG. Older published copies explicitly correct an erroneous coverage denominator in their original manifests; original local manifests remain immutable and their SHA256 is recorded. Model binaries/cache/state remain excluded from new Git commits. `python -m scripts.verify_artifacts` checks real source hashes, split separation, prediction counts and matched IDs.
 
 GRU/LSTM, spatial-temporal CNN, circular angle regression, channel selection, personalized adaptation and confidence-based stopping remain research extensions. They have not been trained or claimed complete.
+
+## Exploratory accuracy follow-ups
+
+Additional recorded-data studies preserve the original 100 ms primary and serving model. The latest best pooled accuracy is **88.7931% at 400 ms** with **0.886998 macro F1** from an inner-selected three-member ensemble, and **84.1828% at 200 ms** with **0.841217 macro F1**. The best 100 ms accuracy remains **77.8393%**. Neither 90% pooled accuracy nor 0.90 macro F1 was obtained. Coverage remains 3,610/4,032 at 100/200 ms and 3,596/4,032 at 400 ms. The expanded 600/800 ms and waveform studies are recorded in [MACRO_F1_SEARCH_RESULTS.md](MACRO_F1_SEARCH_RESULTS.md).
+
+The first follow-up is in [ACCURACY_IMPROVEMENT_RESULTS.md](ACCURACY_IMPROVEMENT_RESULTS.md). The second round, its three new published manifests, stronger grouped selection, larger-TCN result, exact commands, and paired uncertainty are in [ACCURACY_ROUND_2_RESULTS.md](ACCURACY_ROUND_2_RESULTS.md). These are exploratory results on the already studied cohort. The small 400 ms improvement has a paired subject-bootstrap change interval spanning zero.

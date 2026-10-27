@@ -1,0 +1,18 @@
+{
+  "state": "PASS",
+  "experiments": 10,
+  "result_rows": 50,
+  "prediction_records": 180290,
+  "source_labels_checked": true,
+  "metrics_recomputed": true,
+  "ensemble_parent_and_selection_verified": true,
+  "paired_400ms_subject_mean_change_pp": 0.5042254467268074,
+  "paired_subject_bootstrap_change_interval_pp": [
+    -0.22226873274929806,
+    1.3294657385066073
+  ],
+  "test_results": {
+    "torch": "55 passed",
+    "clean": "52 passed, 1 optional Torch module skipped"
+  }
+}

@@ -52,3 +52,21 @@ Known non-failing warnings: Starlette's test-client HTTPX deprecation, sklearn's
 ## Remote CI follow-up
 
 The first run built all images but exposed the worker inheriting the API HTTP health check. Compose now overrides it with the actual worker heartbeat check. The subsequent run at source commit `264d72c` passed all four jobs. CI cleanup/log collection now runs on success and failure. This is a tested configuration fix, not a retry hiding the failure. A documentation-only follow-up records the evidence without rerunning unchanged executable code.
+
+## Additional offline accuracy-study verification
+
+On 2026-10-26, the second accuracy follow-up added grouped inner-selection, per-trial feature normalization, an inner-selected three-member vote, and a larger optional causal TCN. The Torch-enabled full suite passed **55 tests in 10.99 seconds**. The clean-runtime suite passed **52 tests with one optional Torch module skipped in 10.74 seconds**. Tests cover normalization invariance, grouped subject separation, leakage rejection, vote/tie behavior, both TCN architectures, and full-window receptive-field behavior.
+
+All 14 original TCN checkpoints exactly reproduced their 3,610 published predictions after the model class was extended. The updated artifact verifier passed all ten published experiments against actual source fingerprints and inner/outer split invariants. A separate audit compared actual dataset target labels and recomputed metrics for **180,290 prediction records across 50 result rows**; it also verified ensemble selection and parent/code hashes. The counts include repeated trials across studies. See [machine-readable audit](results/accuracy_round2_verification.json) and [round 2 results](ACCURACY_ROUND_2_RESULTS.md).
+
+The new best 400 ms result is 88.5150% accuracy with 89.19% coverage; no 90% pooled result is claimed. Frontend/browser, cloud, connected-sensor, dependency-audit, and latency gates were not rerun for this offline training follow-up. The original verification table above remains the record of its earlier execution scope.
+
+## Macro-F1 search and deployment preparation — 27 October 2026
+
+The full Torch-enabled suite passed **65 tests in 14.95 seconds** after the macro-F1 and waveform studies. Ten unique browser tests passed: four explicit-fixture boundary/dashboard tests and six actual-data application tests covering prediction, replay, desktop/mobile routes, trial selection and failure recovery. The dashboard result-selection/reload test was rerun after the URL-persistence change. Frontend lint and the production build passed. The worker smoke-job browser test was not rerun in this session.
+
+The new search and waveform studies performed 5,194 model fits. The best 400 ms ensemble measured **88.7931% accuracy / 0.886998 macro F1** on the same 3,596 eligible trials as the prior 400 ms result. The 0.90 macro-F1 target was not reached. Longer windows and the waveform study were retained even though they did not improve the best result. The active serving model was not changed.
+
+The [new audit](results/macro_f1_verification.json) recomputes 12 result rows from 38,186 saved prediction records, verifies the inner-selection decisions, checks source/parent hashes, and records comparisons on matching trial IDs. The artifact verifier also checks targets against the original dataset and recomputes fold/pooled metrics across published reports. A test deliberately changes a metric and confirms verification rejects it.
+
+Vercel/Render configuration and authenticated REST/WebSocket/export access are prepared and tested locally. No Render or Vercel resource has been created, no dataset upload has been made, and no cloud-capacity or cloud-inference claim is made.
